@@ -5,10 +5,26 @@ navbar:
   left:
   - text: Home
     href: index.html
-  - text: About
-    href: about.html
-  - text: License
-    href: license.html
+  - text: Day1
+    menu:
+    - text: Session 1
+      href: d1s1.html
+    - text: Session 2
+      href: d1s2.html
+    - text: Session 3
+      href: d1s3.html
+    - text: Session 4
+      href: d1s4.html
+  - text: Day2
+    menu:
+    - text: Session 1
+      href: d2s1.html
+    - text: Session 2
+      href: d2s2.html
+    - text: Session 3
+      href: d2s3.html
+    - text: Session 4
+      href: d2s4.html
 output:
   workflowr::wflow_html:
     toc: yes

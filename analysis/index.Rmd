@@ -1,11 +1,9 @@
 ---
 title: "Home"
-site: workflowr::wflow_site
-output:
-  workflowr::wflow_html:
-    toc: false
 editor_options:
   chunk_output_type: console
 ---
 
-Welcome to my research website.
+## BODL: Introduction To R
+
+A 2-Day Introduction to R run internally for the Black Ochre Data Labs team
