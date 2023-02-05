@@ -1,0 +1,348 @@
+---
+title: "Data Import In R"
+subtitle: "BODL R Training"
+date: "2023-02-16"
+output: 
+  ioslides_presentation:
+    css: ../custom.css
+    fig_caption: yes
+    logo: assets/bodl_logo_white_background.jpg
+    widescreen: yes
+---
+
+```{r, loadPackages, echo = FALSE, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE, include = TRUE, 
+  warning = FALSE, message = FALSE, 
+  out.width = 800, fig.align = "center"
+)
+```
+
+# Getting Data Into R
+
+## Importing Data
+
+- A point of confusion for many learning `R` are the __Error Messages__
+    - We often see them while we're loading data
+    - Some are actually helpful messages
+- A knowledge of data types is beneficial when using `R`
+    - `logical`, `integer`, `numeric`, `character`
+- We can load `xlsx`, `xls`, `csv`, `txt`, files + many more
+
+
+## Importing Data
+
+- Things we do to make it "look nice" in Excel can create problems:
+    - Blank rows are not fatal, just annoying
+    - Cell formatting will not be imported
+    - Mixtures of numbers and text
+    - Plots will not be imported
+    - Deleted cells are sometimes imported as blank rows/columns
+    
+## Importing Data
+
+First let's get the data for this exercise.
+
+- In your R project, create the folder `data` using the `New Folder` icon
+- Save the file `toothData.csv` into this folder
+- Open it with Excel just to have a look at it 
+
+## Importing Data
+
+- This is actually the type of format `R` loves to see
+- Plain text with comma delimiters
+- Simple column structure, with column names
+- No blank rows at the top or separating sub-tables
+- No blank columns
+
+## Previewing in RStudio
+
+1. Close Excel (**don't save/overwrite the file**)
+2. Using the `Files` tab, enter the `data` directory
+3. Click on `toothData.csv` 
+4. Select `View File`
+
+This will open a preview in the Script Window (close when you're done)
+
+## Before We Go On
+
+1. `File` > `New File` > `R Script` (Or `Ctrl+Shift+N`)
+2. Save as `DataImport.R`
+3. Enter this line at the top of the script
+
+```{r}
+library(tidyverse)
+```
+
+## Before We Go On
+
+```{r}
+library(tidyverse)
+```
+
+- The tidyverse is a collection of connected packages
+- A package contains a set of functions for related tasks
+- We've already seen `min()`, `max()` etc from `base`
+- This command loads a core set:
+    - `readr`, `dplyr`, `tibble`, `ggplot2`, `tidyr` and `purrr`
+
+# Import Using the GUI
+
+## Using the GUI To Load Data {.smaller}
+
+Click on the file and choose `Import Dataset`
+
+
+```{r, echo=FALSE, out.width=800}
+knitr::include_graphics("assets/importGUI.png")
+```
+
+<p style="text-align: center;">(Click `Update` if you don't see this)</p>
+
+## The Preview Window
+
+```{r, echo=FALSE, out.width='900mm', fig.align='center'}
+knitr::include_graphics("assets/importGUI_preview.png")
+```
+
+## The Preview Window
+
+```{r, echo=FALSE, out.width='900mm', fig.align='center'}
+knitr::include_graphics("assets/importGUI_code.png")
+```
+
+## The Preview Window
+
+1. Select and copy all the code in the `Code Preview` Box
+2. Click `Import`
+3. Magic happens...
+    + Ignore the red/blue text. This is just 'helpful' information
+4. **Paste the copied code into your script, directly below `library(tidyverse)`**
+
+## What has just happened? 
+
+The code we copied has 3 lines:
+
+```1. library(readr)```
+
+- This package contains the function `read_csv()`
+- Is already loaded by default with `library(tidyverse)`
+    + We don't strictly need this line today
+    + It won't cause any problems though
+    
+## What has just happened? 
+
+The code we copied has 3 lines:
+
+1. library(readr)
+2. `toothData <- read_csv("data/toothData.csv")`
+
+- This line loads the data into your `R Environment`
+- It created an object named `toothData` by using the file name.
+    
+## What has just happened?
+
+```{r, echo=FALSE, out.width='950mm', fig.align='center'}
+knitr::include_graphics("assets/importGUI_name.png")
+```
+
+## What has just happened?
+
+1. `library(readr)`
+2. `toothData <- read_csv("data/toothData.csv")`
+3. `View(toothData)`
+    + Opens a preview in a familiar `Excel-like` format
+    + I **never** use this
+
+Close the preview by clicking the cross and delete `View(toothData)`
+    
+## What has just happened?
+
+- We have just loaded data using the default settings of `read_csv()`
+    + The object `toothData` is in our `R Environment`
+    + The original file remains on our HDD **without modification**!!!
+- Now we've saved the code in our script, **we don't need the GUI for this operation again!**
+
+## Let's Demonstrate
+
+1. In the `Environment Tab` click the broom icon (![](../images/broom.png))
+    + This will delete everything from your `R Environment`
+    + It won't unload the packages
+2. Select the code we've just pasted and send it to the console
+    + (Reloading the packages won't hurt)
+3. Check the `Environment Tab` again and `toothData` is back
+
+
+## A Brief Side Note
+
+- `RStudio` now uses `read_csv()` from the package `readr` by default
+- Old scripts will often use `read.csv()` from the package `utils`
+- The newer version is slightly faster and fails less
+- It also gives informative messages
+- Other functions in `utils` are `read.delim()` and `read.table()`
+- `readr` has the functions `read_tsv()`, `read_delim()` and `read_table()` etc.
+
+
+## Data Frame Objects
+
+- The object `toothData` is known as a `data.frame`
+- `R` equivalent to a spreadsheet
+- `readr` uses a variant called a `tbl_df` or `tibble` 
+    + Like a `data.frame` with pretty bows & ribbons
+    + Similar to a SQL table
+    + Can only have row numbers for row names
+
+## Data Frame Objects
+
+- Some additional ways to inspect this are:
+
+```{r, eval=FALSE}
+toothData
+print(toothData)
+head(toothData)
+glimpse(toothData)
+```
+
+**What were the differences between each method?**
+
+## Data Frame Objects
+
+- Each column is a vector
+    + **Must contain data of the same type**
+- We can access each column by typing the column name after a `$`
+
+```{r,eval=FALSE}
+toothData$len
+```
+
+(We'll come back to this more tomorrow)
+
+<!-- ## Data Frame Objects -->
+
+<!-- - We can grab columns and rows using square brackets `[]` -->
+
+<!-- ```{r,eval=FALSE} -->
+<!-- toothData[1:3, "len"] -->
+<!-- ``` -->
+
+<!-- - The `tibble` versions of `data.frame`s can only have row numbers for the rownames -->
+<!-- - All `data.frame`/`tibble` objects must have column names. -->
+
+## Understanding `read_csv()`
+
+- In the above we called the `R` function `read_csv()`
+- Check the help page
+
+```{r, eval = FALSE}
+?read_csv
+```
+
+- We have four functions but stick to `read_csv()`
+
+## Understanding `read_csv()` {.smaller}
+
+```{r, eval=FALSE}
+read_csv(
+  file,
+  col_names = TRUE, col_types = NULL, col_select = NULL,
+  id = NULL, locale = default_locale(), 
+  na = c("", "NA"), quoted_na = TRUE,
+  quote = "\"", comment = "",
+  trim_ws = TRUE,
+  skip = 0, n_max = Inf,
+  guess_max = min(1000, n_max),
+  name_repair = "unique",
+  num_threads = readr_threads(),
+  progress = show_progress(),
+  show_col_types = should_show_types(),
+  skip_empty_rows = TRUE,
+  lazy = should_read_lazy()
+)
+```
+
+- This function has numerous *arguments* (`file`, `col_names` etc.)
+- Most have 'default' values given
+- If only the argument name is given(e.g. `file`) **we need to specify something**
+
+
+## Understanding `read_csv()`
+
+*If specifying in order, we don't need to name arguments*  
+
+```{r, eval=FALSE}
+toothData <- read_csv("data/toothData.csv")
+```
+
+Is equivalent to:
+
+```{r, eval=FALSE}
+toothData <- read_csv(file = "data/toothData.csv")
+```
+
+## Understanding `read_csv()`
+
+All `arguments` for the function were defined somewhere in the GUI.
+
+1. Open the GUI Preview by clicking on the file again
+2. Uncheck the `First Row as Names` checkbox
+
+## Understanding `read_csv()`
+
+All `arguments` for the function were defined somewhere in the GUI.
+
+1. Open the GUI Preview by clicking on the file again
+2. Uncheck the `First Row as Names` checkbox
+    + *What happened to the code?*
+    + *How did the columns change?*
+
+## Understanding `read_csv()`
+
+__What if the first three lines were comments starting with `#`?__
+
+- It could be the same, or we can specify the comment symbol
+
+```{r, eval=FALSE}
+toothData <- read_csv("data/toothData.csv", comment = "#")
+```
+
+## Reading Help Pages: Bonus Slide
+
+- The bottom three functions are simplified wrappers to `read_delim()`
+- `read_csv()` calls `read_delim()` using `delim = ","`
+- `read_csv2()` calls `read_delim()` using `delim = ";"`
+- `read_tsv()` calls `read_delim()` using `delim = "\t"`
+
+<br>
+__What function would we call for *space-delimited* files?__
+
+## Loading Excel Files
+
+`R` also has a package for loading `.xls` and `xlsx` files.
+
+```{r}
+library(readxl)
+```
+
+The main function is `read_excel()`
+
+```{r, eval=FALSE}
+?read_excel
+```
+
+## Bonus Challenge
+
+Place the file `RealTimeData.xlsx` in your `data` folder
+
+__Try to load each of the sheets from `RealTimeData.xslx`__
+
+(Remember to call the `R` objects something different)
+
+__Do you get any weird behaviour for sheet 3?__
+
+__How could we load these two separate tables?__
+
+---
+
+<div class="footer" style="text-align:center;width:25%">
+[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2018/)
+</div>

@@ -1,6 +1,6 @@
 ---
 title: "Introduction"
-subtitle: "Black Ochre Data Labs"
+subtitle: "BODL R Training"
 date: "2023-02-16"
 output: 
   ioslides_presentation:
