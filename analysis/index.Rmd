@@ -1,9 +1,29 @@
 ---
 title: "Home"
+site: workflowr::wflow_site
 editor_options:
   chunk_output_type: console
 ---
 
 ## BODL: Introduction To R
 
-A 2-Day Introduction to R run internally for the Black Ochre Data Labs team
+Feb 16-17, 2023  
+9am - 5pm  
+Board Room 2  
+Telethon Kids Institute  
+North Tce  
+Adelaide SA
+
+*Presented by Dr Stevie Pederson, Black Ochre Data Labs*
+
+## Provisional Timetable
+
+| **Time** | **Thursday**                     | **Friday**                    |
+|:------ |:---------------------------------- |:----------------------------- |
+|9:00am  | Introduction to `R Studio` <br> Loading Data | Understanding Data Types in `R` |
+|10:30am | *Morning Tea*                      | *Morning Tea*                   |
+|11:00am | Manipulating Data <br> Manipulating Text | Basic Statistical Techniques |
+|12:30pm | *Lunch*                            | *Lunch*                         | 
+|1:30pm  | Data Visualisation Using `ggplot2` <br> Making Publication Quality Images |  Writing Functions  |
+|3:00pm  | *Coffee Break*                     | *Coffee Break*                |
+|3:30pm  | Running Analyses Using `R Markdown` | Getting More Out Of Functions <br> Parallel Processing  |

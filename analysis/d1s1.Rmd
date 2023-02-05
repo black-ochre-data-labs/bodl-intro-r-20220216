@@ -9,7 +9,8 @@ editor_options:
 
 ## Introduction
 
-```{r}
+For most of today, I'll present some slides and ask you to follow some (hopefully) simple instructions.
+The first set of slides are available [here](1.1.1_Introduction.html).
 
-```
+The second set of slides is [here](1.1.2_DataImport.html) and additional data for this session is available at [this link]()
 
