@@ -551,15 +551,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomblackochredatalabsbodlintror20220216tree554c57c4efbcf473692423bfe8a04864dd0d9c30targetblank554c57ca">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomblackochredatalabsbodlintror20220216tree59937a89ee25d919da4bd5fcc55f78ff97b370a9targetblank59937a8a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/black-ochre-data-labs/bodl-intro-r-20220216/tree/554c57c4efbcf473692423bfe8a04864dd0d9c30" target="_blank">554c57c</a>
+<a href="https://github.com/black-ochre-data-labs/bodl-intro-r-20220216/tree/59937a89ee25d919da4bd5fcc55f78ff97b370a9" target="_blank">59937a8</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomblackochredatalabsbodlintror20220216tree554c57c4efbcf473692423bfe8a04864dd0d9c30targetblank554c57ca"
+id="strongRepositoryversionstrongahrefhttpsgithubcomblackochredatalabsbodlintror20220216tree59937a89ee25d919da4bd5fcc55f78ff97b370a9targetblank59937a8a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -569,7 +569,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/black-ochre-data-labs/bodl-intro-r-20220216/tree/554c57c4efbcf473692423bfe8a04864dd0d9c30" target="_blank">554c57c</a>.
+<a href="https://github.com/black-ochre-data-labs/bodl-intro-r-20220216/tree/59937a89ee25d919da4bd5fcc55f78ff97b370a9" target="_blank">59937a8</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -633,6 +633,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/black-ochre-data-labs/bodl-intro-r-20220216/blob/59937a89ee25d919da4bd5fcc55f78ff97b370a9/analysis/d1s1.Rmd" target="_blank">59937a8</a>
+</td>
+<td>
+Steve Pederson
+</td>
+<td>
+2023-02-06
+</td>
+<td>
+Finished session 1
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/black-ochre-data-labs/bodl-intro-r-20220216/59937a89ee25d919da4bd5fcc55f78ff97b370a9/docs/d1s1.html" target="_blank">59937a8</a>
+</td>
+<td>
+Steve Pederson
+</td>
+<td>
+2023-02-06
+</td>
+<td>
+Finished session 1
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -710,19 +744,33 @@ Initial Commit
 </div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
+<p>The first session for the day is a very basic introduction to R. From
+there we’ll start to dig deeper.</p>
+<div id="data-files" class="section level3">
+<h3>Data Files</h3>
+<p>We’ll discuss during our very first session but we’ll need to create
+a directory on our computer before we start. We should name this
+<code>R_Training</code> and whatever your OS version of
+<code>Documents</code> is might be a good place for it. Inside that
+directory, please create a new directory called data and the following
+files can be placed in this folder</p>
+<ul>
+<li><a href="data/toothData.csv">toothData.csv</a>.</li>
+<li><a href="data/RealTimeData.xlsx">RealTimeData.xlsx</a></li>
+</ul>
+</div>
+<div id="slides" class="section level3">
+<h3>Slides</h3>
 <p>For most of today, I’ll present some slides and ask you to follow
-some (hopefully) simple instructions. The first set of slides are
-available <a href="1.1.1_Introduction.html">here</a>.</p>
-<p>The second set of slides is <a href="1.1.2_DataImport.html">here</a>
-and additional data for this session is available at <a
-href="assets/toothData.csv">this link</a>. Please download this file and
-place it in the <code>data</code> subdirectory of your
-<code>R_Training</code> project. (We’ll create this during the first
-half of the session) The name of the file should be kept as
-<code>toothData.csv</code></p>
-<p>The final file we need for this session is some example <a
-href="assets/RealTimeData.xlsx">RT-PCR data</a>. Please download and
-place in the same <code>data</code> folder.</p>
+some (hopefully) simple instructions.</p>
+<ul>
+<li>The first set of slides are available <a
+href="1.1.1_Introduction.html">here</a></li>
+<li>The second set of slides is <a
+href="1.1.2_DataImport.html">here</a></li>
+</ul>
+<p>If you want to follow along, please open these in a new browser
+tab/window but it might just be easier to follow mine</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -766,6 +814,7 @@ loaded via a namespace (and not attached):
 [33] rmarkdown_2.18   callr_3.7.3      magrittr_2.0.3   whisker_0.4     
 [37] ps_1.7.2         promises_1.2.0.1 htmltools_0.5.3  httpuv_1.6.6    
 [41] utf8_1.2.2       stringi_1.7.8    cachem_1.0.6    </code></pre>
+</div>
 </div>
 </div>
 

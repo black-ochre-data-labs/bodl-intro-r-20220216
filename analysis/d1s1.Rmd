@@ -9,14 +9,25 @@ editor_options:
 
 ## Introduction
 
+The first session for the day is a very basic introduction to R. 
+From there we'll start to dig deeper.
+
+### Data Files
+
+We'll discuss during our very first session but we'll need to create a directory on our computer before we start.
+We should name this `R_Training` and whatever your OS version of `Documents` is might be a good place for it.
+Inside that directory, please create a new directory called data and the following files can be placed in this folder
+
+- [toothData.csv](data/toothData.csv).
+- [RealTimeData.xlsx](data/RealTimeData.xlsx)
+
+### Slides
+
 For most of today, I'll present some slides and ask you to follow some (hopefully) simple instructions.
-The first set of slides are available [here](1.1.1_Introduction.html).
 
-The second set of slides is [here](1.1.2_DataImport.html) and additional data for this session is available at [this link](assets/toothData.csv).
-Please download this file and place it in the `data` subdirectory of your `R_Training` project.
-(We'll create this during the first half of the session)
-The name of the file should be kept as `toothData.csv`
+- The first set of slides are available [here](1.1.1_Introduction.html)
+- The second set of slides is [here](1.1.2_DataImport.html) 
 
-The final file we need for this session is some example [RT-PCR data](assets/RealTimeData.xlsx).
-Please download and place in the same `data` folder.
+If you want to follow along, please open these in a new browser tab/window but it might just be easier to follow mine
+
 
