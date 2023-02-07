@@ -1,33 +1,49 @@
 ---
-title: "Introduction"
+title: "Introduction To R"
 subtitle: "BODL R Training"
+author: "Dr Stevie Pederson"
 date: "2023-02-16"
-output: 
-  ioslides_presentation:
-    css: ../custom.css
-    fig_caption: yes
+date-format: long
+institute: "Black Ochre Data Labs<br>Telethon Kids Institute"
+editor: source
+format: 
+  revealjs:
+    theme: [dark, ../custom.scss]
+    code-line-numbers: false
+    width: 1024
+    height: 768
+    sansfont: Times New Roman
     logo: assets/bodl_logo_white_background.jpg
-    widescreen: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
-  echo = TRUE, include = TRUE,
-  warning = FALSE, message = FALSE, 
-  out.width = 800, fig.align = "center"
+  echo = TRUE, include = TRUE, warning = FALSE, message = FALSE, 
+  fig.align = "center"
 )
 ```
+
+# Introduction
 
 ## Who Am I? 
 
 **Stephen (Stevie) Pederson**
 
 - R User for ~20 years
-- Short training course with Hadley Wickham (2015)
+    + I remember when R was difficult!
+- PhD (2008-2018) was a Bayesian Model for Transcript-Level Analysis
+    + MCMC Engine written in C, Called from R
 - Senior Author of 3 R Packages 
-    + `ngsReports`, `strandChckR`, `extraChIPs`
+    + `ngsReports`, `strandCheckR`, `extraChIPs`
+    
+## Who Am I? 
+
+**Stephen (Stevie) Pederson**    
+
+- Short training course with Hadley Wickham (Chicago, 2015)
 - Ran multiple R Training Sessions (2015-2020)
-- Made countless typos and bad decisions
+    + RAdelaide, BioinfoSummer, SARDI
+- Made [countless]{.underline} typos and horrible decisions
 
 
 # R
@@ -39,16 +55,21 @@ knitr::opts_chunk$set(
 - Huge user base of biological researchers (www.bioconductor.org)
 - Easily perform complex analytic procedures
     - Many come as inbuilt functions  
+- (Can be) very fast
 - Experience is the best teacher
 
 ## Why use R? 
 
 - Avoids common Excel pitfalls
+    + We (almost) never modify files on disk!
 - Makes communicating results simple
+    + Even write presentations
 - **Reproducible Research!!!**
     - Transparent methods
     - Code for analysis is **equivalent to a lab book**
     - Excellent integration with version control such as `git`
+- Enables easy interaction with your data
+    + Can also be run as a script
 
 ## What is R?
 
@@ -62,29 +83,26 @@ knitr::opts_chunk$set(
 ## What is R?
 
 - Open source language
-- `R` is run by a volunteer community (**R Core**)
-- John Chambers is *still* a member of R Core
 - Annual release schedule with patches as required
-    
-## What is RStudio
-
-- RStudio is product of a **for profit** company (Posit)
-- An Integrated Development Environment (IDE)
-- Employs many of the best & brightest package developers (`tidyverse`, `bookdown`, `reticulate`, `roxygen2` etc)
+- `R` is run by a volunteer community (**R Core**)
+    + John Chambers is *still* a member of R Core
+- Informal version names are taken from Peanuts
     
 ## What is R?
 
 - Packages are stored on CRAN (https://cran.r-project.org)
     - Packages are a collection of related functions
     - Not curated for statistical quality or documentation
+
+. . .
+
 - Bioconductor is a secondary repository (https://www.bioconductor.org)
     - Packages have a more biological/genomics focus
     - Curated for consistency & documentation
    
 ## Where is R used?
 
-- Used by political parties (e.g. Trump, Biden), Google, ATO etc
-- ABS wanted my R skills specifically
+- Google, ATO, ABS etc
 - Very large community of users in finance (Dirk Eddelbuettel - `Rcpp`)
 - Genomics & Ecological Research
 - Strong integration with HPC systems like Amazon, Hadoop
@@ -131,7 +149,13 @@ By the end of the day, we'll be able to
 - `R` does all the calculations, manages the data, generates plots
 - `RStudio` helps manage our code, displays the plots plus more
 
-## What is RStudio | Some very helpful features of `RStudio`
+## What is RStudio
+
+- RStudio is product of a **for profit** company (Posit)
+- An Integrated Development Environment (IDE)
+- Employs many of the best & brightest package developers (`tidyverse`, `bookdown`, `reticulate`, `roxygen2` etc)
+
+## Some very helpful features of `RStudio`
 
 - We can write scripts and **execute code** interactively
 -  Auto-completion by hitting the `<tab>` key
@@ -205,15 +229,21 @@ As well as performing simple calculations:
 - `R` has what we call an `Environment` (i.e. a Workspace)
 - We can define objects here, or import data
    - Like a workbook in Excel, but **much more** flexible & powerful
+- Objects can look like spreadsheets, be a single number or even empty
 - `R` performs calculations & runs processes on these objects
 
-## The R Environment | Creating an `R` object
+## Creating an `R` object
 
 - We need to give it a name, and some data
     - Like naming a spreadsheet in Excel (e.g. `Sheet1`)
 - The process looks like `nameOfObject <- data`
     - The `<-` symbol is like an arrow
     - Tells `R` to put the `data` **in the object**
+    - (Arrows can also work the other way)
+
+. . .
+
+![*An APL Keyboard from the 1970s*](assets/APL-keybd2.png){width=60% fig-align="left"}
     
 ## The R Environment 
 
@@ -233,25 +263,32 @@ print(x)
 
 ## The R Environment
 
-__Where have we created the object `x`?__
+
+*__Where have we created the object `x`?__*
 
 - Is it on your hard drive somewhere?
 - Is it in a file somewhere?
 
-## The R Environment
+. . .
 
 - We have placed `x` in our `R Workspace`
 - More formally known as your `Global Environment`
 
-```{r, echo=FALSE, include=TRUE, out.width=600}
-# knitr::include_graphics("../images/EnvironmentTab.png")
-```
+. . .
+
+![](assets/EnvironmentTab.png)
 
 
 ## The R Environment
 
 - The `Environment` is like your desktop
-- We keep all our relevant objects here and can save all the objects in your workspace as an `.RData` object
+- We keep all our relevant objects here 
+    + Can save all the objects in your workspace as an `.RData` object
+    + `R` can be set to automatically save an Workspace on exit
+
+. . .
+
+- To save a workspace manually
 
 ```{r, eval=FALSE, echo=TRUE, include=TRUE}
 save.image()
@@ -293,6 +330,10 @@ log(x)
 - This will take you to the `Help` pane
     - Click on the underlined word `Index` at the bottom for a list of functions in the `base` packages
     
+::: {.notes}
+May be issues with `URL '/help/library/base/html/00Index.html' not found`
+:::
+    
 ## Vectors: A Sneak Peek
 
 - Instead of a single value, we can give an `R` object multiple values
@@ -318,6 +359,11 @@ mean(x)
 sd(x)
 ```
 
+No need to select a column or cells...
+
+. . . 
+
+(We'll discuss subsetting tomorrow)
     
 # The Script Window
 
@@ -383,7 +429,7 @@ Including comments describing your intention, is **highly advisable**
     - Sometimes completes when you don't want it to
 
 
-# RStudio | Other Tabs and Features
+# Other Tabs and Features
 
 ## RStudio: Other Tabs and Features
 
@@ -399,7 +445,7 @@ In the bottom right are a series of tabs
 
 1. `Files`: This shows your current working directory
 2. `Plots`: Every time you make a graph it appears here
-3. `Packages`: __NEVER CLICK OR UN-CLICK ANYTHING HERE__
+3. `Packages`: [__NEVER CLICK OR UN-CLICK ANYTHING HERE__]{.underline}
 4. `Help`: We all use this a lot!
 
 ## RStudio: Disable The Packages Tab
@@ -426,11 +472,3 @@ Page 2 has lots of hints:
 - `Ctrl + 2` places focus on the Console
 - `Ctrl + 3` places focus on the Help Tab
 
-
-
-
----
-
-<div class="footer" style="text-align:center;width:25%">
-[Home](../index)
-</div>
