@@ -1,13 +1,24 @@
 ---
 title: "Data Import In R"
 subtitle: "BODL R Training"
+author: "Dr Stevie Pederson"
+institute: "Black Ochre Data Labs<br>Telethon Kids Institute"
 date: "2023-02-16"
-output: 
-  ioslides_presentation:
-    css: ../custom.css
-    fig_caption: yes
+date-format: long
+title-slide-attributes:
+    data-background-color: "#3c3c44"
+    data-background-image: assets/bodl_logo_white_background.jpg
+    data-background-opacity: "0.3"
+    data-background-size: "90%"
+editor: source
+format: 
+  revealjs:
+    theme: [../custom.scss]
+    code-line-numbers: false
+    width: 1024
+    height: 768
+    sansfont: Times New Roman
     logo: assets/bodl_logo_white_background.jpg
-    widescreen: yes
 ---
 
 ```{r, loadPackages, echo = FALSE, include = FALSE}
@@ -18,7 +29,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Getting Data Into R
+# Getting Data Into R {background-color="#3c3c44"}
 
 ## Importing Data
 
@@ -68,25 +79,9 @@ This will open a preview in the Script Window (close when you're done)
 
 1. `File` > `New File` > `R Script` (Or `Ctrl+Shift+N`)
 2. Save as `DataImport.R`
-3. Enter this line at the top of the script
 
-```{r}
-library(tidyverse)
-```
 
-## Before We Go On
-
-```{r}
-library(tidyverse)
-```
-
-- The tidyverse is a collection of connected packages
-- A package contains a set of functions for related tasks
-- We've already seen `min()`, `max()` etc from `base`
-- This command loads a core set:
-    - `readr`, `dplyr`, `tibble`, `ggplot2`, `tidyr` and `purrr`
-
-# Import Using the GUI
+# Import Using the GUI {background-color="#3c3c44"}
 
 ## Using the GUI To Load Data {.smaller}
 
@@ -117,7 +112,10 @@ knitr::include_graphics("assets/importGUI_code.png")
 2. Click `Import`
 3. Magic happens...
     + Ignore the red/blue text. This is just 'helpful' information
-4. **Paste the copied code into your script, directly below `library(tidyverse)`**
+    
+. . . 
+
+**Paste the copied code into your script**
 
 ## What has just happened? 
 
@@ -126,9 +124,6 @@ The code we copied has 3 lines:
 ```1. library(readr)```
 
 - This package contains the function `read_csv()`
-- Is already loaded by default with `library(tidyverse)`
-    + We don't strictly need this line today
-    + It won't cause any problems though
     
 ## What has just happened? 
 
@@ -165,7 +160,7 @@ Close the preview by clicking the cross and delete `View(toothData)`
 
 ## Let's Demonstrate
 
-1. In the `Environment Tab` click the broom icon (![](../images/broom.png))
+1. In the `Environment Tab` click the broom icon (![](assets/broom.png))
     + This will delete everything from your `R Environment`
     + It won't unload the packages
 2. Select the code we've just pasted and send it to the console
@@ -191,6 +186,16 @@ Close the preview by clicking the cross and delete `View(toothData)`
     + Like a `data.frame` with pretty bows & ribbons
     + Similar to a SQL table
     + Can only have row numbers for row names
+
+. . .
+
+<br>
+
+```{r, eval = FALSE}
+as.data.frame(toothData)
+```
+
+
 
 ## Data Frame Objects
 
@@ -239,7 +244,7 @@ toothData$len
 
 - We have four functions but stick to `read_csv()`
 
-## Understanding `read_csv()` {.smaller}
+## Understanding `read_csv()` 
 
 ```{r, eval=FALSE}
 read_csv(
@@ -264,20 +269,36 @@ read_csv(
 - Most have 'default' values given
 - If only the argument name is given(e.g. `file`) **we need to specify something**
 
-
-## Understanding `read_csv()`
-
-*If specifying in order, we don't need to name arguments*  
+## Understanding `read_csv()` 
 
 ```{r, eval=FALSE}
-toothData <- read_csv("data/toothData.csv")
+read_csv(
+  file,
+  col_names = TRUE, col_types = NULL, col_select = NULL,
+  id = NULL, locale = default_locale(), 
+  na = c("", "NA"), quoted_na = TRUE,
+  quote = "\"", comment = "",
+  trim_ws = TRUE,
+  skip = 0, n_max = Inf,
+  guess_max = min(1000, n_max),
+  name_repair = "unique",
+  num_threads = readr_threads(),
+  progress = show_progress(),
+  show_col_types = should_show_types(),
+  skip_empty_rows = TRUE,
+  lazy = should_read_lazy()
+)
 ```
 
-Is equivalent to:
+- If specifying in order, we don't need to name arguments
 
-```{r, eval=FALSE}
-toothData <- read_csv(file = "data/toothData.csv")
-```
+. . .
+
+`toothData <- read_csv("data/toothData.csv")` 
+
+is identical to  
+
+`toothData <- read_csv(file = "data/toothData.csv")`
 
 ## Understanding `read_csv()`
 
@@ -285,6 +306,8 @@ All `arguments` for the function were defined somewhere in the GUI.
 
 1. Open the GUI Preview by clicking on the file again
 2. Uncheck the `First Row as Names` checkbox
+
+![](assets/importGUI.png){width="60%"}
 
 ## Understanding `read_csv()`
 
@@ -294,6 +317,10 @@ All `arguments` for the function were defined somewhere in the GUI.
 2. Uncheck the `First Row as Names` checkbox
     + *What happened to the code?*
     + *How did the columns change?*
+    
+. . . 
+
+Try clicking/unclicking a few more & try understand the consequences
 
 ## Understanding `read_csv()`
 
@@ -340,9 +367,3 @@ __Try to load each of the sheets from `RealTimeData.xslx`__
 __Do you get any weird behaviour for sheet 3?__
 
 __How could we load these two separate tables?__
-
----
-
-<div class="footer" style="text-align:center;width:25%">
-[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2018/)
-</div>

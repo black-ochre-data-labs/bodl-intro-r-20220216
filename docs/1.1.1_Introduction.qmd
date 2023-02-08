@@ -2,18 +2,24 @@
 title: "Introduction To R"
 subtitle: "BODL R Training"
 author: "Dr Stevie Pederson"
+institute: "Black Ochre Data Labs<br>Telethon Kids Institute"
 date: "2023-02-16"
 date-format: long
-institute: "Black Ochre Data Labs<br>Telethon Kids Institute"
+title-slide-attributes:
+    data-background-color: "#3c3c44"
+    data-background-image: assets/bodl_logo_white_background.jpg
+    data-background-opacity: "0.3"
+    data-background-size: "90%"
 editor: source
 format: 
   revealjs:
-    theme: [dark, ../custom.scss]
+    theme: [../custom.scss]
     code-line-numbers: false
     width: 1024
     height: 768
     sansfont: Times New Roman
     logo: assets/bodl_logo_white_background.jpg
+
 ---
 
 ```{r setup, include=FALSE}
@@ -23,7 +29,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Introduction
+# Introduction {background-color="#3c3c44"}
 
 ## Who Am I? 
 
@@ -46,7 +52,8 @@ knitr::opts_chunk$set(
 - Made [countless]{.underline} typos and horrible decisions
 
 
-# R
+# R {background-color="#3c3c44" background-image=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/512px-R_logo.svg.png background-size="70%" background-opacity="0.5"}
+
 
 ## Why use R?
 
@@ -138,7 +145,7 @@ By the end of the day, we'll be able to
 4. Make amazing looking plots
 5. Send reports to collaborators made directly from our code
 
-# Introduction to RStudio
+# RStudio {background-color="#3c3c44" background-image=https://www.rstudio.com/wp-content/uploads/2018/10/RStudio-Logo-Flat.png background-size="70%" background-opacity="0.5"}
 
 ## Introduction to RStudio
 
