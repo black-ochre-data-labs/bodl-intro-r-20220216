@@ -19,7 +19,6 @@ format:
     height: 768
     sansfont: Times New Roman
     logo: assets/bodl_logo_white_background.jpg
-
 ---
 
 ```{r setup, include=FALSE}

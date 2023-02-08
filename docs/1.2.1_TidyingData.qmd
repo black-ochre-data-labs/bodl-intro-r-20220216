@@ -1,13 +1,24 @@
 ---
 title: "Tidying Data"
 subtitle: "BODL R Training"
+author: "Dr Stevie Pederson"
+institute: "Black Ochre Data Labs<br>Telethon Kids Institute"
 date: "2023-02-16"
-output: 
-  ioslides_presentation:
-    css: ../custom.css
-    fig_caption: yes
+date-format: long
+title-slide-attributes:
+    data-background-color: "#3c3c44"
+    data-background-image: assets/bodl_logo_white_background.jpg
+    data-background-opacity: "0.3"
+    data-background-size: "90%"
+editor: source
+format: 
+  revealjs:
+    theme: [../custom.scss]
+    code-line-numbers: false
+    width: 1024
+    height: 768
+    sansfont: Times New Roman
     logo: assets/bodl_logo_white_background.jpg
-    widescreen: yes
 ---
 
 
@@ -18,7 +29,54 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Data Manipulation
+# Logical Tests {background-color="#3c3c44"}
+
+## Logical Tests
+
+- Before we start to dig too deep $\implies$ **Logical Tests**
+
+. . .
+
+- We also need another sneak peak at vectors
+
+## The `c()` Function
+
+- The `c()` function joins values together
+- Commonly thought to stand for `combine` or `concatenate`
+
+```{r}
+c()
+1:3
+c(1, 2, 3)
+x <- c(1:5, NA)
+```
+
+## Logical Tests 
+
+::: {.incremental}
+
+- Is Equal To: `==`
+- Not equal: `!=`
+- Or: `|`
+- Less than: `<`
+- Less than or equal: `<=`
+
+:::
+
+## Logical Tests
+
+```{r, results='hide'}
+x == 5
+x != 5
+x > 3
+x > 3 | x == 2
+is.na(x)
+```
+
+- `R` also recognises the symbol `&` for `AND`
+
+
+# Data Manipulation {background-color="#3c3c44"}
 
 ## Data Manipulation
 
@@ -30,58 +88,32 @@ We'll cover:
 - Changing from wide to long form using `tidyr`
 <!-- - Editing text using `stringr` -->
 
-## Data Manipulation | Loading The Packages
+## Loading The Packages
 
 ```{r}
-library(tidyverse)
+library(readr)
+library(dplyr)
+library(tidyr)
 ```
 
 - The package `dplyr` works specifically with `data.frame` objects
 - Works optimally with `tibble`-style data.frames
 
-## But First | Logical Tests 
-
-- Is Equal To: `==`
-- Not equal: `!=`
-- Or: `|`
-- Less than: `<`
-- Less than or equal: `<=`
-
-## Logical Tests
-
-```{r, results='hide'}
-x <- c(1:5, NA)
-x == 5
-x != 5
-x > 3
-x > 3 | x == 2
-is.na(x)
-```
-
-- `R` also recognises the symbol `&` for `AND`
-- Not highly relevant for `dplyr`
-
-# The package `dplyr`
+# The package `dplyr` {background-color="#3c3c44" background-image=https://swag.rstudio.com/uploads/1/3/1/3/131335021/s815253891256106552_p2_i4_w660.png}
 
 ## Starting with `dplyr`
 
-```{r load-transport, echo=FALSE, eval = TRUE}
-myNames <- c(
-  "X1", "gender", "name", "weight", "height", "method"
-  )
-transport <- here::here("docs/data/transport.csv") %>% 
-  read_csv(
-    comment = "#", col_names = myNames, na = "-", col_types = "-ccnnc"
-  )
+Data for this session
+
+```{r load-transport}
+transport <- read_csv(
+  "data/transport.csv",
+  comment = "#", col_names = FALSE, na = "-", col_types = "-ccnnc"
+)
+colnames(transport) <- c("gender", "name", "weight", "height", "method")
 ```
 
-
-Data for this session:
-
-```{r, eval = FALSE}
-transport <- read_csv("data/transport_clean.csv")
-transport
-```
+. . .
 
 So we have a `r nrow(transport)` x `r ncol(transport)` `data frame`
 
@@ -93,12 +125,11 @@ ncol(transport)
 
 ## Starting with `dplyr::select()` 
 
-- `dplyr` is part of the core `tidyverse`
 - The function `select()` allows you to select columns by name
 - The `tibble` must be given as the first argument
 
 ```{r}
-select(transport, gender, weight, height, method)
+select(transport, gender, name, weight)
 ```
 
 Or by position
@@ -122,7 +153,8 @@ __Discuss: Would removing by name or position by the best?__
 
 The `select()` function has a few helper functions
 
-- `starts_with()`, `ends_with()`, `contains()`, `one_of()` and `everything()`
+- `starts_with()`, `ends_with()`, `contains()`, `one_of()`, `any_of()`, `all_of()` and `everything()`
+- Provided in the package `tidyselect` (always loaded by `dplyr`)
 
 ```{r}
 select(transport, ends_with("ght"))
@@ -147,16 +179,13 @@ Now we have removed the `name` column
 - To get the column back, we need to reload the `.csv` file
 
 ```{r, echo=FALSE, eval = TRUE}
-transport <- here::here("docs/data/transport.csv") %>% 
-  read_csv(
-    comment = "#", col_names = myNames, na = "-", col_types = "-ccnnc"
-  )
+transport <- read_csv(
+  "data/transport.csv",
+  comment = "#", col_names = FALSE, na = "-", col_types = "-ccnnc"
+)
+colnames(transport) <- c("gender", "name", "weight", "height", "method")
 ```
 
-
-```{r eval = FALSE}
-transport <- read_csv("data/transport_clean.csv")
-```
 
 ## Using `dplyr::filter()` 
 
@@ -183,23 +212,17 @@ We can change to descending order using `desc()`
 arrange(transport, desc(weight))
 ```
 
-# Combining Functions
+# Combining Functions {background-color="#3c3c44"}
 
 ## Combining Functions
 
 - This is where `dplyr` steps up a gear
-- We can chain functions together using `%>%`
+- We can chain functions together using `|>`
 - This behaves like a `|` in the bash shell
-- From the package `magrittr`
-- Is always imported by `dplyr`
+- Introduced as `%>%` from the package `magrittr`
+    + Added to R 4.2.0
 
 Places the **output of the first function** as the **first argument** of the next function!
-
------
-
-```{r, echo=FALSE, include=TRUE, results='asis'}
-include_graphics("assets/MagrittePipe.jpg")
-```
 
 ## Combining Functions
 
@@ -210,7 +233,7 @@ filter(transport, method == "bike")
 Is identical to 
 
 ```{r}
-transport %>% filter(method == "bike")
+transport |> filter(method == "bike")
 ```
 
 ## Combining Functions
@@ -218,10 +241,10 @@ transport %>% filter(method == "bike")
 But now we can perform multiple operations!
 
 ```{r}
-transport %>% filter(method == "bike") %>% arrange(weight)
+transport |> filter(method == "bike") |> arrange(weight)
 ```
 
-There is __no limit__ to the number of functions you can connect together
+There is __no limit__ to the number of functions you can chain together
 
 ## For the technically minded
 
@@ -229,11 +252,11 @@ There is __no limit__ to the number of functions you can connect together
 2. Each function returns a `data.frame`
 
 ```{r}
-transport %>% filter(method == "bike") %>% arrange(weight)
+transport |> filter(method == "bike") |> arrange(weight)
 ```
 
 
-1. The `magrittr` placed `transport` into the first argument of `filter()`
+1. The `|>` placed `transport` into the first argument of `filter()`
 2. The output of `filter()` was a `data.frame` $\implies$ this was placed as the first argument to `arrange()`
 
 
@@ -242,16 +265,16 @@ transport %>% filter(method == "bike") %>% arrange(weight)
 We can add extra columns using `mutate()`
 
 ```{r}
-transport %>% mutate(height_m = height/100)
+transport |> mutate(height_m = height/100)
 ```
 
 Once we've added a column, we can refer to it by name
 
 ```{r}
-transport %>% 
+transport |> 
   mutate(
     height_m = height/100, 
-         BMI = weight / height_m^2
+    BMI = weight / height_m^2
   )
 ```
 
@@ -260,7 +283,7 @@ transport %>%
 We can also overwrite existing columns
 
 ```{r}
-transport %>% mutate(height = height/100)
+transport |> mutate(height = height/100)
 ```
 
 __Have we changed the original__ `data_frame` yet?
@@ -270,15 +293,15 @@ __Have we changed the original__ `data_frame` yet?
 Can use the function `rename()`
 
 ```{r}
-transport %>% rename(height_cm = height)
+transport |> rename(height_cm = height)
 ```
 
 Now we can get crazy
 
 ```{r}
-transport %>%
-  rename(height_cm = height) %>%
-  mutate(height_m = height_cm/100, BMI = weight / height_m^2) %>%
+transport |>
+  rename(height_cm = height) |>
+  mutate(height_m = height_cm/100, BMI = weight / height_m^2) |>
   filter(BMI > 25)
 ```
 
@@ -287,7 +310,7 @@ transport %>%
 We can get summaries for entire columns
 
 ```{r}
-transport %>% 
+transport |> 
   summarise(mean(weight), mean(height))
 ```
 
@@ -296,8 +319,8 @@ transport %>%
 Let's remove that missing value:
 
 ```{r}
-transport %>%
-  filter(!is.na(height)) %>%
+transport |>
+  filter(!is.na(height)) |>
   summarise(mean(weight), mean(height))
 ```
 
@@ -306,9 +329,9 @@ transport %>%
 We can group categorical variables by their levels
 
 ```{r}
-transport %>%
-  filter(!is.na(height)) %>%
-  group_by(gender) %>%
+transport |>
+  filter(!is.na(height)) |>
+  group_by(gender) |>
   summarise(mean(weight), mean(height))
 ```
 
@@ -318,9 +341,9 @@ transport %>%
 Or combinations of levels
 
 ```{r}
-transport %>%
-  filter(!is.na(height)) %>%
-  group_by(gender, method) %>%
+transport |>
+  filter(!is.na(height)) |>
+  group_by(gender, method) |>
   summarise(mean(weight), mean(height))
 ```
 
@@ -333,11 +356,13 @@ We can use any function that spits out a single value
 We could assign our own names to the columns
 
 ```{r}
-transport %>%
-  filter(!is.na(height)) %>%
-  group_by(gender, method) %>%
-  summarise(mn_weight = mean(weight), 
-            mn_height = mean(height))
+transport |>
+  filter(!is.na(height)) |>
+  group_by(gender, method) |>
+  summarise(
+    mn_weight = mean(weight), 
+    mn_height = mean(height)
+  )
 ```
 
 ## Getting Group Summaries
@@ -345,47 +370,60 @@ transport %>%
 And we can count how many entries we have using `n()`
 
 ```{r}
-transport %>%
-  filter(!is.na(height)) %>%
-  group_by(gender, method) %>%
-  summarise(mn_weight = mean(weight), 
-            mn_height = mean(height), 
-            n = n())
+transport |>
+  filter(!is.na(height)) |>
+  group_by(gender, method) |>
+  summarise(
+    mn_weight = mean(weight), 
+    mn_height = mean(height), 
+    n = n()
+  )
 ```
 
-# Applying Multiple Functions 
+# Applying Functions Across Multiple Columns {background-color="#3c3c44"}
 
-## Applying Multiple Functions 
+## Applying Functions Across Multiple Columns
 
-- Use the function `summarise_at()`
-- Can apply `starts_with()`, `ends_with()`, `contains()` syntax to specify variables/columns
-    - Must be wrapped in `vars()`
-- Can apply multiple functions
-    - Must be wrapped in `funs()`
+- Use the helper function `across()`
+- Can apply `starts_with()`, `ends_with()`, `contains()` syntax to select variables/columns
+- Pass a function to the `.fns` argument
     
-## Applying Multiple Functions 
+## Applying Functions Across Multiple Columns
 
 ```{r}
-transport %>%
-  filter(!is.na(height)) %>%
-  group_by(gender, method) %>%
-  summarise_at(vars(ends_with("ght")), 
-               funs(mean, sd))
+transport |>
+  filter(!is.na(height)) |>
+  group_by(gender, method) |>
+  summarise(
+    across(.cols = ends_with("ght"), .fns = mean)
+  )
 ```
 
 ## Applying Multiple Functions
 
-We could reorder the results using `select()`
+We can pass multiple functions to multiple columns
 
 ```{r}
-transport %>%
-  filter(!is.na(height)) %>%
-  group_by(gender, method) %>%
-  summarise_at(vars(ends_with("ght")), 
-               funs(mean, sd)) %>%
-  select(gender, method, 
-         starts_with("weight"), 
-         starts_with("height"))
+transport |>
+  filter(!is.na(height)) |>
+  group_by(gender, method) |>
+  summarise(
+    n = n(),
+    across(ends_with("ght"), .fns = c(mn = mean, sd = sd))
+  )
+```
+
+## Applying Multiple Functions
+
+We can also pass function arguments
+
+```{r}
+transport |>
+  group_by(gender, method) |>
+  summarise(
+    n = n(),
+    across(ends_with("ght"), .fns = c(mn = mean, sd = sd), na.rm = TRUE)
+  )
 ```
 
 ## Using `dplyr::case_when()`
@@ -393,14 +431,19 @@ transport %>%
 Kalen just had her height measured and she is 158.1cm. That missing value can be fixed!!!
 
 ```{r}
-transport %>%
-  mutate(height = case_when(
-    name == "Kalen" ~ 158.1,
-    name != "Kalen" ~ height
-  ))
+transport |>
+  mutate(
+    height = case_when(
+      name == "Kalen" ~ 158.1,
+      name != "Kalen" ~ height
+    )
+  )
 ```
 
-`case_when()` is like `if_else()` but allows for multiple options
+. . .
+
+- `case_when()` is like `if_else()` but allows for multiple options
+- e.g. `logFC > 0 & p < 0.05 ~ "Up"` then `logFC < 0 & p < 0.05 ~ "Down"` then `p >= 0.05 ~ "Unchanged"`
 
 
 ## Using `dplyr::case_when()`
@@ -408,16 +451,18 @@ transport %>%
 Let's overwrite that initial object
 
 ```{r}
-transport <- transport %>%
-  mutate(height = case_when(
-    name == "Kalen" ~ 158.1,
-    name != "Kalen" ~ height
-  ))
+transport <- transport |>
+  mutate(
+    height = case_when(
+      name == "Kalen" ~ 158.1,
+      name != "Kalen" ~ height
+    )
+  )
 ```
 
 **What would happen if we accidentally ran this again?**
 
-# Combining Data Frames
+# Combining Data Frames {background-color="#3c3c44"}
 
 ## Combining Data Frames
 
@@ -452,9 +497,10 @@ bind_rows(tony, transport)
 2. Load the contact numbers in the file `contacts.csv`
 
 ```{r}
-contacts <- read_csv("data/contacts.csv")
+contacts <- read_csv("data/contacts.csv", col_types = "cc")
 dim(contacts)
 dim(transport)
+glimpse(contacts)
 ```
 
 
@@ -486,7 +532,13 @@ We can use the second object as the template
 ```{r}
 right_join(transport, contacts, by = "name")
 ```
+
 Any missing from the first object (`data`) will become a row of missing values where missing
+
+```{r}
+right_join(transport, contacts, by = "name") |> tail()
+```
+
 
 ## Combining Data Frames | `full_join()`
 
@@ -498,8 +550,13 @@ full_join(transport, contacts, by = "name")
 
 Will be missing values in both directions
 
+```{r}
+full_join(transport, contacts, by = "name") |> filter(is.na(gender))
+full_join(transport, contacts, by = "name") |> filter(is.na(contact))
+```
 
-# Reshaping your data
+
+# Reshaping your data {background-color="#3c3c44"}
 
 ## Reshaping your data
 
@@ -536,7 +593,7 @@ The basic function is `gather()`
 ## From Wide to Long
 
 ```{r}
-wideData %>%
+wideData |>
   gather(key = "Day",
          value = "Change",
          contains("day"))
@@ -553,11 +610,11 @@ __How could we get means for each treatment/day from the original data?__
 __How could we get means for each treatment/day from the original data?__
 
 ```{r}
-wideData %>%
+wideData |>
   gather(key = "Day",
          value = "Change",
-         contains("day")) %>%
-  group_by(Tx, Day) %>%
+         contains("day")) |>
+  group_by(Tx, Day) |>
   summarise(mn_change = mean(Change))
 ```
 
@@ -568,11 +625,11 @@ Might be easier if needing more summaries (e.g. `sd()`)
 Let's save that last summary `data.frame`
 
 ```{r}
-wideMeans <- wideData %>%
+wideMeans <- wideData |>
   gather(key = "Day",
          value = "Change",
-         contains("day")) %>%
-  group_by(Tx, Day) %>%
+         contains("day")) |>
+  group_by(Tx, Day) |>
   summarise(mn_change = mean(Change))
 ```
 
@@ -584,7 +641,7 @@ We can change from long to wide using the 'opposite' function `spread()`
 - Values in the `value =` column remain the values
 
 ```{r}
-wideMeans %>%
+wideMeans |>
   spread(key = Day,
          value = mn_change)
 ```
@@ -606,7 +663,7 @@ Here we have 3 genes being measured in 2 cell types, across 3 time-points
 The first part is easy:
 
 ```{r}
-pcr %>%
+pcr |>
   gather(key = CellType,
          value = Ct,
          ends_with("hr"))
@@ -622,10 +679,10 @@ If we want to now organise by treatment and timepoint:
 We can use the function `separate()` 
 
 ```{r}
-pcr %>%
+pcr |>
   gather(key = CellType,
          value = Ct,
-         ends_with("hr")) %>%
+         ends_with("hr")) |>
   separate(col = CellType, 
            into = c("CellType", "TimePoint"))
 ```
@@ -635,12 +692,12 @@ pcr %>%
 Now we can form our final data structure
 
 ```{r}
-pcr %>%
+pcr |>
   gather(key = CellType,
          value = Ct,
-         ends_with("hr")) %>%
+         ends_with("hr")) |>
   separate(col = CellType, 
-           into = c("CellType", "TimePoint")) %>%
+           into = c("CellType", "TimePoint")) |>
   spread(key = TimePoint,
          value = Ct)
 ```
@@ -650,10 +707,10 @@ pcr %>%
 <!-- ## Text Manipulation | Returning to our data -->
 
 <!-- ```{r} -->
-<!-- pcr_long <- pcr %>% -->
+<!-- pcr_long <- pcr |> -->
 <!--  gather(key = CellType, -->
 <!--          value = Ct, -->
-<!--          ends_with("hr")) %>% -->
+<!--          ends_with("hr")) |> -->
 <!--   mutate(TimePoint = str_extract(CellType, "(0hr|12hr|24hr)"), -->
 <!--          CellType = str_replace(CellType, "_(0hr|12hr|24hr)", "")) -->
 <!-- ``` -->
@@ -665,7 +722,7 @@ pcr %>%
 <!-- Now we could make it wide (but not as wide) -->
 
 <!-- ```{r} -->
-<!-- pcr_long %>% -->
+<!-- pcr_long |> -->
 <!--  spread(key = TimePoint, value = Ct) -->
 <!-- ``` -->
 
