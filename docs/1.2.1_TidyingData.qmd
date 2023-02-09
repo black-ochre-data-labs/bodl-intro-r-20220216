@@ -569,34 +569,35 @@ In `long` form, the information is _structured around the measurement_
 ## Reshaping your data | From Wide to Long
 
 ```{r}
-wideData <- read_csv("data/wide.csv")
-wideData
+timeCourse <- read_csv("data/timeCourse.csv")
+timeCourse
 ```
 
 This is a time course:
 
 - Measuring log-change in GFP intensity
 - Two treatments (`Tx`) A & B 
-- Also have identifier columns
-
+- Also have identifier column: `Mouse`
 
 ## From Wide to Long
 
-The basic function is `gather()`
+The basic function is `pivot_longer()`
 
 - Part of the core tidyverse package `tidyr`
 - Key arguments are:
-    - `key`: what are the column names describing
-    - `value`: what is the value in these columns
-- Select columns to `gather` using `dplyr` helper functions
+    - `cols`: which columns are shifting to long form
+    - `names_to`: What shall we call the column with the old column names
+    - `values_to`: What shall we call the column with the values
     
 ## From Wide to Long
 
 ```{r}
-wideData |>
-  gather(key = "Day",
-         value = "Change",
-         contains("day"))
+timeCourse |>
+  pivot_longer(
+    cols = starts_with("day"),
+    names_to = "Day",
+    values_to = "logFC"
+  )
 ```
 
 Many functions require data to be in this format
@@ -605,27 +606,42 @@ Many functions require data to be in this format
 
 __How could we get means for each treatment/day from the original data?__
 
-## From Wide to Long
-
-__How could we get means for each treatment/day from the original data?__
+ . . .
 
 ```{r}
-wideData |>
-  gather(key = "Day",
-         value = "Change",
-         contains("day")) |>
+timeCourse |>
+  pivot_longer(
+    cols = starts_with("day"), names_to = "Day", values_to = "logFC"
+  ) |>
   group_by(Tx, Day) |>
-  summarise(mn_change = mean(Change))
+  summarise(mn_change = mean(logFC))
 ```
 
-Might be easier if needing more summaries (e.g. `sd()`)
+. . .
+
+__Can we add the standard deviation?__
+
+## From Wide to Long
+
+__Can we add the standard deviation?__
+
+ . . .
+
+```{r}
+timeCourse |>
+  pivot_longer(
+    cols = starts_with("day"), names_to = "Day", values_to = "logFC"
+  ) |>
+  group_by(Tx, Day) |>
+  summarise(across(all_of("logFC"), .fns = c(mn = mean, sd = sd)))
+```
 
 ## Reshaping your data | From Long To Wide
 
 Let's save that last summary `data.frame`
 
 ```{r}
-wideMeans <- wideData |>
+wideMeans <- timeCourse |>
   gather(key = "Day",
          value = "Change",
          contains("day")) |>
