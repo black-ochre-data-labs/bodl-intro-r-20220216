@@ -726,7 +726,7 @@ pcr |>
 The reverse operation is `unite()`
 
 ```{r}
-transport %>% 
+transport |>
   unite(
     col = "group", all_of(c("gender", "method")), sep = "-"
   )
@@ -737,7 +737,7 @@ transport %>%
 We can also perform this, retaining the original column
 
 ```{r}
-transport %>% 
+transport |>
   unite(
     col = "group", all_of(c("gender", "method")), sep = "-",
     remove = FALSE
@@ -756,6 +756,38 @@ transport %>%
 . . .
 
 Nearly **all** my analyses start with `library(tidyverse)`
+
+## Saving Data
+
+- We'll be using `transport` later today
+- Please save your edited version (i.e. without missing values)
+
+```{r, eval = FALSE}
+write_csv(
+  x, # This is where your R object goes
+  file, # This is where to save it on your HDD
+  na = "NA",
+  append = FALSE,
+  col_names = !append,
+  quote = c("needed", "all", "none"),
+  escape = c("double", "backslash", "none"),
+  eol = "\n",
+  num_threads = readr_threads(),
+  progress = show_progress(),
+  path = deprecated(),
+  quote_escape = deprecated()
+)
+```
+
+## Saving Data
+
+- We'll be using `transport` later today
+- Please save your edited version (i.e. without missing values)
+
+```{r}
+write_csv(transport, "data/transport_clean.csv")
+```
+
 
 # Some Final Words {background-color="#3c3c44"}
 
@@ -776,4 +808,5 @@ transport |> select(gender)
 transport |> dplyr::select(gender) |> glimpse()
 ```
 
-    
+
+

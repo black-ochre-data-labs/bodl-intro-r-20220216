@@ -1,0 +1,359 @@
+---
+title: "Tidying Data"
+subtitle: "BODL R Training"
+author: "Dr Stevie Pederson"
+institute: "Black Ochre Data Labs<br>Telethon Kids Institute"
+date: "2023-02-16"
+date-format: long
+title-slide-attributes:
+    data-background-color: "#3c3c44"
+    data-background-image: assets/bodl_logo_white_background.jpg
+    data-background-opacity: "0.3"
+    data-background-size: "90%"
+editor: source
+format: 
+  revealjs:
+    theme: [../custom.scss]
+    code-line-numbers: false
+    width: 1024
+    height: 768
+    sansfont: Times New Roman
+    logo: assets/bodl_logo_white_background.jpg
+---
+
+```{r, loadPackages, echo = FALSE, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE, include = TRUE, warning = FALSE, message = FALSE, 
+  fig.align = "center", results = 'hide', fig.show = 'hide'
+)
+```
+
+# Data Visualisation {background-color="#3c3c44"}
+
+## Session Setup
+
+1. Start a new R Script called: `DataVisualisation.R`
+2. Add the following two lines and execute them
+
+```{r}
+library(tidyverse)
+transport <- read_csv("data/transport_clean.csv")
+```
+
+. . .
+
+- `library(tidyverse)`will load all packages from the last session
+- `ggplot2` will also be loaded
+
+## Base Plotting
+
+R has many generic plotting functions inbuilt:
+
+- Line/Scatter plots: `plot()`
+- Histograms: `hist()`
+- Boxplots: `boxplot()`
+
+. . .
+
+- They're usually ugly & unfriendly to use
+- Can be handy for a quick & dirty plot
+
+## Scatterplots
+
+A simple scatter plot needs x & y co-ordinates
+
+```{r}
+plot(transport$height, transport$weight)
+```
+
+## Histograms
+
+For a histogram, we only need values which can be *binned*
+
+```{r}
+hist(transport$height)
+```
+
+. . .
+
+Checkout the p-values!!!
+
+```{r plot-p-hist, fig.show='asis', results='asis'}
+not_sig <- runif(1e6) # Randomly make a million values from U(0, 1)
+sig <- rbeta(1e5, 1, 50) # Add 100,000 from a skewed distribution
+p <- c(not_sig, sig)
+hist(p, breaks = 100, main = "P-Values") # Plot using 100 bins, i.e. every 0.01
+abline(v = 0.05, col = "red") # Add our significance threshold
+```
+
+
+## Boxplots
+
+A boxplot will plot the range of values across different categories
+
+- We can use the *formula syntax* from `R`
+- The `~` symbol usually means *"depends on"*
+    - i.e. Plot the values of height as they depend on gender
+
+```{r}
+boxplot(height ~ gender, data = transport)
+```
+
+# Using `ggplot2` {background-color="#3c3c44" background-image=https://ggplot2.tidyverse.org/logo.png background-size="50%" background-opacity="0.5"}
+
+## The package `ggplot2`
+
+- `ggplot2` gives much more flexibility and power
+    - Is part of the core `tidyverse`
+- Has unique syntax and approach
+- We add layers of plotting information like geometry, colours, themes etc
+
+## The package `ggplot2`
+
+- `ggplot2` gives much more flexibility and power
+    - Is part of the core `tidyverse`
+- Has unique syntax and approach
+- We add layers of plotting information like geometry, colours, themes etc
+
+- Based on the book: The Grammar of Graphics^[*Wilkinson, L* "The Grammar of Graphics", Springer, 2005]
+
+![](https://m.media-amazon.com/images/I/61L6t6eXkGL._AC_UF700,800_QL80_.jpg){width="17%"}
+
+## The package `ggplot2`: aesthetics
+
+The main function is `ggplot()`
+
+- In this first stage we set the plotting aesthetics using `aes()`
+- Defines what is plotted on which axis, what defines the colour/shape etc.
+
+```{r, fig.show='hide'}
+library(tidyverse)
+transport <- read_csv("data/transport_clean.csv")
+ggplot(transport, aes(x = weight, y = height))
+```
+
+No data will be plotted. We get the plot area only...
+
+## The package `ggplot2`: geometry
+
+- After defining the plot aesthetics, we:
+    - Tell R that "more is to come" by adding a `+` symbol at the end of the line
+    - Add the geometry using various `geom_...()` functions
+
+```{r}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point()
+```
+
+
+## The package `ggplot2`: geometry
+
+```{r, echo=FALSE, fig.width=4, fig.height=4, fig.show='asis'}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point()
+```
+
+## The package `ggplot2`: aesthetics
+
+There are numerous aesthetics available for `geom_point()`
+
+```{r, eval=FALSE}
+?geom_point
+```
+
+```{r, fig.show='hide'}
+ggplot(transport, aes(x = weight, y = height, colour = method)) +
+  geom_point()
+```
+
+```{r}
+ggplot(transport, aes(x = weight, y = height, 
+                      colour = method, shape = gender)) +
+  geom_point()
+```
+
+## The package `ggplot2`: aesthetics
+
+We can put the general aesthetics in `ggplot()`, with the `geom_point()` specific ones in that line
+
+```{r}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender))
+```
+
+- aesthetics set in `ggplot()` are passed to all geoms
+
+## The package `ggplot2`: aesthetics
+
+Aesthetics set outside of `aes()` are general across all points
+
+```{r}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender), size = 4)
+```
+
+## The package `ggplot2`: adding multiple geoms
+
+```{r}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth()
+```
+
+This defaults to a `loess` fit
+
+```{r}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE)
+```
+
+## The package `ggplot2`: labels
+
+Point labels can be added using `geom_text()`
+
+```{r}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
+  geom_text(aes(label= name)) +
+  labs(x = "Weight (kg)", y = "Height (cm)", 
+       shape = "Gender", colour = "Transport")
+```
+
+## The package `ggplot2`: labels
+
+They tend to be clumsy so
+
+```{r}
+library(ggrepel)
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
+  geom_text_repel(aes(label= name)) +
+  labs(x = "Weight (kg)", y = "Height (cm)", 
+       shape = "Gender", colour = "Transport")
+```
+
+
+## The package `ggplot2`: labels
+
+Axis and legend labels can be added using `labs()`
+
+```{r}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
+  geom_text_repel(aes(label= name)) +
+  labs(x = "Weight (kg)", y = "Height (cm)", 
+       shape = "Gender", colour = "Transport")
+```
+
+## The package `ggplot2`: facets
+
+(This is my favourite feature)
+
+```{r}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
+  geom_text_repel(aes(label= name)) +
+  labs(x = "Weight (kg)", y = "Height (cm)", 
+       shape = "Gender", colour = "Transport") +
+  facet_wrap(~gender) 
+```
+
+## The package `ggplot2`: Different geoms
+
+Enter `geom_` in the Console followed by the `tab` key
+
+```{r}
+ggplot(transport, aes(x = height, fill = gender)) +
+  geom_density(alpha = 0.5)
+```
+
+```{r}
+ggplot(transport, aes(x = gender, y =height, fill = gender)) +
+  geom_boxplot()
+```
+
+
+## The package `ggplot2`: `geom_bar()`
+
+We can summarise our data before plotting
+
+```{r}
+transport %>%
+  filter(!is.na(height)) %>%
+  group_by(method, gender) %>%
+  summarise(mn_height = mean(height), sd_height = sd(height)) %>%
+  ggplot(aes(x = method, y = mn_height, fill = method)) +
+  geom_bar(stat = "identity") +
+  facet_wrap(~gender) +
+  guides(fill =FALSE)
+```
+
+NB: `geom_bar()` requires `stat = "identity"`
+
+## The package `ggplot2`: `geom_errorbar()`
+
+```{r}
+transport %>%
+  filter(!is.na(height)) %>%
+  group_by(method, gender) %>%
+  summarise(mn_height = mean(height), sd_height = sd(height)) %>%
+  ggplot(aes(x = method, y = mn_height, fill = method)) +
+  geom_bar(stat = "identity") +
+  geom_errorbar(aes(ymin = mn_height - sd_height,
+                    ymax = mn_height + sd_height),
+                width = 0.6)+
+  facet_wrap(~gender) +
+  guides(fill =FALSE)
+```
+
+## Making pie charts
+
+These are not intuitive so here's how:
+
+```{r}
+transport %>%
+  filter(!is.na(height)) %>%
+  group_by(method) %>%
+  summarise(n = n()) %>%
+  ggplot(aes(x = 1, y = n, fill = method)) +
+  geom_bar(stat = "identity", colour = "black") +
+  coord_polar("y") +
+  theme_void()
+```
+
+
+## The package `ggplot2`: facets
+
+__How could we get histograms for both `weight` and `height` using facets?__
+
+- The geom to use is `geom_histogram()`
+
+## The package `ggplot2`: facets
+
+__How could we get histograms for both `weight` and `height` using facets?__
+
+```{r}
+transport %>%
+  gather(key = "measurement", value = "value",
+         ends_with("ght")) %>%
+  ggplot(aes(x = value, fill = measurement)) +
+  geom_histogram(bins = 10, colour = "black") +
+  facet_wrap(~measurement, scales = "free_x") +
+  guides(fill = FALSE)
+```
+
+## The package `ggplot2`: facets
+
+```{r}
+transport %>%
+  gather(key = "measurement", value = "value",
+         ends_with("ght")) %>%
+  ggplot(aes(x =gender, y = value, fill = gender)) +
+  geom_boxplot() +
+  facet_wrap(~measurement, scales = "free_y")
+```
