@@ -99,7 +99,7 @@ library(tidyr)
 - The package `dplyr` works specifically with `data.frame` objects
 - Works optimally with `tibble`-style data.frames
 
-# The package `dplyr` {background-color="#3c3c44" background-image=https://swag.rstudio.com/uploads/1/3/1/3/131335021/s815253891256106552_p2_i4_w660.png}
+# The package `dplyr` {background-color="#3c3c44" background-image=https://swag.rstudio.com/uploads/1/3/1/3/131335021/s815253891256106552_p2_i4_w660.png background-size="60%" background-opacity="0.5"}
 
 ## Starting with `dplyr`
 
@@ -220,7 +220,8 @@ arrange(transport, desc(weight))
 - We can chain functions together using `|>`
 - This behaves like a `|` in the bash shell
 - Introduced as `%>%` from the package `magrittr`
-    + Added to R 4.2.0
+    + `|>` Added at R 4.2.0
+    + Older code may contain `%>%`
 
 Places the **output of the first function** as the **first argument** of the next function!
 
@@ -236,13 +237,15 @@ Is identical to
 transport |> filter(method == "bike")
 ```
 
-## Combining Functions
+. . .
 
-But now we can perform multiple operations!
+Now we can perform [multiple operations]{.underline}!
 
 ```{r}
 transport |> filter(method == "bike") |> arrange(weight)
 ```
+
+. . .
 
 There is __no limit__ to the number of functions you can chain together
 
@@ -255,6 +258,8 @@ There is __no limit__ to the number of functions you can chain together
 transport |> filter(method == "bike") |> arrange(weight)
 ```
 
+
+. . .
 
 1. The `|>` placed `transport` into the first argument of `filter()`
 2. The output of `filter()` was a `data.frame` $\implies$ this was placed as the first argument to `arrange()`
@@ -286,7 +291,7 @@ We can also overwrite existing columns
 transport |> mutate(height = height/100)
 ```
 
-__Have we changed the original__ `data_frame` yet?
+__Have we changed the original__ `object` yet?
 
 ## Using `dplyr::rename()`
 
@@ -443,7 +448,16 @@ transport |>
 . . .
 
 - `case_when()` is like `if_else()` but allows for multiple options
-- e.g. `logFC > 0 & p < 0.05 ~ "Up"` then `logFC < 0 & p < 0.05 ~ "Down"` then `p >= 0.05 ~ "Unchanged"`
+- Executes conditions sequentially
+
+```{r, eval = FALSE}
+case_when(
+  direction > 0 & p < 0.05 ~ "Up",
+  direction < 0 & p < 0.05 ~ "Down",
+  p >= 0.05 ~ "Unchanged"
+)
+```
+
 
 
 ## Using `dplyr::case_when()`
@@ -466,11 +480,13 @@ transport <- transport |>
 
 ## Combining Data Frames
 
-`dplyr` has some very useful functions for combining `data.frame` objects: `bind_rows()`, `left_join()`, `right_join()` and `full_join()`
+`dplyr` has some very useful functions for combining `data.frame` objects
 
-Unbelievably, we've just had data from `Tony` and he's a 83kg car-driver, who is 177.3cm tall.
+- `bind_rows()`, `left_join()`, `right_join()` and `full_join()`
 
-We can manually create a `data_frame` for him
+Amazingly, we've just had data from `Tony` and he's a 83kg car-driver, who is 177.3cm tall.
+
+- We can manually create a `tibble` just for him
 
 ## Combining Data Frames
 
@@ -514,7 +530,7 @@ glimpse(contacts)
 
 **How do we combine these?**    
 
-## Combining Data Frames | `left_join()`
+## `dplyr::left_join()`
 
 We can use the first `data_frame` as the template
 
@@ -525,7 +541,7 @@ left_join(transport, contacts, by = "name")
 - Any `name` entries missing from the second object (`contacts`) will become a missing value in the column `contact`
 - Any `name` entries in the first which have multiple matches in the second will be expanded
 
-## Combining Data Frames | `right_join()`
+## `dplyr::right_join()`
 
 We can use the second object as the template
 
@@ -540,7 +556,7 @@ right_join(transport, contacts, by = "name") |> tail()
 ```
 
 
-## Combining Data Frames | `full_join()`
+## `dplyr::full_join()`
 
 Or we can combine everything
 
@@ -556,7 +572,7 @@ full_join(transport, contacts, by = "name") |> filter(is.na(contact))
 ```
 
 
-# Reshaping your data {background-color="#3c3c44"}
+# Reshaping your data {background-color="#3c3c44" background-image=https://tidyr.tidyverse.org/logo.png background-size="50%" background-opacity="0.5"}
 
 ## Reshaping your data
 
@@ -583,7 +599,7 @@ This is a time course:
 
 The basic function is `pivot_longer()`
 
-- Part of the core tidyverse package `tidyr`
+- Part of the package `tidyr`
 - Key arguments are:
     - `cols`: which columns are shifting to long form
     - `names_to`: What shall we call the column with the old column names
@@ -636,125 +652,128 @@ timeCourse |>
   summarise(across(all_of("logFC"), .fns = c(mn = mean, sd = sd)))
 ```
 
-## Reshaping your data | From Long To Wide
-
-Let's save that last summary `data.frame`
-
-```{r}
-wideMeans <- timeCourse |>
-  gather(key = "Day",
-         value = "Change",
-         contains("day")) |>
-  group_by(Tx, Day) |>
-  summarise(mn_change = mean(Change))
-```
-
 ## From Long To Wide
 
-We can change from long to wide using the 'opposite' function `spread()`
-
-- Values in the `key =` column become the new column names
-- Values in the `value =` column remain the values
+- We can also take our data from long to wide form
+- Key arguments are `names_from` and `values_from`
+- Often have to deal with missing values in this context
 
 ```{r}
-wideMeans |>
-  spread(key = Day,
-         value = mn_change)
+transport |>
+  mutate(status = 1) |>
+  pivot_wider(
+    names_from = "method", values_from = "status"
+  )
 ```
 
 
 ## From Long To Wide
 
-Would we ever use both `gather()` and `spread()`?
+- We can also take our data from long to wide form
+- Key arguments are `names_from` and `values_from`
+- Often have to deal with missing values in this context
+
+```{r}
+transport |>
+  mutate(status = 1) |>
+  pivot_wider(
+    names_from = "method", values_from = "status", values_fill = 0
+  )
+```
+
+
+## Combining and Separating Columns
+
+There really is no end to the possible situations we find
 
 ```{r}
 pcr <- read_csv("data/PCR.csv")
-head(pcr)
+pcr
 ```
 
-Here we have 3 genes being measured in 2 cell types, across 3 time-points
+. . .
 
-## From Long To Wide
+Here, both treatment and timepoint are in the column name
 
-The first part is easy:
+## Combining and Separating Columns
+
+Let's transform using pivot longer
 
 ```{r}
 pcr |>
-  gather(key = CellType,
-         value = Ct,
-         ends_with("hr"))
+  pivot_longer(cols = ends_with("hr"), names_to = "group", values_to = "Ct")
 ```
 
-If we want to now organise by treatment and timepoint:
+. . .
 
-- Need to separate `CellType` into two columns
-
-
-## From Long To Wide
-
-We can use the function `separate()` 
+We need to separate the original column names: `separate()`
 
 ```{r}
 pcr |>
-  gather(key = CellType,
-         value = Ct,
-         ends_with("hr")) |>
-  separate(col = CellType, 
-           into = c("CellType", "TimePoint"))
+  pivot_longer(cols = ends_with("hr"), names_to = "group", values_to = "Ct") |>
+  separate(
+    col = "group", into = c("Treat", "Timepoint")
+  )
 ```
 
-## From Long To Wide
+. . .
 
-Now we can form our final data structure
+- The separator was set by default to be any non-alpha-numeric symbol
+- This is a pattern known as a *regular expression*
+
+## Combining and Separating Columns
+
+The reverse operation is `unite()`
 
 ```{r}
-pcr |>
-  gather(key = CellType,
-         value = Ct,
-         ends_with("hr")) |>
-  separate(col = CellType, 
-           into = c("CellType", "TimePoint")) |>
-  spread(key = TimePoint,
-         value = Ct)
+transport %>% 
+  unite(
+    col = "group", all_of(c("gender", "method")), sep = "-"
+  )
 ```
 
+. . .
 
+We can also perform this, retaining the original column
 
-<!-- ## Text Manipulation | Returning to our data -->
+```{r}
+transport %>% 
+  unite(
+    col = "group", all_of(c("gender", "method")), sep = "-",
+    remove = FALSE
+  )
+```
 
-<!-- ```{r} -->
-<!-- pcr_long <- pcr |> -->
-<!--  gather(key = CellType, -->
-<!--          value = Ct, -->
-<!--          ends_with("hr")) |> -->
-<!--   mutate(TimePoint = str_extract(CellType, "(0hr|12hr|24hr)"), -->
-<!--          CellType = str_replace(CellType, "_(0hr|12hr|24hr)", "")) -->
-<!-- ``` -->
+# The `tidyverse` {background-color="#3c3c44" background-image=https://tidyverse.tidyverse.org/logo.png background-size="50%" background-opacity="0.5"}
 
-<!-- Save this as `pcr_long` -->
+## The `tidyverse`
 
-<!-- ## Text Manipulation -->
+- The packages `dplyr`, `tidyr` and `readr` are used in most workflows
+- Additional near-essential packages: `ggplot2` and `forcats`
+- All can be loaded with `library(tidyverse)`
+    + A few less obvious packages like `purrr` are also loaded
+    
+. . .
 
-<!-- Now we could make it wide (but not as wide) -->
+Nearly **all** my analyses start with `library(tidyverse)`
 
-<!-- ```{r} -->
-<!-- pcr_long |> -->
-<!--  spread(key = TimePoint, value = Ct) -->
-<!-- ``` -->
+# Some Final Words {background-color="#3c3c44"}
 
-<!-- ## Challenge -->
+## Conflicting Function Names
 
-<!-- To investigate the effect of fitness, gender, country of origin on red blood cell count (RBC), download `challenge.csv` with observations made on 500 subjects. The variables are: -->
+- Many functions in `dplyr` were inspired by SQL
+    + Some function names have been used by multiple packages
+    + `select()` and `filter()` are most heavily used
+- If a weird error occurs, add the package name before the function
+    + `dplyr::select()` or `dplyr::filter()`
+    + I [always]{.underline} do this for both as a habit
+    
+. . .
+    
+```{r, eval = TRUE, echo = TRUE, warning=TRUE, error=TRUE, include=TRUE}
+library(GO.db)
+transport |> select(gender)
+transport |> dplyr::select(gender) |> glimpse()
+```
 
-<!-- 1. **gender**: male or female. -->
-<!-- 2. **fitness**: a measure of fitness lying between 0 and 100. -->
-<!-- 3. **country**: there are three countries denoted by 1, 2, or 3. -->
-<!-- 4. **RBC**: red blood cell count in millions/$\mu$L. -->
-
-<!-- __Clean the data entirely in R__ -->
-
----
-
-<div class="footer" style="text-align:center;width:25%">
-[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2018/)
-</div>
+    
