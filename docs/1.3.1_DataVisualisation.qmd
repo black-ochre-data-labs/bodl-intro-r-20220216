@@ -62,7 +62,7 @@ R has many generic plotting functions inbuilt:
 
 A simple scatter plot needs x & y co-ordinates
 
-```{r}
+```{r, eval=FALSE}
 plot(transport$height, transport$weight)
 ```
 
@@ -70,7 +70,7 @@ plot(transport$height, transport$weight)
 
 For a histogram, we only need values which can be *binned*
 
-```{r}
+```{r, eval=FALSE}
 hist(transport$height)
 ```
 
@@ -95,13 +95,18 @@ A boxplot will plot the range of values across different categories
 - The `~` symbol usually means *"depends on"*
     - i.e. Plot the values of height as they depend on gender
 
-```{r}
+```{r, eval=FALSE}
 boxplot(height ~ gender, data = transport)
 ```
 
-# Using `ggplot2` {background-color="#3c3c44" background-image=https://ggplot2.tidyverse.org/logo.png background-size="50%" background-opacity="0.5"}
+# Using `ggplot2` {background-color="#3c3c44" background-image=https://ggplot2.tidyverse.org/logo.png background-size="40%" background-opacity="0.5"}
 
 ## The package `ggplot2`
+
+```{r turn-off-eval, echo=FALSE, eval=TRUE}
+knitr::opts_chunk$set(eval = FALSE, fig.show = "hide")
+```
+
 
 - `ggplot2` gives much more flexibility and power
     - Is part of the core `tidyverse`
@@ -115,45 +120,52 @@ boxplot(height ~ gender, data = transport)
 - Has unique syntax and approach
 - We add layers of plotting information like geometry, colours, themes etc
 
-- Based on the book: The Grammar of Graphics^[*Wilkinson, L* "The Grammar of Graphics", Springer, 2005]
+- Based on the book: The Grammar of Graphics^[*Wilkinson, L* "The Grammar of Graphics", Springer New York, 2005]
 
 ![](https://m.media-amazon.com/images/I/61L6t6eXkGL._AC_UF700,800_QL80_.jpg){width="17%"}
 
-## The package `ggplot2`: aesthetics
+## Calling `ggplot()`
 
-The main function is `ggplot()`
+The main function is `ggplot()` [(The package is `ggplot2`)]{.fragment .fade-in}
 
 - In this first stage we set the plotting aesthetics using `aes()`
 - Defines what is plotted on which axis, what defines the colour/shape etc.
 
 ```{r, fig.show='hide'}
-library(tidyverse)
-transport <- read_csv("data/transport_clean.csv")
 ggplot(transport, aes(x = weight, y = height))
 ```
 
 No data will be plotted. We get the plot area only...
 
-## The package `ggplot2`: geometry
+## Adding A Geometry Layer
+
+::: {.panel-tabset}
+
+### Slide Text
 
 - After defining the plot aesthetics, we:
     - Tell R that "more is to come" by adding a `+` symbol at the end of the line
-    - Add the geometry using various `geom_...()` functions
+    - Add the geometry using various `geom_*()` functions
 
-```{r}
+```{r, eval=FALSE}
 ggplot(transport, aes(x = weight, y = height)) +
   geom_point()
 ```
 
+### Figure
 
-## The package `ggplot2`: geometry
-
-```{r, echo=FALSE, fig.width=4, fig.height=4, fig.show='asis'}
+```{r plot-transport-raw, fig.show='asis', echo=FALSE}
 ggplot(transport, aes(x = weight, y = height)) +
   geom_point()
 ```
 
-## The package `ggplot2`: aesthetics
+:::
+
+## Layer Aesthetics
+
+:::: {.panel-tabset}
+
+### Slide Text
 
 There are numerous aesthetics available for `geom_point()`
 
@@ -161,52 +173,134 @@ There are numerous aesthetics available for `geom_point()`
 ?geom_point
 ```
 
-```{r, fig.show='hide'}
+::: {.fragment}
+
+Start with colouring points by the transport method
+
+```{r, fig.show='hide', eval=FALSE}
 ggplot(transport, aes(x = weight, y = height, colour = method)) +
   geom_point()
 ```
 
-```{r}
-ggplot(transport, aes(x = weight, y = height, 
-                      colour = method, shape = gender)) +
+:::
+
+::: {.fragment}
+
+Now set the shape of each point by the gender of our study participant
+
+```{r, eval=FALSE}
+ggplot(
+  transport, 
+  aes(x = weight, y = height, colour = method, shape = gender)
+) +
   geom_point()
 ```
 
-## The package `ggplot2`: aesthetics
+:::
 
-We can put the general aesthetics in `ggplot()`, with the `geom_point()` specific ones in that line
+### Figure
+
+```{r plot-transport-colour-shape, echo=FALSE, eval=TRUE, fig.show='asis'}
+ggplot(
+  transport, 
+  aes(x = weight, y = height, colour = method, shape = gender)
+) +
+  geom_point()
+```
+
+::::
+
+## Fixed Aesthetics
+
+- Top-level aesthetics are passed down through all layers
+- Aesthetics can be set to respond to variables (i.e. columns)
+- Can also be provided as fixed values
+    + Fixed values are usually specific to a layer
+
+```{r}
+ggplot(
+  transport, 
+  aes(x = weight, y = height, colour = method, shape = gender)
+) +
+  geom_point(size = 4)
+```
+
+
+## Aesthetics and Layers
+
+- Variable aesthetics can also be restricted to a layer
 
 ```{r}
 ggplot(transport, aes(x = weight, y = height)) +
-  geom_point(aes(colour = method, shape = gender))
+  geom_point(
+    aes(colour = method, shape = gender),
+    size = 4
+  )
 ```
 
-- aesthetics set in `ggplot()` are passed to all geoms
+. . .
 
-## The package `ggplot2`: aesthetics
+- This will look identical to the previous plot
+    + Colour & Shape will not be passed to any other layers
+    + Next, we'll add more layers
 
-Aesthetics set outside of `aes()` are general across all points
 
-```{r}
-ggplot(transport, aes(x = weight, y = height)) +
-  geom_point(aes(colour = method, shape = gender), size = 4)
-```
+## Adding Multiple Layers
 
-## The package `ggplot2`: adding multiple geoms
+:::: {.panel-tabset}
 
-```{r}
+### Slide Text
+
+- `geom_smooth()` will add a line of best fit, with standard error
+- This defaults to a `loess` fit
+
+```{r, eval=FALSE}
 ggplot(transport, aes(x = weight, y = height)) +
   geom_point(aes(colour = method, shape = gender)) +
   geom_smooth()
 ```
 
-This defaults to a `loess` fit
+::: {.fragment}
 
-```{r}
+- We can manually specify `lm` and hide the standard errors
+- The *formula syntax* says `y` *depends on* `x`
+
+```{r, eval=FALSE}
 ggplot(transport, aes(x = weight, y = height)) +
   geom_point(aes(colour = method, shape = gender)) +
   geom_smooth(method = "lm", formula = y~x, se = FALSE)
 ```
+
+:::
+
+### Figure
+
+```{r plot-transport-with-lm, echo=FALSE, fig.show='asis'}
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE)
+```
+
+::::
+
+## The package `ggplot2`: adding multiple geoms
+
+- If we had left `colour = method` in the original `aes()` we would produce two lines
+
+```{r}
+ggplot(transport, aes(x = weight, y = height, colour = method)) +
+  geom_point(aes(shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE)
+```
+
+. . .
+
+- `geom_line()` has no *shape* aesthetic
+- If we'd also left `shape` assigned in the initial call
+    + Lines would also be grouped by gender
+    + Grouped lines would still have the same type of line
+    + Could add a `linetype` or `linewidth` aesthetic $\implies$ looks terrible
+
 
 ## The package `ggplot2`: labels
 
@@ -216,23 +310,20 @@ Point labels can be added using `geom_text()`
 ggplot(transport, aes(x = weight, y = height)) +
   geom_point(aes(colour = method, shape = gender)) +
   geom_smooth(method = "lm", formula = y~x, se = FALSE) +
-  geom_text(aes(label= name)) +
-  labs(x = "Weight (kg)", y = "Height (cm)", 
-       shape = "Gender", colour = "Transport")
+  geom_text(aes(label= name)) 
 ```
 
-## The package `ggplot2`: labels
+. . .
 
-They tend to be clumsy so
+- `geom_text()` can be clumsy
+- `ggrepel::geom_text_repel()` is a good alternative
 
 ```{r}
-library(ggrepel)
+library(ggrepel) # Place this line at the top of your script
 ggplot(transport, aes(x = weight, y = height)) +
   geom_point(aes(colour = method, shape = gender)) +
   geom_smooth(method = "lm", formula = y~x, se = FALSE) +
-  geom_text_repel(aes(label= name)) +
-  labs(x = "Weight (kg)", y = "Height (cm)", 
-       shape = "Gender", colour = "Transport")
+  geom_text_repel(aes(label= name)) 
 ```
 
 
@@ -245,37 +336,138 @@ ggplot(transport, aes(x = weight, y = height)) +
   geom_point(aes(colour = method, shape = gender)) +
   geom_smooth(method = "lm", formula = y~x, se = FALSE) +
   geom_text_repel(aes(label= name)) +
-  labs(x = "Weight (kg)", y = "Height (cm)", 
-       shape = "Gender", colour = "Transport")
+  labs(
+    x = "Weight (kg)", y = "Height (cm)", 
+    shape = "Gender", colour = "Transport"
+  )
 ```
 
-## The package `ggplot2`: facets
+. . .
 
-(This is my favourite feature)
+It may be better to rename columns where possible though
+
+# Using facets {background-color="#3c3c44"}
+
+## Using facets
+
+- The ability to break a plot into *facets* is an incredibly useful feature
 
 ```{r}
 ggplot(transport, aes(x = weight, y = height)) +
   geom_point(aes(colour = method, shape = gender)) +
   geom_smooth(method = "lm", formula = y~x, se = FALSE) +
   geom_text_repel(aes(label= name)) +
-  labs(x = "Weight (kg)", y = "Height (cm)", 
-       shape = "Gender", colour = "Transport") +
+  labs(
+    x = "Weight (kg)", y = "Height (cm)", 
+    shape = "Gender", colour = "Transport"
+  ) +
   facet_wrap(~gender) 
 ```
 
-## The package `ggplot2`: Different geoms
+## Using facets
 
-Enter `geom_` in the Console followed by the `tab` key
+- We can set separate scales using `scales = "free"`
+   + Or `"free_x"`, `"free_y"`
 
 ```{r}
-ggplot(transport, aes(x = height, fill = gender)) +
-  geom_density(alpha = 0.5)
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
+  geom_text_repel(aes(label= name)) +
+  labs(
+    x = "Weight (kg)", y = "Height (cm)", 
+    shape = "Gender", colour = "Transport"
+  ) +
+  facet_wrap(~gender, scales = "free") 
 ```
 
+## Using facets
+
+- An alternative is `facet_grid()` 
+- We use the `y ~ x` syntax to specify the x/y groupings
+
 ```{r}
-ggplot(transport, aes(x = gender, y =height, fill = gender)) +
+ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
+  geom_text_repel(aes(label= name)) +
+  labs(
+    x = "Weight (kg)", y = "Height (cm)", 
+    shape = "Gender", colour = "Transport"
+  ) +
+  facet_grid(method~gender, scales = "free") 
+```
+
+# Different geoms {background-color="#3c3c44"}
+
+## Common geoms 
+
+```{r eval=FALSE}
+?geom_
+```
+
+
+::: {.incremental}
+- `geom_boxplot()`, `geom_violin()`
+- `geom_bar()`, `geom_col()`, `geom_histogram()`, `geom_errobar()`
+- `geom_line()`, `geom_density()`
+- `geom_rect()`, `geom_raster()`
+- `geom_hline()`, `geom_vline()`, `geom_abline()`, `geom_segment()`
+- `geom_text()`, `geom_label()`
+:::
+
+## `geom_boxplot()`
+
+```{r}
+ggplot(transport, aes(x = gender, y =height)) +
   geom_boxplot()
 ```
+
+. . .
+
+Adding fill or colour variables will group within the x-variable
+
+```{r}
+ggplot(transport, aes(x = gender, y =height, fill = method)) +
+  geom_boxplot()
+```
+
+. . .
+
+Can be easily combined with facets for clear visualisations
+
+::: {.notes}
+Try to switch in `geom_violin()`
+:::
+
+## `geom_histogram()`
+
+- Histograms look horrible with the default settings
+
+
+```{r, eval = FALSE}
+ggplot(transport, aes(height)) +
+  geom_histogram()
+```
+
+. . .
+
+- With a few tweaks, they look pretty good
+
+```{r}
+ggplot(transport, aes(height)) +
+  geom_histogram(fill = "grey70", colour = "black", binwidth = 5)
+```
+
+. . .
+
+- To switch to a frequency instead of count
+
+```{r}
+ggplot(transport, aes(height, after_stat(density))) +
+  geom_histogram(fill = "grey70", colour = "black", binwidth = 5)
+```
+
 
 
 ## The package `ggplot2`: `geom_bar()`
