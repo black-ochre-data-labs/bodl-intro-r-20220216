@@ -466,7 +466,7 @@ Dr Stevie Pederson
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-p-hist-1.png" width="960"></p>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-p-hist-1.png" width="768"></p>
 </figure>
 </div>
 </div>
@@ -494,9 +494,6 @@ Dr Stevie Pederson
 </section>
 <section id="the-package-ggplot2" class="slide level2">
 <h2>The package <code>ggplot2</code></h2>
-<div class="cell" data-layout-align="center">
-
-</div>
 <ul>
 <li><code>ggplot2</code> gives much more flexibility and power
 <ul>
@@ -522,79 +519,99 @@ Dr Stevie Pederson
 <section id="calling-ggplot" class="slide level2">
 <h2>Calling <code>ggplot()</code></h2>
 <p>The main function is <code>ggplot()</code> <span class="fragment fade-in">(The package is <code>ggplot2</code>)</span></p>
+<div class="fragment">
 <ul>
 <li>In this first stage we set the plotting aesthetics using <code>aes()</code></li>
 <li>Defines what is plotted on which axis, what defines the colour/shape etc.</li>
+<li>No data will be plotted. We get the plot area only</li>
 </ul>
-<div class="cell" data-layout-align="center">
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column fragment">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-blank-area-1.png" width="576"></p>
+</figure>
 </div>
-<p>No data will be plotted. We get the plot area only…</p>
+</div>
+</div>
+</div>
+</div>
 </section>
 <section id="adding-a-geometry-layer" class="slide level2">
 <h2>Adding A Geometry Layer</h2>
-<div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Slide Text</a></li><li><a href="#tabset-1-2">Figure</a></li></ul>
-<div class="tab-content">
-<div id="tabset-1-1">
+<p>After defining the overall aesthetics, we</p>
 <ul>
-<li>After defining the plot aesthetics, we:
-<ul>
-<li>Tell R that “more is to come” by adding a <code>+</code> symbol at the end of the line</li>
+<li>Tell R “more is to come” by adding ‘<code>+</code>’ at the end of the line</li>
 <li>Add the geometry using various <code>geom_*()</code> functions</li>
-</ul></li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<div id="tabset-1-2">
-<div class="cell" data-layout-align="center">
-
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="layer-aesthetics" class="slide level2">
-<h2>Layer Aesthetics</h2>
-<div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Slide Text</a></li><li><a href="#tabset-2-2">Figure</a></li></ul>
-<div class="tab-content">
-<div id="tabset-2-1">
-<p>There are numerous aesthetics available for <code>geom_point()</code></p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>?geom_point</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="fragment">
-<p>Start with colouring points by the transport method</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height, <span class="at">colour =</span> method)) <span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-<div class="fragment">
-<p>Now set the shape of each point by the gender of our study participant</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  transport, </span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height, <span class="at">colour =</span> method, <span class="at">shape =</span> gender)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</div>
-</div>
-<div id="tabset-2-2">
-<div class="cell" data-layout-align="center">
+<div class="cell fragment" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-colour-shape-1.png" width="960"></p>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-raw-1.png" width="576"></p>
 </figure>
 </div>
 </div>
 </div>
+</section>
+<section id="global-aesthetics" class="slide level2">
+<h2>Global Aesthetics</h2>
+<aside class="notes">
+<p>Don’t forget to show people the help page</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<ul>
+<li>There are numerous aesthetics available for <code>geom_point()</code></li>
+<li>Start with colouring points by the transport method</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height, <span class="at">colour =</span> method)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-add-colour-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="global-aesthetics-1" class="slide level2">
+<h2>Global Aesthetics</h2>
+<ul>
+<li>Now set the shape of each point by the gender of our study participants</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  transport, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height, <span class="at">colour =</span> method, <span class="at">shape =</span> gender)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-add-shape-1.png" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
@@ -602,32 +619,42 @@ Dr Stevie Pederson
 <section id="fixed-aesthetics" class="slide level2">
 <h2>Fixed Aesthetics</h2>
 <ul>
-<li>Top-level aesthetics are passed down through all layers</li>
+<li>Top-level aesthetics (<code>ggplot(aes(...))</code>) are passed down through layers</li>
 <li>Aesthetics can be set to respond to variables (i.e.&nbsp;columns)</li>
-<li>Can also be provided as fixed values
-<ul>
-<li>Fixed values are usually specific to a layer</li>
-</ul></li>
+<li>Can <em>also be provided as fixed values</em> <span class="math inline">\(\implies\)</span> specific to a layer</li>
 </ul>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  transport, </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height, <span class="at">colour =</span> method, <span class="at">shape =</span> gender)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  transport, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> weight, <span class="at">y =</span> height, </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> method, <span class="at">shape =</span> gender</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>) <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column fragment">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-add-size-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </section>
 <section id="aesthetics-and-layers" class="slide level2">
 <h2>Aesthetics and Layers</h2>
 <ul>
-<li>Variable aesthetics can also be restricted to a layer</li>
+<li>Variable aesthetics <em>can also be restricted to a layer</em></li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender),</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender),</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">4</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <ul>
@@ -641,63 +668,91 @@ Dr Stevie Pederson
 </section>
 <section id="adding-multiple-layers" class="slide level2">
 <h2>Adding Multiple Layers</h2>
-<div class="panel-tabset">
-<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Slide Text</a></li><li><a href="#tabset-3-2">Figure</a></li></ul>
-<div class="tab-content">
-<div id="tabset-3-1">
 <ul>
 <li><code>geom_smooth()</code> will add a line of best fit, with standard error</li>
 <li>This defaults to a <code>loess</code> fit</li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender)) <span class="sc">+</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender)) <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="fragment">
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-add-loess-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="adding-multiple-layers-1" class="slide level2">
+<h2>Adding Multiple Layers</h2>
 <ul>
 <li>We can manually specify <code>lm</code> and hide the standard errors</li>
 <li>The <em>formula syntax</em> says <code>y</code> <em>depends on</em> <code>x</code></li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender)) <span class="sc">+</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender)) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-</div>
-<div id="tabset-3-2">
-<div class="cell" data-layout-align="center">
-
-</div>
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-with-lm-1.png" width="576"></p>
+</figure>
 </div>
 </div>
 </div>
 </section>
-<section id="the-package-ggplot2-adding-multiple-geoms" class="slide level2">
-<h2>The package <code>ggplot2</code>: adding multiple geoms</h2>
+<section id="adding-multiple-layers-2" class="slide level2">
+<h2>Adding Multiple Layers</h2>
 <ul>
-<li>If we had left <code>colour = method</code> in the original <code>aes()</code> we would produce two lines</li>
+<li><code>colour = method</code> in the global <code>aes()</code> produces two lines</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height, <span class="at">colour =</span> method)) <span class="sc">+</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape =</span> gender)) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-with-lm2-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="being-careful-with-aesthetics" class="slide level2">
+<h2>Being Careful With Aesthetics</h2>
+<ul>
+<li><code>colour = method</code> in the global <code>aes()</code> produces two lines</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height, <span class="at">colour =</span> method)) <span class="sc">+</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">shape =</span> gender)) <span class="sc">+</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="fragment">
 <ul>
 <li><code>geom_line()</code> has no <em>shape</em> aesthetic</li>
 <li>If we’d also left <code>shape</code> assigned in the initial call
 <ul>
 <li>Lines would also be grouped by gender</li>
 <li>Grouped lines would still have the same type of line</li>
-<li>Could add a <code>linetype</code> or <code>linewidth</code> aesthetic <span class="math inline">\(\implies\)</span> looks terrible</li>
+<li>Could add a <code>linetype</code> or <code>linewidth</code> aesthetic
+<ul>
+<li>This looks terrible</li>
+</ul></li>
 </ul></li>
 </ul>
-</div>
 </section>
-<section id="the-package-ggplot2-labels" class="slide level2">
-<h2>The package <code>ggplot2</code>: labels</h2>
+<section id="adding-labels" class="slide level2">
+<h2>Adding labels</h2>
 <p>Point labels can be added using <code>geom_text()</code></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
@@ -705,32 +760,71 @@ Dr Stevie Pederson
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label=</span> name)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="fragment">
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-labels-1.png" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="adding-labels-1" class="slide level2">
+<h2>Adding labels</h2>
 <ul>
 <li><code>geom_text()</code> can be clumsy</li>
 <li><code>ggrepel::geom_text_repel()</code> is a good alternative</li>
 </ul>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel) <span class="co"># Place this line at the top of your script</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender)) <span class="sc">+</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label=</span> name)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Place this line at the top of your script</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel) </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label=</span> name)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column fragment">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-label-repel-1.png" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </div>
 </section>
-<section id="the-package-ggplot2-labels-1" class="slide level2">
+<section id="the-package-ggplot2-labels" class="slide level2">
 <h2>The package <code>ggplot2</code>: labels</h2>
 <p>Axis and legend labels can be added using <code>labs()</code></p>
-<div class="cell" data-layout-align="center">
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> weight, <span class="at">y =</span> height)) <span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender)) <span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label=</span> name)) <span class="sc">+</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Weight (kg)"</span>, <span class="at">y =</span> <span class="st">"Height (cm)"</span>, </span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"Gender"</span>, <span class="at">colour =</span> <span class="st">"Transport"</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">colour =</span> method, <span class="at">shape =</span> gender)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">formula =</span> y<span class="sc">~</span>x, <span class="at">se =</span> <span class="cn">FALSE</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label=</span> name)) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Weight (kg)"</span>, <span class="at">y =</span> <span class="st">"Height (cm)"</span>, </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"Gender"</span>, <span class="at">colour =</span> <span class="st">"Transport"</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column fragment">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/plot-transport-axis-labels-1.png" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 <div class="fragment">
 <p>It may be better to rename columns where possible though</p>
@@ -756,8 +850,9 @@ Dr Stevie Pederson
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"Gender"</span>, <span class="at">colour =</span> <span class="st">"Transport"</span></span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>gender) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-</section>
+<img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-1-1.png" width="576" class="r-stretch quarto-figure-center"></section>
 <section id="using-facets-2" class="slide level2">
 <h2>Using facets</h2>
 <ul>
@@ -776,8 +871,9 @@ Dr Stevie Pederson
 <span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"Gender"</span>, <span class="at">colour =</span> <span class="st">"Transport"</span></span>
 <span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>gender, <span class="at">scales =</span> <span class="st">"free"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-</section>
+<img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-2-1.png" width="576" class="r-stretch quarto-figure-center"></section>
 <section id="using-facets-3" class="slide level2">
 <h2>Using facets</h2>
 <ul>
@@ -794,8 +890,9 @@ Dr Stevie Pederson
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"Gender"</span>, <span class="at">colour =</span> <span class="st">"Transport"</span></span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(method<span class="sc">~</span>gender, <span class="at">scales =</span> <span class="st">"free"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-</section></section>
+<img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-3-1.png" width="576" class="r-stretch quarto-figure-center"></section></section>
 <section>
 <section id="different-geoms" class="title-slide slide level1 center" data-background-color="#3c3c44">
 <h1>Different geoms</h1>
@@ -822,12 +919,26 @@ Dr Stevie Pederson
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> gender, <span class="at">y =</span>height)) <span class="sc">+</span></span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-5-1.png" width="576"></p>
+</figure>
+</div>
+</div>
 </div>
 <div class="fragment">
 <p>Adding fill or colour variables will group within the x-variable</p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(<span class="at">x =</span> gender, <span class="at">y =</span>height, <span class="at">fill =</span> method)) <span class="sc">+</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-6-1.png" width="576"></p>
+</figure>
+</div>
+</div>
 </div>
 </div>
 <div class="fragment">
@@ -863,6 +974,13 @@ Dr Stevie Pederson
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(height)) <span class="sc">+</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"grey70"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">binwidth =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-8-1.png" width="576"></p>
+</figure>
+</div>
+</div>
 </div>
 </div>
 <div class="fragment">
@@ -872,6 +990,13 @@ Dr Stevie Pederson
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(transport, <span class="fu">aes</span>(height, <span class="fu">after_stat</span>(density))) <span class="sc">+</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">fill =</span> <span class="st">"grey70"</span>, <span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">binwidth =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-9-1.png" width="576"></p>
+</figure>
+</div>
+</div>
 </div>
 </div>
 </section>
@@ -887,8 +1012,9 @@ Dr Stevie Pederson
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
 <span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>gender) <span class="sc">+</span></span>
 <span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-<p>NB: <code>geom_bar()</code> requires <code>stat = "identity"</code></p>
+<img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-10-1.png" width="576" class="r-stretch quarto-figure-center"><p>NB: <code>geom_bar()</code> requires <code>stat = "identity"</code></p>
 </section>
 <section id="the-package-ggplot2-geom_errorbar" class="slide level2">
 <h2>The package <code>ggplot2</code>: <code>geom_errorbar()</code></h2>
@@ -904,8 +1030,9 @@ Dr Stevie Pederson
 <span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">width =</span> <span class="fl">0.6</span>)<span class="sc">+</span></span>
 <span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>gender) <span class="sc">+</span></span>
 <span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-</section>
+<img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-11-1.png" width="576" class="r-stretch quarto-figure-center"></section>
 <section id="making-pie-charts" class="slide level2">
 <h2>Making pie charts</h2>
 <p>These are not intuitive so here’s how:</p>
@@ -918,8 +1045,9 @@ Dr Stevie Pederson
 <span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
 <span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_polar</span>(<span class="st">"y"</span>) <span class="sc">+</span></span>
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-</section>
+<img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-12-1.png" width="576" class="r-stretch quarto-figure-center"></section>
 <section id="the-package-ggplot2-facets" class="slide level2">
 <h2>The package <code>ggplot2</code>: facets</h2>
 <p><strong>How could we get histograms for both <code>weight</code> and <code>height</code> using facets?</strong></p>
@@ -938,8 +1066,9 @@ Dr Stevie Pederson
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>, <span class="at">colour =</span> <span class="st">"black"</span>) <span class="sc">+</span></span>
 <span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>measurement, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
 <span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
-</section>
+<img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-13-1.png" width="576" class="r-stretch quarto-figure-center"></section>
 <section id="the-package-ggplot2-facets-2" class="slide level2">
 <h2>The package <code>ggplot2</code>: facets</h2>
 <div class="cell" data-layout-align="center">
@@ -949,9 +1078,16 @@ Dr Stevie Pederson
 <span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span>gender, <span class="at">y =</span> value, <span class="at">fill =</span> gender)) <span class="sc">+</span></span>
 <span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span></span>
 <span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>measurement, <span class="at">scales =</span> <span class="st">"free_y"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.3.1_DataVisualisation_files/figure-revealjs/unnamed-chunk-14-1.png" width="576"></p>
+</figure>
 </div>
-
-<img src="assets/bodl_logo_white_background.jpg" class="slide-logo r-stretch"><div class="footer footer-default">
+</div>
+</div>
+<p><img src="assets/bodl_logo_white_background.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
 
 </div>
 </section></section>
