@@ -22,6 +22,7 @@ format:
 ---
 
 ```{r, loadPackages, echo = FALSE, include = FALSE}
+if (interactive()) setwd(here::here("docs"))
 knitr::opts_chunk$set(
   echo = TRUE, include = TRUE, warning = FALSE, message = FALSE, 
   fig.align = "center", results = 'hide', fig.show = "asis",
@@ -287,63 +288,63 @@ ggplot(transport, aes(x = weight, y = height)) +
 
 ## Adding labels
 
-- `geom_text()` can be clumsy
-- `ggrepel::geom_text_repel()` is a good alternative
+`ggrepel::geom_text_repel()` is a good alternative
 
-```{r plot-transport-label-repel, fig.height=6, fig.width=7}
-#| output-location: column-fragment
-# Place this line at the top of your script
-library(ggrepel) 
+```{r plot-transport-label-repel, fig.height=5.4, fig.width=6.3}
+#| output-location: fragment
+library(ggrepel) # Place this line at the top of your script
 ggplot(transport, aes(x = weight, y = height)) +
-  geom_point(
-    aes(colour = method, shape = gender)
-  ) +
-  geom_smooth(
-    method = "lm", formula = y~x, se = FALSE
-  ) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
   geom_text_repel(aes(label= name)) 
 ```
 
 
 ## The package `ggplot2`: labels
 
-Axis and legend labels can be added using `labs()`
+Axis and legend labels can be modified using `labs()`
 
-```{r plot-transport-axis-labels, fig.width=7, fig.height=6}
-#| output-location: column-fragment
+```{r plot-transport-axis-labels, fig.width=6.4, fig.height=5.5}
+#| output-location: fragment
 ggplot(transport, aes(x = weight, y = height)) +
-  geom_point(
-    aes(colour = method, shape = gender)
-    ) +
-  geom_smooth(
-    method = "lm", formula = y~x, se = FALSE
-    ) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
   geom_text_repel(aes(label= name)) +
-  labs(
-    x = "Weight (kg)", y = "Height (cm)", 
-    shape = "Gender", colour = "Transport"
-  )
+  labs(x = "Weight (kg)", y = "Height (cm)", shape = "Gender", colour = "Transport")
+```
+
+::: {.notes}
+Mention that this can be risky and that renaming columns may be better if possible
+:::
+
+# Using facets {background-color="#3c3c44"}
+
+## Saving as an Object
+
+- Our code is starting to get a bit long for my screen
+- We can save a `ggplot2` plot as an `R` object 
+
+```{r save-object}
+p <- ggplot(transport, aes(x = weight, y = height)) +
+  geom_point(aes(colour = method, shape = gender)) +
+  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
+  geom_text_repel(aes(label= name)) +
+  labs(x = "Weight (kg)", y = "Height (cm)", shape = "Gender", colour = "Transport")
 ```
 
 . . .
 
-It may be better to rename columns where possible though
-
-# Using facets {background-color="#3c3c44"}
+- Note that no plot will be produced
+    + Typing the object name (`p`) will generate the figure
+- We can still continue adding layers and modifying
 
 ## Using facets
 
 - The ability to break a plot into *facets* is an incredibly useful feature
 
-```{r}
-ggplot(transport, aes(x = weight, y = height)) +
-  geom_point(aes(colour = method, shape = gender)) +
-  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
-  geom_text_repel(aes(label= name)) +
-  labs(
-    x = "Weight (kg)", y = "Height (cm)", 
-    shape = "Gender", colour = "Transport"
-  ) +
+```{r plot-transport-facet-wrap, fig.width=8}
+#| output-location: fragment
+p +
   facet_wrap(~gender) 
 ```
 
@@ -352,15 +353,9 @@ ggplot(transport, aes(x = weight, y = height)) +
 - We can set separate scales using `scales = "free"`
    + Or `"free_x"`, `"free_y"`
 
-```{r}
-ggplot(transport, aes(x = weight, y = height)) +
-  geom_point(aes(colour = method, shape = gender)) +
-  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
-  geom_text_repel(aes(label= name)) +
-  labs(
-    x = "Weight (kg)", y = "Height (cm)", 
-    shape = "Gender", colour = "Transport"
-  ) +
+```{r plot-transport-facet-scales, fig.width=8}
+#| output-location: fragment
+p +
   facet_wrap(~gender, scales = "free") 
 ```
 
@@ -369,48 +364,45 @@ ggplot(transport, aes(x = weight, y = height)) +
 - An alternative is `facet_grid()` 
 - We use the `y ~ x` syntax to specify the x/y groupings
 
-```{r}
-ggplot(transport, aes(x = weight, y = height)) +
-  geom_point(aes(colour = method, shape = gender)) +
-  geom_smooth(method = "lm", formula = y~x, se = FALSE) +
-  geom_text_repel(aes(label= name)) +
-  labs(
-    x = "Weight (kg)", y = "Height (cm)", 
-    shape = "Gender", colour = "Transport"
-  ) +
-  facet_grid(method~gender, scales = "free") 
+```{r plot-transpor-facet-grid}
+#| output-location: fragment
+p +
+  facet_grid(method ~ gender, scales = "free") 
 ```
 
 # Different geoms {background-color="#3c3c44"}
 
 ## Common geoms 
 
-```{r eval=FALSE}
+```{r call-help, eval=FALSE}
 ?geom_
 ```
 
 
 ::: {.incremental}
 - `geom_boxplot()`, `geom_violin()`
-- `geom_bar()`, `geom_col()`, `geom_histogram()`, `geom_errobar()`
+- `geom_bar()`, `geom_col()`, `geom_histogram()`
+  + `geom_errobar()`, `geom_errorbarh()`
 - `geom_line()`, `geom_density()`
 - `geom_rect()`, `geom_raster()`
 - `geom_hline()`, `geom_vline()`, `geom_abline()`, `geom_segment()`
 - `geom_text()`, `geom_label()`
 :::
 
-## `geom_boxplot()`
+## Boxplots
 
-```{r}
+```{r boxplot-transport}
+#| output-location: fragment
 ggplot(transport, aes(x = gender, y =height)) +
   geom_boxplot()
 ```
 
-. . .
+## Boxplots
 
 Adding fill or colour variables will group within the x-variable
 
-```{r}
+```{r boxplot-transport-fill}
+#| output-location: fragment
 ggplot(transport, aes(x = gender, y =height, fill = method)) +
   geom_boxplot()
 ```
@@ -423,112 +415,465 @@ Can be easily combined with facets for clear visualisations
 Try to switch in `geom_violin()`
 :::
 
-## `geom_histogram()`
+## Histograms
 
 - Histograms look horrible with the default settings
 
 
-```{r, eval = FALSE}
+```{r hist-transport}
+#| output-location: fragment
 ggplot(transport, aes(height)) +
   geom_histogram()
 ```
 
-. . .
+## Histograms
 
-- With a few tweaks, they look pretty good
+- Manually setting `fill`, `colour` and `binwidth` really helps
 
-```{r}
+```{r hist-transport-manual}
+#| output-location: fragment
 ggplot(transport, aes(height)) +
   geom_histogram(fill = "grey70", colour = "black", binwidth = 5)
 ```
 
-. . .
+## Histograms
 
-- To switch to a frequency instead of count
+- The syntax to switch to a frequency instead of count
 
-```{r}
+```{r hist-transport-freq}
+#| output-location: fragment
 ggplot(transport, aes(height, after_stat(density))) +
   geom_histogram(fill = "grey70", colour = "black", binwidth = 5)
 ```
 
 
+## Bar/Column Charts
 
-## The package `ggplot2`: `geom_bar()`
+- Two variants:
+    + `geom_col()` and `geom_bar()`
+- Both can produce the same plot with enough tweaking
+- Both stack values by default
+- By default 
+    + `geom_bar()` counts values by groupings
+    + `geom_col()` plots the data as provided 
+- If we summarise in advance: `geom_col()`
+   + This is my preferred option
+   + I retain control over the data (trust no-one, not even yourself)
 
-We can summarise our data before plotting
+## Bar/Column Charts
 
-```{r}
-transport %>%
-  filter(!is.na(height)) %>%
-  group_by(method, gender) %>%
-  summarise(mn_height = mean(height), sd_height = sd(height)) %>%
-  ggplot(aes(x = method, y = mn_height, fill = method)) +
-  geom_bar(stat = "identity") +
-  facet_wrap(~gender) +
-  guides(fill =FALSE)
-```
+- Manually summarising for stacked bars
+- **Note that now we're piping the data in!**
 
-NB: `geom_bar()` requires `stat = "identity"`
-
-## The package `ggplot2`: `geom_errorbar()`
-
-```{r}
-transport %>%
-  filter(!is.na(height)) %>%
-  group_by(method, gender) %>%
-  summarise(mn_height = mean(height), sd_height = sd(height)) %>%
-  ggplot(aes(x = method, y = mn_height, fill = method)) +
-  geom_bar(stat = "identity") +
-  geom_errorbar(aes(ymin = mn_height - sd_height,
-                    ymax = mn_height + sd_height),
-                width = 0.6)+
-  facet_wrap(~gender) +
-  guides(fill =FALSE)
-```
-
-## Making pie charts
-
-These are not intuitive so here's how:
-
-```{r}
-transport %>%
-  filter(!is.na(height)) %>%
-  group_by(method) %>%
-  summarise(n = n()) %>%
-  ggplot(aes(x = 1, y = n, fill = method)) +
-  geom_bar(stat = "identity", colour = "black") +
-  coord_polar("y") +
-  theme_void()
+```{r plot-transport-geom-col}
+#| output-location: fragment
+transport |>
+  group_by(method, gender) |>
+  summarise(count = n(), .groups = "drop") |> 
+  ggplot(aes(method, count, fill = gender))+
+  geom_col()
 ```
 
 
-## The package `ggplot2`: facets
+## Bar/Column Charts
 
-__How could we get histograms for both `weight` and `height` using facets?__
+- This is identical to the default for `geom_bar()`
 
-- The geom to use is `geom_histogram()`
-
-## The package `ggplot2`: facets
-
-__How could we get histograms for both `weight` and `height` using facets?__
-
-```{r}
-transport %>%
-  gather(key = "measurement", value = "value",
-         ends_with("ght")) %>%
-  ggplot(aes(x = value, fill = measurement)) +
-  geom_histogram(bins = 10, colour = "black") +
-  facet_wrap(~measurement, scales = "free_x") +
-  guides(fill = FALSE)
+```{r plot-transport-geom-bar}
+#| output-location: fragment
+transport |>
+  ggplot(aes(method, fill = gender))+
+  geom_bar()
 ```
 
-## The package `ggplot2`: facets
 
-```{r}
-transport %>%
-  gather(key = "measurement", value = "value",
-         ends_with("ght")) %>%
-  ggplot(aes(x =gender, y = value, fill = gender)) +
-  geom_boxplot() +
-  facet_wrap(~measurement, scales = "free_y")
+## Bar/Column Charts
+
+- Manually summarising for 'dodged' bars
+- The same can be applied for `geom_bar()`
+
+```{r plot-transport-geom-col-dodge}
+#| output-location: fragment
+transport |>
+  group_by(method, gender) |>
+  summarise(count = n(), .groups = "drop") |>
+  ggplot(aes(method, count, fill = gender))+
+  geom_col(position = "dodge")
 ```
+
+## Adding Error Bars
+
+- Instead of counting, let's summarise values for *height* by gender
+
+```{r plot-transport-height}
+#| output-location: column-fragment
+transport |>
+  group_by(gender) |>
+  summarise(
+    mn_height = mean(height)
+  ) |>
+  ggplot(
+    aes(gender, mn_height, fill = gender)
+  ) +
+  geom_col(position = "dodge")
+```
+
+## Adding Error Bars
+
+- Now we can add error bars by calculating $\hat{\sigma}$
+
+```{r plot-transport-height-err}
+#| output-location: column-fragment
+transport |>
+  group_by(gender) |>
+  summarise(
+    mn_height = mean(height), 
+    sd_height = sd(height)
+  ) |>
+  ggplot(aes(gender, mn_height, fill = gender)) +
+  geom_col(position = "dodge") +
+  geom_errorbar(
+    aes(
+      ymin = mn_height - sd_height, 
+      ymax = mn_height + sd_height
+    ),
+    width = 0.4
+  )
+```
+
+## Challenge
+
+- Repeat the previous using weight instead of height
+- Include the transport method as facets
+
+## Density Plots
+
+```{r plot-transport-density}
+#| output-location: column-fragment
+transport |>
+  ggplot(aes(height, colour = gender)) +
+  geom_density(
+    fill = "grey70", alpha = 0.5, 
+    linewidth = 1
+  ) 
+```
+
+## Axis Intercepts
+
+```{r plot-transport-density-vline}
+#| output-location: column-fragment
+transport %>% 
+  ggplot(aes(height, colour = gender)) +
+  geom_density(
+    fill = "grey70", alpha = 0.5, 
+    linewidth = 1
+  ) +
+  geom_vline(
+    aes(xintercept = mn, colour = gender),
+    ## Take note of this amazing trick
+    ## We need to use the %>% approach to piping here
+    data = . %>% 
+      group_by(gender) %>% 
+      summarise(mn = mean(height))
+  )
+```
+
+::: {.notes}
+- Discuss the usage of `.` in piping
+- Seems like only `%>%` can handle the `.` in this way
+:::
+
+## Heatmaps
+
+- Need multiple measures
+- Let's reload that PCR time course
+
+```{r load-pcr, results='markup'}
+#| output-location: fragment
+pcr <- read_csv("data/PCR.csv") |> 
+  pivot_longer(cols = ends_with("hr"), names_to = "group", values_to = "Ct") |> 
+  separate(group, into = c("Treat", "Time"))
+glimpse(pcr)
+```
+
+## Heatmaps
+
+- `geom_raster()` can be used for plotting even grids
+
+```{r heatmap-pcr}
+#| output-location: fragment
+pcr |> 
+  ggplot(aes(Treat, Time, fill = Ct)) +
+  geom_raster() +
+  facet_wrap(~Gene)
+```
+
+# Scales {background-color="#3c3c44"}
+
+## Modifying Scales
+
+- Up until now we've accepted the default colours
+- We can modify all colours and axes using scales
+
+. . .
+
+- `scale_x_continuous()`, `scale_y_continuous()`
+- `scale_x_discrete()`, `scale_y_discrete()`
+- `scale_fill_continuous()`, `scale_fill_discrete()`, `scale_fill_manual()`
+- `scale_colour_continuous()`, `scale_colour_discrete()`, `scale_colour_manual()`
+- `scale_alpha_*()` + many, many more
+
+## Expanding Axes
+
+- `expansion()` takes two vectors
+    + The first is multiplicative
+    + The second is additive
+
+```{r barplot-transport-expansion}
+#| output-location: column-fragment
+transport |>
+  ggplot(
+    aes(method, fill = gender)
+  ) +
+  geom_bar(position = "dodge") +
+  scale_y_continuous(
+    # Expand the lower limit by 0%
+    # and the upper limit by 5%
+    expand = expansion(c(0, 0.05))
+  )
+```
+
+## Changing the Colours
+
+- We can manually set colours using `scale_fill_manual()`
+    + Can be named if you choose
+
+```{r barplot-transport-colours}
+#| output-location: column-fragment
+transport |>
+  ggplot(
+    aes(method, fill = gender)
+  ) +
+  geom_bar(position = "dodge") +
+  scale_y_continuous(
+    expand = expansion(c(0, 0.05))
+  ) +
+  scale_fill_manual(
+    values = c("blue", "red")
+  )
+```
+
+## Changing the Colours
+
+- `scale_fill_brewer()` has a series of defined palettes
+
+```{r show-palettes, eval=FALSE}
+RColorBrewer::display.brewer.all()
+```
+
+
+## Changing the Colours
+
+```{r barplot-transport-set1}
+#| output-location: column-fragment
+transport |>
+  ggplot(
+    aes(method, fill = gender)
+  ) +
+  geom_bar(position = "dodge") +
+  scale_y_continuous(
+    expand = expansion(c(0, 0.05))
+  ) +
+  scale_fill_brewer(palette = "Set1")
+```
+
+## Changing the Colours
+
+- The `viridis` palettes are colour-blind friendly
+- Also excellent at showing changes in the middle of the range
+
+```{r barplot-transport-viridis}
+#| output-location: column-fragment
+transport |>
+  ggplot(
+    aes(method, fill = gender)
+  ) +
+  geom_bar(position = "dodge") +
+  scale_y_continuous(
+    expand = expansion(c(0, 0.05))
+  ) +
+  scale_fill_viridis_d(option = "cividis")
+```
+
+## Manually Defining Palettes {.smaller}
+
+- All `r length(colours())` available colours can be seen by typing `colours()`
+- `hcl.colors()` also has a series of predefined palettes
+
+```{r list-pals, results='markup'}
+hcl.pals()
+```
+
+. . .
+
+- Colours can also be specified as RGB, e.g. "#3C3C44"
+    + Can also use the `rgb()` function
+
+
+## Manually Defining Palettes
+
+- I often spend ages on this
+
+```{r barplot-transport-hcl}
+#| output-location: column-fragment
+cols <- hcl.colors(2, "Berlin")
+transport |>
+  ggplot(
+    aes(method, fill = gender)
+  ) +
+  geom_bar(position = "dodge") +
+  scale_y_continuous(
+    expand = expansion(c(0, 0.05))
+  ) +
+  scale_fill_manual(
+    values = cols
+  )
+```
+
+## Heatmaps
+
+- Heatmaps usually have continuous values
+- We'll also need to tidy those axes
+- Alternatives are `scale_fill_gradient()`, `scale_fill_gradient2()`, `scale_fill_gradientn()`
+
+```{r heatmap-pcr-viridis}
+#| output-location: column-fragment
+pcr |> 
+  ggplot(aes(Treat, Time, fill = Ct)) +
+  geom_raster() +
+  facet_wrap(~Gene) +
+  scale_x_discrete(
+    expand = expansion(add = c(0, 0))
+  ) +
+  scale_y_discrete(
+    expand = expansion(add = c(0, 0))
+  ) +
+  scale_fill_viridis_c()
+```
+
+# Themes {background-color="#3c3c44"}
+
+## Modifying Themes
+
+- I hate that grey background!!!
+
+```{r theme-bw}
+#| output-location: fragment
+p + theme_bw()
+```
+
+
+## Themes
+
+- Themes are used to control the overall output of multiple aspects
+    + e.g. The background grid, fonts, legend position etc
+- The default theme is horrible
+   + Also try `theme_classic()`, `theme_minimal()`, `theme_void()`
+   
+   
+## Themes
+
+- We can place the legend at the bottom
+    + By default it now runs horizontally
+
+```{r move-legend, fig.show='hide'}
+p + 
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+- Or we can inset it into the plotting region
+
+```{r inset-legend, fig.show='hide'}
+p + 
+  theme_bw() +
+  theme(legend.position = c(1, 0), legend.justification = c(1, 0))
+```
+
+## Theme Elements
+
+- The above elements just took standard vectors
+- Some more complicated elements need helper functions
+    + `element_text()` allows setting font size, font type, text alignment etc
+    + `element_rect()` allows setting outline colours & fills etc
+    + `element_blank()` removes the entire element
+    
+## Theme Elements
+
+```{r crazy-themes, fig.show='hide'}
+p + 
+  ggtitle("My Transport Data") +
+  theme_bw() +
+  theme(
+    legend.position = c(0.99, 0.01), legend.justification = c(1, 0),
+    # Centre the title
+    plot.title = element_text(hjust = 0.5),
+    # Do dumb things to the x-axis
+    axis.text.x = element_text(face = "italic", size = 16),
+    # Hide the grid
+    panel.grid = element_blank(),
+    # Change the plot border
+    panel.background = element_rect(colour = "forestgreen", linewidth = 2)
+  )
+```
+
+# Exporting Graphics {background-color="#3c3c44"}
+
+## Exporting Graphics
+
+1. Click the `Export` button in RStudio
+    + Plots can be previewed interactively and resized
+2. Call `ggsave()` to export the last plot
+    + The suffix will automatically set the output format
+
+```r
+ggsave(
+  filename,
+  plot = last_plot(),
+  device = NULL,
+  path = NULL,
+  scale = 1,
+  width = NA,
+  height = NA,
+  units = c("in", "cm", "mm", "px"),
+  dpi = 300,
+  limitsize = TRUE,
+  bg = NULL,
+  ...
+)
+```
+
+
+## The Old-Fashioned Way
+
+- Alternatively, call a graphics device directly
+- By default, the graphics device is the `Plots` Pane
+- If we call a different device via a function, the plot is written to a file
+
+```{r write-to-png, eval=FALSE}
+# The call to png() opens a new graphics device that writes to a png file
+png(
+  "transport.png",
+  width = 7, height = 7, units = "in",
+  res = 300
+)
+# Now the device is open, make the plot
+p
+# Close the graphics device
+dev.off()
+# Plots will now be produced back in the usual place
+# Check to see if the file has been created
+```
+
+- The is *super-helpful* for really getting font-sizes figured out
+- Additional devices are `pdf()`, `jpeg()`, `tiff()`, `svg()` etc
