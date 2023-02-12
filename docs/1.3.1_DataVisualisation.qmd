@@ -1,5 +1,5 @@
 ---
-title: "Tidying Data"
+title: "Data Visualisation"
 subtitle: "BODL R Training"
 author: "Dr Stevie Pederson"
 institute: "Black Ochre Data Labs<br>Telethon Kids Institute"
