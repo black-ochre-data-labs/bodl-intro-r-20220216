@@ -21,7 +21,7 @@ format:
     logo: assets/bodl_logo_white_background.jpg
 ---
 
-```{r, loadPackages, echo = FALSE, include = FALSE}
+```{r setup, echo = FALSE, include = FALSE}
 if (interactive()) setwd(here::here("docs"))
 knitr::opts_chunk$set(
   echo = TRUE, include = TRUE, warning = FALSE, message = FALSE, 

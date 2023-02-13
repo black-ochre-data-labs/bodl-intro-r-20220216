@@ -441,7 +441,7 @@ Dr Stevie Pederson
 <li>Formatting usually doesn’t appear on screen (<u>but <strong>can</strong></u>)</li>
 <li>The parsing to HTML often occurs using <code>pandoc</code></li>
 </ul></li>
-<li>Often used for Project README files etc</li>
+<li>Often used for Project README files etc.</li>
 <li>Not R-specific but is general across data-science</li>
 </ul>
 <div class="fragment">
@@ -457,7 +457,7 @@ Dr Stevie Pederson
 <ul>
 <li>Section Headers are denoted by on or more <code>#</code> symbols
 <ul>
-<li><code>#</code> is the highest level, <code>##</code> is next highest etc</li>
+<li><code>#</code> is the highest level, <code>##</code> is next highest etc.</li>
 </ul></li>
 </ul>
 <div class="fragment">
@@ -542,7 +542,7 @@ Dr Stevie Pederson
 <li>PDF Documents (If you have <span class="math inline">\(\LaTeX\)</span> installed)</li>
 <li>Slidy, <code>ioslides</code> or PowerPoint presentations</li>
 </ul>
-<p>We never need to use MS Word, Excel or Powerpoint again!</p>
+<p>We never need to use MS Word, Excel or PowerPoint again!</p>
 </section>
 <section id="writing-reports-using-rmarkdown-2" class="slide level2">
 <h2>Writing Reports Using <code>rmarkdown</code></h2>
@@ -553,7 +553,7 @@ Dr Stevie Pederson
 <li>Data, experimental and analytic descriptions</li>
 <li>Mathematical/Statistical equations</li>
 <li>Nicely Formatted Results</li>
-<li>Any other information: citations, hyperlinks etc</li>
+<li>Any other information: citations, hyperlinks etc.</li>
 </ul>
 </section>
 <section id="creating-an-r-markdown-document" class="slide level2">
@@ -592,10 +592,10 @@ Dr Stevie Pederson
 <ul>
 <li>Chunks always begin with ```{r}</li>
 <li>Chunks always end with ```</li>
-<li>Executed <code>R</code> code goes between these two delineators</li>
+<li>Executed <code>R</code> code goes between these two delineation marks</li>
 <li>Chunk names are optional and directly follow the letter <code>r</code>
 <ul>
-<li>Chunks can also be other languages (<code>bash</code>, <code>python</code> etc)</li>
+<li>Chunks can also be other languages (<code>bash</code>, <code>python</code> etc.)</li>
 <li>Here the <code>r</code> tells RMarkdown the chunk is an <code>R</code> chunk</li>
 </ul></li>
 <li>Other parameters are set in the chunk header, e.g.&nbsp;do we show/hide the code</li>
@@ -627,7 +627,7 @@ Dr Stevie Pederson
 <li>Increasing numbers of <code>#</code> gives Section <code>-&gt;</code> Subsection <code>-&gt;</code> Subsubsection etc.</li>
 <li><strong>Bold</strong> is set by **Knit** (or __Knit__)</li>
 <li><em>Italics</em> can be set using a single asterisk/underline: *Italics* or _Italics_</li>
-<li><code>Typewriter font</code> is set using a single backtick `Typewriter`</li>
+<li><code>Typewriter font</code> is set using a single back-tick `Typewriter`</li>
 </ul>
 </section>
 <section id="compiling-the-report" class="slide level2">
@@ -655,8 +655,409 @@ Dr Stevie Pederson
 <section>
 <section id="making-our-own-report" class="title-slide slide level1 center" data-background-color="#3c3c44">
 <h1>Making Our Own Report</h1>
+
+</section>
+<section id="making-our-own-report-1" class="slide level2">
+<h2>Making Our Own Report</h2>
+<p>Now we can modify the code to create our own analysis.</p>
+<ul>
+<li>Delete everything in your R Markdown file EXCEPT the header</li>
+<li>We’ll analyse the <code>transport</code> dataset</li>
+<li>Edit the title to be something suitable</li>
+</ul>
+</section>
+<section id="making-our-own-reports" class="slide level2">
+<h2>Making Our Own Reports</h2>
+<p>What do we need for our report?</p>
+<ul>
+<li>Load and describe the data using clear text explanations
+<ul>
+<li>Maybe include the questions being asked by the study</li>
+</ul></li>
+<li>Create figures which show any patterns, trends or issues</li>
+<li>Perform an analysis</li>
+<li>State conclusions</li>
+<li>Send to collaborators</li>
+</ul>
+</section>
+<section id="making-our-own-reports-1" class="slide level2">
+<h2>Making Our Own Reports</h2>
+<ul>
+<li>First we’ll need to load the data
+<ul>
+<li>Then we can describe the data</li>
+</ul></li>
+<li>RMarkdown <em>always</em> compiles from the directory it is in
+<ul>
+<li>File paths should be relative to this</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>My “first” real chunk always loads the packages we need</li>
+</ul>
+</div>
+</section>
+<section id="creating-a-code-chunk" class="slide level2">
+<h2>Creating a Code Chunk</h2>
+<div class="cell" data-layout-align="center">
+
+</div>
+<ul>
+<li><code>Alt+Ctrl+I</code> creates a new chunk on Windows/Linux
+<ul>
+<li><code>Cmd+Option+I</code> on OSX</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Type <code>load-packages</code> next to the ```{r
+<ul>
+<li>This is the chunk name</li>
+<li>Really helpful habit to form</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>Enter <code>library(tidyverse)</code> in the chunk body
+<ul>
+<li>We’ll add other packages as we go</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<p><em>Knit…</em></p>
+</div>
+</section>
+<section id="dealing-with-messages" class="slide level2">
+<h2>Dealing With Messages</h2>
+<ul>
+<li>The <code>tidyverse</code> is a little too helpful sometimes
+<ul>
+<li>These messages look horrible in a final report</li>
+<li>Are telling us which packages/version <code>tidyverse</code> has loaded</li>
+<li>Also informing us of conflicts (e.g.&nbsp;<code>dplyr::filter</code> Vs. <code>stats::filter</code>)</li>
+<li>Can be helpful when running an interactive session</li>
+</ul></li>
+<li>We can hide these from our report</li>
+</ul>
+</section>
+<section id="dealing-with-messages-1" class="slide level2">
+<h2>Dealing With Messages</h2>
+<ol type="1">
+<li>Go to the top of your file (below the YAML)</li>
+<li>Create a new chunk</li>
+<li>Name it <code>setup</code></li>
+<li>Place a comma after <code>setup</code> and add <code>include = FALSE</code>
+<ul>
+<li>This will hide the chunk from the report</li>
+</ul></li>
+</ol>
+<div class="fragment">
+<ol start="4" type="1">
+<li>In the chunk body add <code>knitr::opts_chunk$set(message = FALSE)</code>
+<ul>
+<li>This sets a global parameter for all chunks</li>
+<li>i.e.&nbsp;Don’t print “helpful” messages</li>
+</ul></li>
+</ol>
+</div>
+<div class="fragment">
+<p><em>Knit…</em></p>
+</div>
+</section>
+<section id="making-our-own-reports-2" class="slide level2">
+<h2>Making Our Own Reports</h2>
+<ul>
+<li>I like to load all data straight after loading packages</li>
+<li>Gets the entire workflow sorted at the beginning</li>
+<li>Alerts to any problems early</li>
+</ul>
+<div class="fragment">
+<p>Below the <code>load-packages</code> chunk:</p>
+<ul>
+<li>Create a new chunk</li>
+<li>Name it <code>load-data</code></li>
+<li>In the chunk body load <code>transport</code> using <code>read_csv()</code></li>
+</ul>
+</div>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>transport <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/transport_clean.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <aside class="notes">
-<p>Pickup the edits from here</p>
+<p>Chunks can be run interactively using <code>Ctrl+Alt+Shift+P</code></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</section>
+<section id="describing-data" class="slide level2">
+<h2>Describing Data</h2>
+<p>Now let’s add a section header for our analysis to start the report</p>
+<ol type="1">
+<li>Type <code>## Data Description</code> after the header and after leaving a blank line</li>
+<li>Use your own words to describe the data
+<ul>
+<li>Consider things like how many participants, different methods, measures we have etc.</li>
+</ul></li>
+</ol>
+<div class="fragment">
+<blockquote>
+<p>32 study participants were included, measuring their weight and height, as well as their gender and which transportation method they used to travel to and from work. The two transportation methods were <em>bike</em> and <em>car</em>.</p>
+</blockquote>
+</div>
+</section>
+<section id="describing-data-1" class="slide level2">
+<h2>Describing Data</h2>
+<ul>
+<li>In my version, I mentioned the study size</li>
+<li>We can <strong>take this directly</strong> from the data
+<ul>
+<li>Very useful as participants change</li>
+</ul></li>
+<li><code>nrow(transport)</code> would give us the number of participants</li>
+</ul>
+<div class="fragment">
+<p>Replace the number 32 in your description with `<code>r</code> <code>nrow(transport)</code>`</p>
+<p><em>Knit…</em></p>
+</div>
+</section>
+<section id="describing-data-2" class="slide level2">
+<h2>Describing Data</h2>
+<p>Next we might like a data summary giving group totals</p>
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gender, method) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  gender method     n
+  &lt;chr&gt;  &lt;chr&gt;  &lt;int&gt;
+1 female bike      14
+2 female car        2
+3 male   bike       4
+4 male   car       12</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li>This doesn’t look great <span class="math inline">\(\implies\)</span> the package <code>pander</code></li>
+</ul>
+</div>
+</section>
+<section id="creating-summary-tables" class="slide level2">
+<h2>Creating Summary Tables</h2>
+<ul>
+<li>Add the following to your <code>load-packages</code> chunk</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pander)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li>Now we can send to output to the function <code>pander()</code></li>
+</ul>
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gender, method) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pander</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column fragment">
+<div class="cell-output-display">
+<table style="width:32%;">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">gender</th>
+<th style="text-align: center;">method</th>
+<th style="text-align: center;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">female</td>
+<td style="text-align: center;">bike</td>
+<td style="text-align: center;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">female</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">male</td>
+<td style="text-align: center;">bike</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">male</td>
+<td style="text-align: center;">car</td>
+<td style="text-align: center;">12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-summary-tables-1" class="slide level2">
+<h2>Creating Summary Tables</h2>
+<ul>
+<li><code>pander()</code> has a <code>caption = ""</code> argument</li>
+<li>We can also set the column alignment using <code>justify = ""</code></li>
+</ul>
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(gender, method) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pander</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">justify =</span> <span class="st">"llr"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Summary of study design"</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column fragment">
+<div class="cell-output-display">
+<table style="width:32%;">
+<caption>Summary of study design</caption>
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">gender</th>
+<th style="text-align: left;">method</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">female</td>
+<td style="text-align: left;">bike</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">female</td>
+<td style="text-align: left;">car</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">male</td>
+<td style="text-align: left;">bike</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">male</td>
+<td style="text-align: left;">car</td>
+<td style="text-align: right;">12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="creating-summary-tables-2" class="slide level2">
+<h2>Creating Summary Tables</h2>
+<ul>
+<li>Multiple other packages exist for table creation
+<ul>
+<li>All do some things brilliantly, none does everything</li>
+</ul></li>
+<li><code>pander</code> is a good all-rounder
+<ul>
+<li>Tables are very simplistic</li>
+<li>Also enables easy in-line results</li>
+</ul></li>
+<li><code>reactable</code> creates amazing looking tables
+<ul>
+<li>A bit difficult to download the table data</li>
+</ul></li>
+<li><code>DT</code> also creates fantastic tables
+<ul>
+<li>Less flexible with formatting</li>
+<li>Allows simple downloading to <code>csv</code>, <code>xls</code> etc.</li>
+</ul></li>
+<li><code>gt</code> is popular with some</li>
+<li><code>xtable</code> is excellent for <span class="math inline">\(\LaTeX\)</span> output</li>
+</ul>
+</section>
+<section id="additional-features-of-pander" class="slide level2">
+<h2>Additional Features of <code>pander</code></h2>
+<ul>
+<li><code>pander</code> also allows for easy addition of in-line text</li>
+<li>The following will return only the <em>unique</em> values in a column</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">unique</span>(transport<span class="sc">$</span>method)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>Wrapping this in <code>pander()</code> will return formatted markdown</li>
+</ul>
+<div class="fragment">
+<p>In your description, change:</p>
+<ul>
+<li>“transportation methods were <em>bike</em> and <em>car</em>.”</li>
+</ul>
+<p>to</p>
+<ul>
+<li>“transportation methods were `<code>r</code> <code>pander(unique(transport$method))</code>`.”</li>
+</ul>
+</div>
+</section>
+<section id="adding-plots" class="slide level2">
+<h2>Adding Plots</h2>
+<ul>
+<li>For this dataset, weight or BMI would be the response variable
+<ul>
+<li>method, gender and height would be the predictors</li>
+</ul></li>
+<li>What plots would be informative?</li>
+</ul>
+<div class="fragment">
+<ol type="1">
+<li>Weight Vs. Height separated by gender</li>
+<li>BMI by transportation method &amp; gender</li>
+</ol>
+</div>
+</section>
+<section id="adding-plots-1" class="slide level2">
+<h2>Adding Plots</h2>
+<ol type="1">
+<li>Create a new chunk</li>
+<li>Set the chunk name as as <code>plot-weight-vs-height</code></li>
+</ol>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(height, weight)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">formula =</span> y <span class="sc">~</span> x) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>gender, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Height (cm)"</span>, <span class="at">y =</span> <span class="st">"Weight (kg)"</span>) <span class="sc">+</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<aside class="notes">
+<p>Maybe mention <code>ggpmisc::stat_poly_eq(use_label("eq"))</code></p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -669,164 +1070,242 @@ Dr Stevie Pederson
           display:block!important;
       }</style></aside>
 </section>
-<section id="making-our-own-report-1" class="slide level2">
-<h2>Making Our Own Report</h2>
-<p>Now we can modify the code to create our own analysis.</p>
+<section id="figure-captions" class="slide level2">
+<h2>Figure Captions</h2>
 <ul>
-<li>Delete everything in your R Markdown file EXCEPT the header</li>
-<li>We’ll analyse the <code>PlantGrowth</code> dataset which comes with <code>R</code></li>
-<li>First we’ll need to describe the data</li>
+<li>Each chunk header can take multiple arguments</li>
+<li><code>fig.cap = ""</code> allows for specification of a figure caption</li>
+</ul>
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(height, weight)) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">formula =</span> y <span class="sc">~</span> x</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>gender, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Height (cm)"</span>, <span class="at">y =</span> <span class="st">"Weight (kg)"</span>) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column fragment">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.4_RMarkdown_files/figure-revealjs/plot-weight-vs-height-fig-cap-1.png" width="576"></p>
+<p></p><figcaption><em>Relationship between weight and height for male and female study participants. A strong linear trend was clearly evident</em></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="other-chunk-options" class="slide level2">
+<h2>Other Chunk Options</h2>
+<ul>
+<li>Other options include:
+<ul>
+<li><code>fig.width</code>, <code>fig.height</code>, <code>fig.show</code>, <code>fig.align</code> etc.</li>
+<li><code>echo</code>: Setting to <code>FALSE</code> will hide the chunk</li>
+<li><code>eval</code>: Setting to <code>FALSE</code> will prevent evaluation of the chunk</li>
+<li><code>results</code>: Can control hiding or formatting of chunk output</li>
+<li><code>warning</code>: Show/hide warnings in the output</li>
+<li><code>message</code>: Show/hide messages in the output</li>
+<li><code>cache</code>: Setting a cached chunk will only evaluate it once, then reload</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>As we saw earlier settings can be made globally
+<ul>
+<li>Individual settings will then over-ride global settings</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="other-chunk-options-1" class="slide level2">
+<h2>Other Chunk Options</h2>
+<ul>
+<li>Here’s my <code>setup</code> chunk for this presentation</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">echo =</span> <span class="cn">TRUE</span>, <span class="at">include =</span> <span class="cn">TRUE</span>, <span class="at">warning =</span> <span class="cn">FALSE</span>, <span class="at">message =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fig.align =</span> <span class="st">"center"</span>, <span class="at">results =</span> <span class="st">'hide'</span>, <span class="at">fig.show =</span> <span class="st">"asis"</span>,</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">fig.width =</span> <span class="dv">6</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="fragment">
+<ul>
+<li>When you’ve seen my results, I’ve set <code>results = 'asis'</code> in that chunk header</li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>A complete list is available at <a href="https://yihui.org/knitr/options/">https://yihui.org/knitr/options/</a></li>
+</ul>
+</div>
+</section>
+<section id="a-challenge" class="slide level2">
+<h2>A Challenge</h2>
+<ol type="1">
+<li>Add BMI to the data
+<ul>
+<li>Can be done ‘on-the-fly’ by piping</li>
+<li>The formula is <span class="math inline">\(\text{BMI} = \frac{\text{weight}}{\text{height}^2}\)</span> (kg/m<sup>2</sup>)</li>
+</ul></li>
+<li>Create a boxplot of BMI
+<ul>
+<li>Place <code>gender</code> on the x-axis</li>
+<li>Fill by <code>method</code></li>
+</ul></li>
+<li>Customise the plot
+<ul>
+<li>Set your own colour palette</li>
+<li>Set your own axis labels etc.</li>
+</ul></li>
+</ol>
+</section>
+<section id="my-solution" class="slide level2">
+<h2>My Solution</h2>
+<div class="cell columns column-output-location" data-layout-align="center">
+<div class="column">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BMI =</span> weight <span class="sc">/</span> (<span class="fl">0.01</span><span class="sc">*</span>height)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(gender, BMI)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>( <span class="at">fill =</span> method)) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_label</span>(</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">label =</span> my_label),</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> . <span class="sc">%&gt;%</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">n =</span> <span class="fu">n</span>(), <span class="at">BMI =</span> <span class="fu">max</span>(BMI)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">BMI =</span> <span class="fu">max</span>(BMI),</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">my_label =</span> <span class="fu">paste</span>(<span class="st">"n ="</span>, n)</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">nudge_y =</span> <span class="fl">0.2</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"forestgreen"</span>, <span class="st">"grey"</span>)</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Gender"</span>) <span class="sc">+</span></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><div class="column fragment">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="1.4_RMarkdown_files/figure-revealjs/boxplot-bmi-1.png" width="576"></p>
+<p></p><figcaption><em>BMI for male and female participants, separated by transportation method</em></figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="statistical-analysis" class="slide level2">
+<h2>Statistical Analysis</h2>
+<ul>
+<li>The most obvious analysis: BMI depends on the transport method
+<ul>
+<li>Gender will obviously be a fixed effect with a separate intercept</li>
+<li>Assume the slope is the same</li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Using <code>R</code> formula syntax:
+<ul>
+<li><code>BMI ~ gender + method</code></li>
+</ul></li>
+<li>We’ll discuss in more detail tomorrow</li>
+</ul>
+</div>
+</section>
+<section id="statistical-analysis-1" class="slide level2">
+<h2>Statistical Analysis</h2>
+<ul>
+<li>When using <code>%&gt;%</code> as the pipe, the piped object can be referred to as <code>.</code>
+<ul>
+<li>When using <code>|&gt;</code> this becomes <code>_</code></li>
+</ul></li>
+<li>Here we’ll just sent the results straight to <code>pander()</code></li>
 </ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>?PlantGrowth</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">BMI =</span> weight <span class="sc">/</span> (<span class="fl">0.01</span><span class="sc">*</span>height)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(BMI <span class="sc">~</span> gender <span class="sc">+</span> method, <span class="at">data =</span> .) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pander</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output-display">
+<table style="width:89%;">
+<caption>Fitting linear model: BMI ~ gender + method</caption>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 15%">
+<col style="width: 18%">
+<col style="width: 13%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">Estimate</th>
+<th style="text-align: center;">Std. Error</th>
+<th style="text-align: center;">t value</th>
+<th style="text-align: center;">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>(Intercept)</strong></td>
+<td style="text-align: center;">23.25</td>
+<td style="text-align: center;">0.2472</td>
+<td style="text-align: center;">94.06</td>
+<td style="text-align: center;">1.328e-37</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>gendermale</strong></td>
+<td style="text-align: center;">2.357</td>
+<td style="text-align: center;">0.4387</td>
+<td style="text-align: center;">5.373</td>
+<td style="text-align: center;">9.004e-06</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>methodcar</strong></td>
+<td style="text-align: center;">0.1732</td>
+<td style="text-align: center;">0.4421</td>
+<td style="text-align: center;">0.3918</td>
+<td style="text-align: center;">0.6981</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </section>
-<section id="rename-the-report" class="slide level2">
-<h2>Rename the report</h2>
-<p>First we should change the title of the report to something suitable, e.g.&nbsp;<em>The Effects of Two Herbicide Treatments on Plant Growth</em></p>
-</section>
-<section id="create-a-data-description-section" class="slide level2">
-<h2>Create a “Data Description” Section</h2>
-<p>Now let’s add a section header for our analysis to start the report</p>
-<ol type="1">
-<li>Type <code># Data Description</code> after the header and after leaving a blank line</li>
-<li>Use your own words to describe the data</li>
-</ol>
-</section>
-<section id="create-a-data-description-section-my-example-text-plants-were-treated-with-two-different-herbicides-and-the-effects-on-growth-were-compared-using-the-dried-weight-of-the-plants-after-one-month.-both-treatments-were-compared-to-a-control-group-of-plants-which-were-not-treated-with-any-herbicide.-each-group-contained-10-plants-giving-a-total-of-30-plants.-create-adata-description-section" class="slide level2">
-<h2>Create a <code>Data Description" Section My example text: &gt; Plants were treated with two different herbicides and the effects on growth were compared using the dried weight of the plants after one month. Both treatments were compared to a control group of plants which were not treated with any herbicide. Each group contained 10 plants, giving a total of 30 plants. ## Create a</code>Data Description” Section</h2>
-<p>Hopefully you mentioned that there were 10 plants in each group, with a total of 30.</p>
-<p><strong>Can we get that information from the data itself?</strong></p>
-</section>
-<section id="create-a-data-description-section-we-know-that-the-code-nrowplantgrowth-would-give-the-total-number-of-samples.-__we-can-embed-this-in-our-data-description__-1.-instead-of-the-number-30-in-your-description-enter-rnrowplantgrowth" class="slide level2">
-<h2>Create a <code>Data Description" Section We know that the code `nrow(PlantGrowth)` would give the total number of samples. __We can embed this in our data description!__ 1. Instead of the number 30 in your description, enter  \</code>r<code></code>nrow(PlantGrowth)<code>\</code></h2>
-<ol start="2" type="1">
-<li>Compile the HTML document.</li>
-</ol>
-</section>
-<section id="loading-r-packages" class="slide level2">
-<h2>Loading <em>R</em> packages</h2>
-<ol type="1">
-<li>Before the Data Description header, add a new header called <code>Setup</code></li>
-<li>Create a code chunk with the contents <code>library(tidyverse)</code>.</li>
-<li>Recompile the HTML</li>
-</ol>
-<p><strong>Hint: You can create an empty code chunk using</strong> <code>Ctrl+Alt+I</code></p>
-<p>This has loaded the <code>tidyverse</code> packages for the whole document. All subsequent code chunks can use any functions in the package.</p>
-</section>
-<section id="loading-r-packages-1" class="slide level2">
-<h2>Loading <em>R</em> packages</h2>
-<p>Notice that this gave us an overly informative message. We can turn this off:</p>
-<ol type="1">
-<li>After the <code>r</code> at the start of the code chunk, add a comma</li>
-<li>Start typing the word <code>message</code> and use the auto-complete feature to set <code>message = FALSE</code></li>
-<li>Recompile</li>
-</ol>
-</section>
-<section id="writing-the-report" class="slide level2">
-<h2>Writing the Report</h2>
-<p>After our description, we could also have a look at the data in a summary. Add the following in a code chunk.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>PlantGrowth <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">Mean =</span> <span class="fu">mean</span>(weight)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>(Recompile…)</p>
-</section>
-<section id="formatting-tables" class="slide level2">
-<h2>Formatting Tables</h2>
-<p>To change this table into a nicely formatted one:</p>
-<ol type="1">
-<li>Load <code>pander</code> into the workspace</li>
-<li>Use the function <code>pander</code></li>
-</ol>
-<p>In the <code>Setup</code> section, on the line after loading <code>tidyverse</code> enter:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(pander)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="formatting-tables-1" class="slide level2">
-<h2>Formatting Tables</h2>
-<p>Then head back to the code chunk and add the following.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>PlantGrowth <span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">Mean =</span> <span class="fu">mean</span>(weight)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pander</span>(<span class="at">caption =</span> <span class="st">"Sample Sizes and average weights for each group"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>(Recompile…)</p>
-</section>
-<section id="using-pander" class="slide level2">
-<h2>Using <code>pander</code></h2>
-<p>The package <code>pander</code> is great for formatting <code>R</code> output.</p>
-<p>Add the following line to your data description:</p>
-<blockquote>
-<p>“The three groups are classified as `<code>r</code> <code>pander(levels(PlantGrowth$group))</code>`” (We’ll explain this bit of code tomorrow)</p>
-</blockquote>
-</section>
-<section id="add-a-plot-of-the-data" class="slide level2">
-<h2>Add a plot of the data</h2>
-<ol type="1">
-<li>Create a plot using <code>geom_boxplot()</code></li>
-<li>Fill the boxes based on the <code>group</code> variable</li>
-</ol>
-
-<img data-src="1.4_RMarkdown_files/figure-revealjs/unnamed-chunk-5-1.png" width="480" class="r-stretch quarto-figure-center"></section>
-<section id="analyse-the-data" class="slide level2">
-<h2>Analyse the data</h2>
-<p>Here we can fit a simple linear regression using:</p>
+<section id="complete-the-analysis" class="slide level2">
+<h2>Complete the Analysis</h2>
 <ul>
-<li><code>weight</code> as the response variable</li>
-<li><code>group</code> as the predictor variable</li>
+<li>Describe the statistical question and the results</li>
+<li>Now we have a (relatively) complete report</li>
 </ul>
-<p>To fit a linear model in <code>R</code>:</p>
-<ol type="1">
-<li>Use the function <code>lm()</code></li>
-<li>Save the results as a new object</li>
-</ol>
-</section>
-<section id="analyse-the-data-1" class="slide level2">
-<h2>Analyse the data</h2>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>model_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>We can view the <code>summary()</code> or <code>anova()</code> for a given model using</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(model_fit)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="fragment">
+<ul>
+<li>All code was executed within a single R session</li>
+<li>It compiles <span class="math inline">\(\implies\)</span> <strong>Completely Reproducible</strong></li>
+<li>All code is visible and the analysis is transparent</li>
+</ul>
 </div>
 </section>
-<section id="analyse-the-data-2" class="slide level2">
-<h2>Analyse the data</h2>
-<p>To place these as formatted tables in the text we can use <code>pander()</code></p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model_fit <span class="sc">%&gt;%</span> <span class="fu">anova</span>() <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model_fit <span class="sc">%&gt;%</span> <span class="fu">summary</span>() <span class="sc">%&gt;%</span> <span class="fu">pander</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>You can change the default captions if you like</p>
-</section>
-<section id="add-some-diagnostic-plots" class="slide level2">
-<h2>Add Some Diagnostic Plots</h2>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model_fit, <span class="at">which =</span> <span class="dv">1</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model_fit, <span class="at">which =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>In the chunk header add:<br>
-<code>echo=FALSE, fig.show='hold', fig.width = 6, fig.cap = "Diagnostic plots for model fit"</code></p>
-<p>(Try using tab auto-complete to speed that up)</p>
-</section>
-<section id="finishing-the-analysis" class="slide level2">
-<h2>Finishing the analysis</h2>
+<section id="complete-the-analysis-1" class="slide level2">
+<h2>Complete the Analysis</h2>
 <p>After you’re happy with the way your analysis looks</p>
 <ul>
 <li>A good habit is to finish with a section called <code>Session Info</code></li>
 <li>Add a code chunk which calls the <em>R</em> command <code>sessionInfo()</code></li>
 </ul>
-<p>So far we’ve been compiling everything as HTML, but let’s switch to an MS Word document. We could email this to our supervisors, or upload to Google docs for collaborators…</p>
+<p>So far we’ve been compiling everything as HTML, but let’s switch to an MS Word document. We could email this to our collaborators, or upload to Google docs</p>
 </section>
 <section id="summary" class="slide level2">
 <h2>Summary</h2>
@@ -835,8 +1314,26 @@ Dr Stevie Pederson
 <li>We never need to cut &amp; paste anything between R and other documents</li>
 <li>Every piece of information comes directly from our <em>R</em> analysis</li>
 <li>We can very easily incorporate new data as it arrives</li>
+<li>Source data is never modified</li>
 <li>Creates <em>reproducible research</em></li>
 <li>Highly compatible with collaborative analysis &amp; version control (Git)</li>
+</ul>
+</section>
+<section id="advanced-options" class="slide level2">
+<h2>Advanced Options</h2>
+<ul>
+<li>The <code>R</code> package <code>workflowr</code> is very helpful for larger workflows
+<ul>
+<li>Can include multiple HTML pages</li>
+<li>Strong integration with <code>git</code></li>
+</ul></li>
+<li>Highly customisable output
+<ul>
+<li>Code folding</li>
+<li>Bootstrap themes etc.</li>
+<li>Can use custom <code>css</code> files</li>
+<li>Interactive plots using <code>shiny</code></li>
+</ul></li>
 </ul>
 
 <img src="assets/bodl_logo_white_background.jpg" class="slide-logo r-stretch"><div class="footer footer-default">

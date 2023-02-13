@@ -21,14 +21,13 @@ format:
     logo: assets/bodl_logo_white_background.jpg
 ---
 
-```{r, loadPackages, echo = FALSE, include = FALSE}
+```{r setup, echo = FALSE, include = FALSE}
 if (interactive()) setwd(here::here("docs"))
 knitr::opts_chunk$set(
   echo = TRUE, include = TRUE, warning = FALSE, message = FALSE, 
   fig.align = "center", results = 'hide', fig.show = "asis",
   fig.width = 6
 )
-library(tidyverse)
 ```
 
 # R Markdown {background-color="#3c3c44" background-image=https://raw.githubusercontent.com/rstudio/rmarkdown/main/man/figures/logo.png background-size="40%" background-opacity="0.5"}
@@ -54,7 +53,7 @@ Extends the `markdown` language **to incorporate R code**
     + Text is entered as plain text
     + Formatting usually doesn't appear on screen ([but **can**]{.underline})
     + The parsing to HTML often occurs using `pandoc`
-- Often used for Project README files etc
+- Often used for Project README files etc.
 - Not R-specific but is general across data-science
 
 ::: {.fragment}
@@ -68,7 +67,7 @@ Extends the `markdown` language **to incorporate R code**
 ## Editing Markdown
 
 - Section Headers are denoted by on or more `#` symbols
-    + `#` is the highest level, `##` is next highest etc
+    + `#` is the highest level, `##` is next highest etc.
 
 . . .
 
@@ -143,7 +142,7 @@ We can output our analysis directly as:
 * PDF Documents (If you have $\LaTeX$ installed)
 * Slidy, `ioslides` or PowerPoint presentations
 
-We never need to use MS Word, Excel or Powerpoint again!
+We never need to use MS Word, Excel or PowerPoint again!
 
 ## Writing Reports Using `rmarkdown`
 
@@ -153,7 +152,7 @@ We never need to use MS Word, Excel or Powerpoint again!
 - Data, experimental and analytic descriptions
 - Mathematical/Statistical equations
 - Nicely Formatted Results
-- Any other information: citations, hyperlinks etc
+- Any other information: citations, hyperlinks etc.
 
 ## Creating an *R* Markdown document
 
@@ -191,9 +190,9 @@ Lines 8 to 10 are a code `chunk`
 
 - Chunks always begin with ```{r}
 - Chunks always end with ```
-- Executed `R` code goes between these two delineators
+- Executed `R` code goes between these two delineation marks
 - Chunk names are optional and directly follow the letter `r`
-    + Chunks can also be other languages (`bash`, `python` etc)
+    + Chunks can also be other languages (`bash`, `python` etc.)
     + Here the `r` tells RMarkdown the chunk is an `R` chunk
 - Other parameters are set in the chunk header, e.g. do we show/hide the code
 
@@ -219,7 +218,7 @@ Check the help for a guide to the syntax.
 - Increasing numbers of `#` gives Section `->` Subsection `->` Subsubsection etc.
 - **Bold** is set by \*\*Knit\*\* (or \_\_Knit\_\_)
 - *Italics* can be set using a single asterisk/underline: \*Italics\* or \_Italics\_
-- `Typewriter font` is set using a single backtick \`Typewriter\`
+- `Typewriter font` is set using a single back-tick \`Typewriter\`
 
 
 ## Compiling The Report
@@ -245,186 +244,394 @@ The Viewer Pane will appear with the compiled report (probably)
 
 # Making Our Own Report {background-color="#3c3c44"}
 
-::: {.notes}
-**Pickup the edits from here**
-:::
-
 ## Making Our Own Report
 
 Now we can modify the code to create our own analysis.
 
 - Delete everything in your R Markdown file EXCEPT the header
-- We'll analyse the `PlantGrowth` dataset which comes with `R`
-- First we'll need to describe the data
+- We'll analyse the `transport` dataset
+- Edit the title to be something suitable
 
-```{r, eval=FALSE}
-?PlantGrowth
+## Making Our Own Reports
+
+What do we need for our report?
+
+- Load and describe the data using clear text explanations
+    + Maybe include the questions being asked by the study
+- Create figures which show any patterns, trends or issues
+- Perform an analysis
+- State conclusions
+- Send to collaborators
+
+## Making Our Own Reports
+
+- First we'll need to load the data
+    + Then we can describe the data
+- RMarkdown *always* compiles from the directory it is in
+    + File paths should be relative to this
+    
+. . .
+
+- My "first" real chunk always loads the packages we need
+
+## Creating a Code Chunk
+
+```{r load-tidyverse, echo=FALSE}
+library(tidyverse)
 ```
 
-## Rename the report
 
-First we should change the title of the report to something suitable, e.g. *The Effects of Two Herbicide Treatments on Plant Growth*
+- `Alt+Ctrl+I` creates a new chunk on Windows/Linux
+    + `Cmd+Option+I` on OSX
 
-## Create a "Data Description" Section
+. . .
+
+- Type `load-packages` next to the  \`\`\`{r  
+    + This is the chunk name
+    + Really helpful habit to form
+    
+. . .
+
+- Enter `library(tidyverse)` in the chunk body
+    + We'll add other packages as we go
+
+. . .
+
+*Knit...*
+
+## Dealing With Messages
+
+- The `tidyverse` is a little too helpful sometimes
+    + These messages look horrible in a final report
+    + Are telling us which packages/version `tidyverse` has loaded
+    + Also informing us of conflicts (e.g. `dplyr::filter` Vs. `stats::filter`)
+    + Can be helpful when running an interactive session
+- We can hide these from our report
+
+## Dealing With Messages
+
+1. Go to the top of your file (below the YAML)
+2. Create a new chunk
+3. Name it `setup`
+4. Place a comma after `setup` and add `include = FALSE`
+    + This will hide the chunk from the report
+
+. . .
+
+4. In the chunk body add `knitr::opts_chunk$set(message = FALSE)`
+    + This sets a global parameter for all chunks
+    + i.e. Don't print "helpful" messages
+
+. . .
+
+*Knit...*
+
+## Making Our Own Reports
+
+
+- I like to load all data straight after loading packages
+- Gets the entire workflow sorted at the beginning
+- Alerts to any problems early
+
+. . .
+
+Below the `load-packages` chunk:
+
+- Create a new chunk
+- Name it `load-data`
+- In the chunk body load `transport` using `read_csv()`
+
+. . .
+
+```{r load-data}
+transport <- read_csv("data/transport_clean.csv")
+```
+
+
+::: {.notes}
+Chunks can be run interactively using `Ctrl+Alt+Shift+P`
+:::
+
+## Describing Data
 
 Now let's add a section header for our analysis to start the report
 
-1. Type `# Data Description` after the header and after leaving a blank line
+1. Type `## Data Description` after the header and after leaving a blank line
 2. Use your own words to describe the data
+    + Consider things like how many participants, different methods, measures we have etc.
 
-## Create a ``Data Description" Section
-My example text:
-> Plants were treated with two different herbicides and the effects on growth were compared using the dried weight of the plants after one month.
-Both treatments were compared to a control group of plants which were not treated with any herbicide.
-Each group contained 10 plants, giving a total of 30 plants.
-## Create a ``Data Description" Section
+. . .
 
-Hopefully you mentioned that there were 10 plants in each group, with a total of 30.
 
-__Can we get that information from the data itself?__
+> 32 study participants were included, measuring their weight and height, as well as their gender and which transportation method they used to travel to and from work. The two transportation methods were *bike* and *car*.
 
-## Create a ``Data Description" Section
-We know that the code `nrow(PlantGrowth)` would give the total number of samples.
-__We can embed this in our data description!__
-1. Instead of the number 30 in your description, enter  \``r` `nrow(PlantGrowth)`\`
-2. Compile the HTML document.
 
-## Loading *R* packages
+## Describing Data
 
-1. Before the Data Description header, add a new header called `Setup`
-2. Create a code chunk with the contents `library(tidyverse)`.
-3. Recompile the HTML
+- In my version, I mentioned the study size
+- We can **take this directly** from the data
+    + Very useful as participants change
+- `nrow(transport)` would give us the number of participants
 
-**Hint: You can create an empty code chunk using** `Ctrl+Alt+I`
+. . .
 
-This has loaded the `tidyverse` packages for the whole document.
-All subsequent code chunks can use any functions in the package.
+Replace the number 32 in your description with  \``r` `nrow(transport)`\`
 
-## Loading *R* packages
+*Knit...*
 
-Notice that this gave us an overly informative message.
-We can turn this off:
+## Describing Data
 
-1. After the `r` at the start of the code chunk, add a comma
-2. Start typing the word `message` and use the auto-complete feature to set `message = FALSE`
-3. Recompile
+Next we might like a data summary giving group totals
 
-## Writing the Report
-
-After our description, we could also have a look at the data in a summary.
-Add the following in a code chunk.
-
-```{r, eval=FALSE}
-PlantGrowth %>% 
-  group_by(group) %>% 
-  summarise(n = n(),
-            Mean = mean(weight)) 
+```{r data-summary, results='markup'}
+#| output-location: column-fragment
+transport |>
+  group_by(gender, method) |>
+  summarise(n = n(), .groups = "drop")
 ```
 
-(Recompile...)
+. . .
 
-## Formatting Tables
+- This doesn't look great $\implies$ the package `pander`
 
-To change this table into a nicely formatted one:
+## Creating Summary Tables
 
-1. Load `pander` into the workspace
-2. Use the function `pander`
+- Add the following to your `load-packages` chunk
 
-In the `Setup` section, on the line after loading `tidyverse` enter:
-
-```{r}
+```{r load-pander}
 library(pander)
 ```
 
-## Formatting Tables
+. . .
 
-Then head back to the code chunk and add the following.
+- Now we can send to output to the function `pander()`
 
-```{r, eval=FALSE}
-PlantGrowth %>% 
-  group_by(group) %>% 
-  summarise(n = n(),
-            Mean = mean(weight)) %>%
-  pander(caption = "Sample Sizes and average weights for each group")
+```{r data-summary-pander, results='markup'}
+#| output-location: column-fragment
+transport |>
+  group_by(gender, method) |>
+  summarise(n = n(), .groups = "drop") |>
+  pander()
 ```
 
-(Recompile...)
+## Creating Summary Tables
 
-## Using `pander`
+- `pander()` has a `caption = ""` argument
+- We can also set the column alignment using `justify = ""`
 
-The package `pander` is great for formatting `R` output.
-
-Add the following line to your data description:
-
-> "The three groups are classified as \``r` `pander(levels(PlantGrowth$group))`\`"
-(We'll explain this bit of code tomorrow)
-
-## Add a plot of the data
-
-1. Create a plot using `geom_boxplot()`
-2. Fill the boxes based on the `group` variable
-
-
-```{r, echo =FALSE, include=TRUE, results='asis', fig.show='asis', fig.align='center', fig.height=4, fig.width=5}
-ggplot(PlantGrowth, aes(x = group, y = weight, fill = group)) +
-  geom_boxplot() +
-  theme_bw() +
-  labs(x = "Treatment Group", y = "Dried Weight (g)")
+```{r data-summary-pander-args, results='markup'}
+#| output-location: column-fragment
+transport |>
+  group_by(gender, method) |>
+  summarise(n = n(), .groups = "drop") |>
+  pander(
+    justify = "llr",
+    caption = "Summary of study design"
+  )
 ```
 
-## Analyse the data
+## Creating Summary Tables
 
-Here we can fit a simple linear regression using:
+- Multiple other packages exist for table creation
+    + All do some things brilliantly, none does everything
+- `pander` is a good all-rounder
+    + Tables are very simplistic
+    + Also enables easy in-line results
+- `reactable` creates amazing looking tables
+    + A bit difficult to download the table data
+- `DT` also creates fantastic tables
+    + Less flexible with formatting
+    + Allows simple downloading to `csv`, `xls` etc.
+- `gt` is popular with some
+- `xtable` is excellent for $\LaTeX$ output
 
-- `weight` as the response variable
-- `group` as the predictor variable
+## Additional Features of `pander`
 
-To fit a linear model in `R`:
+- `pander` also allows for easy addition of in-line text
+- The following will return only the *unique* values in a column
 
-1. Use the function `lm()`
-2. Save the results as a new object
-
-## Analyse the data
-
-```{r}
-model_fit <- lm(weight ~ group, data = PlantGrowth)
+```{r col-unique}
+unique(transport$method)
 ```
 
-We can view the `summary()` or `anova()` for a given model using
+- Wrapping this in `pander()` will return formatted markdown
 
-```{r}
-anova(model_fit)
-summary(model_fit)
+. . .
+
+In your description, change:
+
+- "transportation methods were *bike* and *car*." 
+
+to
+
+- "transportation methods were \``r` `pander(unique(transport$method))`\`."
+
+## Adding Plots
+
+- For this dataset, weight or BMI would be the response variable
+    + method, gender and height would be the predictors
+- What plots would be informative?
+
+. . .
+
+1. Weight Vs. Height separated by gender
+2. BMI by transportation method & gender
+
+## Adding Plots
+
+1. Create a new chunk
+2. Set the chunk name as as `plot-weight-vs-height`
+
+```{r plot-weight-vs-height, eval = FALSE}
+transport |>
+  ggplot(aes(height, weight)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, formula = y ~ x) +
+  facet_wrap(~gender, scales = "free") +
+  labs(x = "Height (cm)", y = "Weight (kg)") +
+  theme_bw() 
 ```
 
-## Analyse the data
+::: {.notes}
+Maybe mention `ggpmisc::stat_poly_eq(use_label("eq"))`
+:::
 
-To place these as formatted tables in the text we can use `pander()`
+## Figure Captions
 
-```{r, eval=FALSE}
-model_fit %>% anova() %>% pander()
+- Each chunk header can take multiple arguments
+- `fig.cap = ""` allows for specification of a figure caption
+
+```{r plot-weight-vs-height-fig-cap, fig.cap = "*Relationship between weight and height for male and female study participants. A strong linear trend was clearly evident*", results='asis'}
+#| output-location: column-fragment
+transport |>
+  ggplot(aes(height, weight)) +
+  geom_point() +
+  geom_smooth(
+    method = "lm", se = FALSE, formula = y ~ x
+  ) +
+  facet_wrap(~gender, scales = "free") +
+  labs(x = "Height (cm)", y = "Weight (kg)") +
+  theme_bw() 
+```
+
+## Other Chunk Options
+
+- Other options include:
+    + `fig.width`, `fig.height`, `fig.show`, `fig.align` etc.
+    + `echo`: Setting to `FALSE` will hide the chunk
+    + `eval`: Setting to `FALSE` will prevent evaluation of the chunk
+    + `results`: Can control hiding or formatting of chunk output
+    + `warning`: Show/hide warnings in the output
+    + `message`: Show/hide messages in the output
+    + `cache`: Setting a cached chunk will only evaluate it once, then reload
+
+. . .
+
+- As we saw earlier settings can be made globally
+    + Individual settings will then over-ride global settings
+    
+## Other Chunk Options
+
+- Here's my `setup` chunk for this presentation
+
+```r
+knitr::opts_chunk$set(
+  echo = TRUE, include = TRUE, warning = FALSE, message = FALSE, 
+  fig.align = "center", results = 'hide', fig.show = "asis",
+  fig.width = 6
+)
+```
+
+. . .
+
+- When you've seen my results, I've set `results = 'asis'` in that chunk header
+
+. . .
+
+- A complete list is available at [https://yihui.org/knitr/options/](https://yihui.org/knitr/options/)
+
+## A Challenge
+
+1. Add BMI to the data
+    + Can be done 'on-the-fly' by piping
+    + The formula is $\text{BMI} = \frac{\text{weight}}{\text{height}^2}$ (kg/m^2^)
+2. Create a boxplot of BMI
+    + Place `gender` on the x-axis
+    + Fill by `method`
+3. Customise the plot
+    + Set your own colour palette
+    + Set your own axis labels etc.
+
+## My Solution
+
+```{r boxplot-bmi, fig.cap = "*BMI for male and female participants, separated by transportation method*"}
+#| output-location: column-fragment
+transport %>% 
+  mutate(BMI = weight / (0.01*height)^2) %>% 
+  ggplot(
+    aes(gender, BMI)
+  ) +
+  geom_boxplot(aes( fill = method)) +
+  geom_label(
+    aes(label = my_label),
+    data = . %>% 
+      group_by(gender) %>% 
+      summarise(
+        n = n(), BMI = max(BMI)
+      ) %>% 
+      mutate(
+        BMI = max(BMI),
+        my_label = paste("n =", n)
+      ),
+    nudge_y = 0.2
+  ) +
+  scale_fill_manual(
+    values = c("forestgreen", "grey")
+  ) +
+  labs(x = "Gender") +
+  theme_bw()
 ```
 
 
-```{r, eval=FALSE}
-model_fit %>% summary() %>% pander()
+## Statistical Analysis
+
+- The most obvious analysis: BMI depends on the transport method
+    + Gender will obviously be a fixed effect with a separate intercept
+    + Assume the slope is the same
+
+. . .
+
+- Using `R` formula syntax:
+    + `BMI ~ gender + method`
+- We'll discuss in more detail tomorrow
+
+## Statistical Analysis
+
+- When using `%>%` as the pipe, the piped object can be referred to as `.`
+    + When using `|>` this becomes `_`
+- Here we'll just sent the results straight to `pander()`
+
+```{r fit-bmi, results='markup'}
+#| output-location: fragment
+transport %>% 
+  mutate(BMI = weight / (0.01*height)^2) %>% 
+  lm(BMI ~ gender + method, data = .) %>% 
+  pander()
 ```
 
-You can change the default captions if you like
+## Complete the Analysis
 
-## Add Some Diagnostic Plots
+- Describe the statistical question and the results
+- Now we have a (relatively) complete report
 
-```{r, eval=FALSE}
-plot(model_fit, which = 1)
-plot(model_fit, which = 2)
-```
+. . .
 
-In the chunk header add:  
-`echo=FALSE, fig.show='hold', fig.width = 6, fig.cap = "Diagnostic plots for model fit"`
+- All code was executed within a single R session
+- It compiles $\implies$ **Completely Reproducible**
+- All code is visible and the analysis is transparent
 
-(Try using tab auto-complete to speed that up)
 
-## Finishing the analysis
+## Complete the Analysis
 
 After you're happy with the way your analysis looks
 
@@ -432,7 +639,7 @@ After you're happy with the way your analysis looks
 - Add a code chunk which calls the *R* command `sessionInfo()`
 
 So far we've been compiling everything as HTML, but let's switch to an MS Word document.
-We could email this to our supervisors, or upload to Google docs for collaborators...
+We could email this to our collaborators, or upload to Google docs
 
 ## Summary
 
@@ -441,5 +648,17 @@ This basic process is incredibly useful
 - We never need to cut & paste anything between R and other documents
 - Every piece of information comes directly from our *R* analysis
 - We can very easily incorporate new data as it arrives
+- Source data is never modified
 - Creates *reproducible research*
 - Highly compatible with collaborative analysis & version control (Git)
+
+## Advanced Options
+
+- The `R` package `workflowr` is very helpful for larger workflows
+    + Can include multiple HTML pages
+    + Strong integration with `git`
+- Highly customisable output
+    + Code folding
+    + Bootstrap themes etc.
+    + Can use custom `css` files 
+    + Interactive plots using `shiny`
