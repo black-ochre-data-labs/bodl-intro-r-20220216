@@ -38,14 +38,20 @@ knitr::opts_chunk$set(
     + Load & wrangle data 
     + Analyse data, including figures & tables
     + Publish everything in a complete report/analysis
-* Everything is one document
-    + Our analysis code embedded alongside our results
 * The package `knitr` is the engine behind this
     + Replaced the `Sweave` package about 8-10 years ago
     
 . . .
 
 Extends the `markdown` language **to incorporate R code**
+
+## Writing Reports Using `rmarkdown`
+
+* Everything is one document
+    + Our analysis code embedded alongside our results
+* The entire analysis is performed in a fresh R Environment
+    + Avoids issues with saving/re-saving Workspaces
+* Effectively enforces code that runs sequentially
 
 ## A Brief Primer on Markdown
 

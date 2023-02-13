@@ -419,10 +419,6 @@ Dr Stevie Pederson
 <li>Analyse data, including figures &amp; tables</li>
 <li>Publish everything in a complete report/analysis</li>
 </ul></li>
-<li>Everything is one document
-<ul>
-<li>Our analysis code embedded alongside our results</li>
-</ul></li>
 <li>The package <code>knitr</code> is the engine behind this
 <ul>
 <li>Replaced the <code>Sweave</code> package about 8-10 years ago</li>
@@ -431,6 +427,20 @@ Dr Stevie Pederson
 <div class="fragment">
 <p>Extends the <code>markdown</code> language <strong>to incorporate R code</strong></p>
 </div>
+</section>
+<section id="writing-reports-using-rmarkdown-1" class="slide level2">
+<h2>Writing Reports Using <code>rmarkdown</code></h2>
+<ul>
+<li>Everything is one document
+<ul>
+<li>Our analysis code embedded alongside our results</li>
+</ul></li>
+<li>The entire analysis is performed in a fresh R Environment
+<ul>
+<li>Avoids issues with saving/re-saving Workspaces</li>
+</ul></li>
+<li>Effectively enforces code that runs sequentially</li>
+</ul>
 </section>
 <section id="a-brief-primer-on-markdown" class="slide level2">
 <h2>A Brief Primer on Markdown</h2>
@@ -533,7 +543,7 @@ Dr Stevie Pederson
 <h1>R Markdown</h1>
 
 </section>
-<section id="writing-reports-using-rmarkdown-1" class="slide level2">
+<section id="writing-reports-using-rmarkdown-2" class="slide level2">
 <h2>Writing Reports Using <code>rmarkdown</code></h2>
 <p>We can output our analysis directly as:</p>
 <ul>
@@ -544,7 +554,7 @@ Dr Stevie Pederson
 </ul>
 <p>We never need to use MS Word, Excel or PowerPoint again!</p>
 </section>
-<section id="writing-reports-using-rmarkdown-2" class="slide level2">
+<section id="writing-reports-using-rmarkdown-3" class="slide level2">
 <h2>Writing Reports Using <code>rmarkdown</code></h2>
 <ul>
 <li>The file suffix is <code>.Rmd</code></li>

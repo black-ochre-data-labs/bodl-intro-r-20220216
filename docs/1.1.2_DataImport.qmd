@@ -29,7 +29,25 @@ knitr::opts_chunk$set(
 )
 ```
 
+
 # Getting Data Into R {background-color="#3c3c44"}
+
+## Setting Up For Today
+
+- Before we start playing with data, we'll need some core packages
+- Packages are a collection of functions which enable a set of tasks
+
+. . .
+
+In RStudio
+
+1. `Tools` > `Install Packages`
+2. Type the words `tidyverse`, `rmarkdown` and `pander` in the `Packages` Field
+3. Press `Enter` without modifying any of the defaults
+
+. . .
+
+This may run for a few minutes
 
 ## Importing Data
 
@@ -45,10 +63,10 @@ knitr::opts_chunk$set(
 
 - Things we do to make it "look nice" in Excel can create problems:
     - Blank rows are not fatal, just annoying
-    - Cell formatting will not be imported
-    - Mixtures of numbers and text
-    - Plots will not be imported
+    - Mixtures of numbers and text in a column
     - Deleted cells are sometimes imported as blank rows/columns
+    - Cell formatting will be ignored by R
+    - Plots will also be ignored
     
 ## Importing Data
 
@@ -356,7 +374,11 @@ The main function is `read_excel()`
 ?read_excel
 ```
 
-# Bonus Material {background-color="#3c3c44"}
+# Advanced Material {background-color="#3c3c44"}
+
+::: {.notes}
+Judge how we're going for time, but we should be right to do this before the break
+:::
 
 ## Setup
 
