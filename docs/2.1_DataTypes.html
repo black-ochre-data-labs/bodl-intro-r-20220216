@@ -430,7 +430,7 @@ Dr Stevie Pederson
 <li><code>File &gt; New File &gt; R Markdown</code></li>
 <li>Save as <code>DataTypes.Rmd</code></li>
 </ul></li>
-<li>Add your name, today’s date and athe titles “Data Types in R”</li>
+<li>Add your name, today’s date and the title “Data Types in R”</li>
 </ol>
 </section>
 <section id="recap-of-day-1" class="slide level2">
@@ -510,7 +510,7 @@ Dr Stevie Pederson
 <h2>The 4 Atomic Vector Types</h2>
 <ul>
 <li><em>Atomic Vectors</em> are the building blocks for everything in <code>R</code></li>
-<li>There are siz atomic vector types
+<li>There are six atomic vector types
 <ul>
 <li>Four we’ll focus on</li>
 <li>Two we can ignore</li>
@@ -891,12 +891,35 @@ Dr Stevie Pederson
 <ul>
 <li>Vectors are strictly one dimensional and have a <code>length</code> attribute.</li>
 <li>A <code>matrix</code> is the <strong>two dimensional</strong> equivalent</li>
+<li>Very common in Bioinformatics
+<ul>
+<li>Same measurement (e.g.&nbsp;gene expression) taken across all samples</li>
+</ul></li>
 </ul>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>int_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">ncol=</span><span class="dv">2</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>int_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="{columns}">
+<div class="column" style="width:40%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="assets/count_matrix.png" width="300" height="265"></p>
+<p></p><figcaption>Example count matrix<sup>1</sup></figcaption><p></p>
+</figure>
 </div>
-</section>
+</div>
+</div>
+<aside class="notes">
+<p>This is a classic structure for gene expression: 1. Each row would be the same gene 2. Each column would be the same sample</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Image taken from https://bioconnector.github.io/workshops/r-rnaseq-airway.html</p></li></ol></aside></section>
 <section id="matrices-2" class="slide level2">
 <h2>Matrices</h2>
 <ul>
@@ -906,7 +929,14 @@ Dr Stevie Pederson
 </ul></li>
 <li>Have additional attributes such as <code>dim()</code>, <code>nrow()</code> <code>ncol()</code></li>
 <li>Can have <strong>optional</strong> <code>rownames()</code> &amp; <code>colnames()</code></li>
+<li><u>Very useful</u> for linear algebra</li>
 </ul>
+<div class="fragment">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>int_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">ncol=</span><span class="dv">2</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>int_mat</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
 <section id="matrices-3" class="slide level2">
 <h2>Matrices</h2>
@@ -932,83 +962,141 @@ Dr Stevie Pederson
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>int_mat[<span class="dv">2</span>, <span class="dv">2</span>]</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>int_mat[<span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><strong>How would we just get the first column?</strong></p>
-</section>
-<section id="matrices-5" class="slide level2">
-<h2>Matrices</h2>
-<p><strong>NB: Forgetting the comma when subsetting will treat the matrix as a single vector running down the columns</strong></p>
+<p><strong>How would we just get the first column?</strong> <br><br></p>
+<div class="fragment">
+<p><em>NB: Forgetting the comma will treat the matrix as a vector</em> <strong>running down the columns</strong></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>int_mat</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>int_mat[<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
 </section>
-<section id="matrices-6" class="slide level2">
+<section id="matrices-5" class="slide level2">
 <h2>Matrices</h2>
 <p><strong>Requesting a row or column that doesn’t exist is the source of a very common error message</strong></p>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(int_mat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3 2</code></pre>
 </div>
+</div>
+<div class="fragment">
+<p>Given we have 3 rows, we <em>should</em> expect an error if we ask for a row &gt; 3</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>int_mat[<span class="dv">5</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>int_mat[<span class="dv">5</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in int_mat[5, ]: subscript out of bounds</code></pre>
 </div>
-<div class="red">
-<pre><code>Error in int_mat[5, ] : subscript out of bounds</code></pre>
+</div>
+</div>
+</section>
+<section id="matrices-6" class="slide level2">
+<h2>Matrices</h2>
+<ul>
+<li>We can access column names or row names
+<ul>
+<li><code>colnames()</code> and <code>rownames()</code></li>
+</ul></li>
+<li>We can also set them</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(int_mat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+</div>
+<p>To set them we use the <code>colnames()&lt;-</code> strategy</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(int_mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"A"</span>, <span class="st">"B"</span>)  </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(int_mat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p>Both column and row names can be returned using <code>dimnames()</code></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(int_mat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </section>
 <section id="arrays" class="slide level2">
 <h2>Arrays</h2>
-<p>Arrays extend matrices to 3 or more dimensions</p>
-<p>Beyond the scope of today, but we just have more commas in the square brackets, e.g.</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(iris3)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(iris3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(iris3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="arrays-1" class="slide level2">
-<h2>Arrays</h2>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>iris3[<span class="dv">1</span>,,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>iris3[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>,,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="summary-homogeneous-data-types" class="slide level2">
-<h2>Summary | Homogeneous Data Types</h2>
 <ul>
-<li>Vectors, Matrices &amp; Arrays are the basic <em>homogeneous</em> data types of <code>R</code></li>
+<li>Arrays extend matrices to 3 or more dimensions</li>
+<li>Beyond the scope of today, but we just have more commas in the square brackets</li>
+<li>Less commonly used in bioinformatics</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(iris3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 50  4  3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(iris3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 600</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(iris3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+NULL
+
+[[2]]
+[1] "Sepal L." "Sepal W." "Petal L." "Petal W."
+
+[[3]]
+[1] "Setosa"     "Versicolor" "Virginica" </code></pre>
+</div>
+</div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ul>
+<li>These are the basic <em>homogeneous</em> data types of <code>R</code>
+<ul>
+<li>1D: Vectors</li>
+<li>2D: Matrices</li>
+<li><blockquote>
+<p>2D: Arrays</p>
+</blockquote></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
 <li>All are essentially just vectors</li>
 </ul>
+</div>
 </section></section>
 <section>
-<section id="heterogeneous-data-types" class="title-slide slide level1 center">
+<section id="heterogeneous-data-types" class="title-slide slide level1 center" data-background-color="#3c3c44">
 <h1>Heterogeneous Data Types</h1>
 
 </section>
 <section id="heterogeneous-data-types-1" class="slide level2">
 <h2>Heterogeneous Data Types</h2>
-<p>Summary of main data types in <code>R</code></p>
+<div class="columns">
+<div class="column" style="width:&quot;50%;">
 <table>
+<caption><em>Main data types in R</em></caption>
+<colgroup>
+<col style="width: 30%">
+<col style="width: 33%">
+<col style="width: 35%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Dimension</th>
 <th>Homogeneous</th>
-<th>Heterogeneous</th>
+<th><span class="fragment" data-fragment-index="1">Heterogeneous</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>1d</td>
 <td><code>vector</code></td>
-<td><code>list</code></td>
+<td><span class="fragment" data-fragment-index="2"><code>list</code></span></td>
 </tr>
 <tr class="even">
 <td>2d</td>
 <td><code>matrix</code></td>
-<td><code>data.frame</code></td>
+<td><span class="fragment" data-fragment-index="3"><code>data.frame</code></span></td>
 </tr>
 <tr class="odd">
 <td>3d+</td>
@@ -1017,54 +1105,98 @@ Dr Stevie Pederson
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<p><span class="fragment" data-fragment-index="4">We’ve already seen <code>data.frame</code> objects…</span></p>
+</section>
+<section id="list-objects" class="slide level2">
+<h2>List Objects</h2>
+<p>A <code>list</code> is a <strong>heterogeneous</strong> vector.</p>
+<div>
+<ul>
+<li class="fragment">Each element is an <code>R</code> object
+<ul>
+<li class="fragment">Could be a <code>vector</code> or <code>matrix</code></li>
+<li class="fragment">Could be another <code>list</code></li>
+<li class="fragment">Any other <code>R</code> object type we haven’t seen yet</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<p><strong>These are incredibly common in <code>R</code></strong></p>
+</div>
 </section>
 <section id="lists" class="slide level2">
 <h2>Lists</h2>
-<p>A <code>list</code> is a <strong>heterogeneous</strong> vector.</p>
+<p>We can put all our vectors into a single list</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">logical =</span> logi_vec,</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">integer =</span> int_vec,</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">doubles =</span> dbl_vec,</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">characters =</span> char_vec</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>my_list</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
 <ul>
-<li>Each component is an <code>R</code> object</li>
-<li>Can be a <code>vector</code>, or <code>matrix</code></li>
-<li>Could be another <code>list</code></li>
-<li>Any other <code>R</code> object type we haven’t seen yet</li>
+<li>This is a list of length 4</li>
+<li>At each position is another <code>R</code> object</li>
+<li>No way to force row or columns on this</li>
 </ul>
-<p><strong>These are incredibly common in <code>R</code></strong></p>
+</div>
+<div class="fragment">
+<ul>
+<li>We did add names though (note the <code>$</code> in the main object)</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
 <section id="lists-1" class="slide level2">
 <h2>Lists</h2>
-<p>Many <code>R</code> functions provide output as a list</p>
+<p>We can call the individual components of a list using the <code>$</code> symbol followed by the name</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>testResults <span class="ot">&lt;-</span> <span class="fu">t.test</span>(dbl_vec)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(testResults)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(testResults)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>testResults</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>my_list<span class="sc">$</span>logical</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>my_list<span class="sc">$</span>integer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>NB: There is a function (<code>print.htest()</code>) that tells <code>R</code> how to print the results to the Console</p>
+<p><em>Note that each component is quite different to the others.</em></p>
 </section>
 <section id="lists-2" class="slide level2">
 <h2>Lists</h2>
-<p>Explore the various attributes of the object <code>testResults</code></p>
+<p>Many <code>R</code> functions provide output as a list</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(testResults)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(testResults)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(testResults)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>t_results <span class="ot">&lt;-</span> <span class="fu">t.test</span>(dbl_vec)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(t_results)</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(t_results)</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>t_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>NB: There is a function (<code>print.htest()</code>) that tells <code>R</code> how to print the results to the Console</p>
 </section>
 <section id="lists-3" class="slide level2">
 <h2>Lists</h2>
+<p>Explore the various attributes of the object <code>t_results</code></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(t_results)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">attributes</span>(t_results)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(t_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
 <p>We can call the individual components of a list using the <code>$</code> symbol followed by the name</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>testResults<span class="sc">$</span>statistic</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>testResults<span class="sc">$</span>conf.int</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>testResults<span class="sc">$</span>method</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>t_results<span class="sc">$</span>statistic</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>t_results<span class="sc">$</span>conf.int</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>t_results<span class="sc">$</span>method</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><em>Note that each component is quite different to the others.</em></p>
+</div>
 </section>
 <section id="subsetting-lists" class="slide level2">
 <h2>Subsetting Lists</h2>
 <p>A <code>list</code> is a <code>vector</code> so we can also subset using the <code>[]</code> method</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>testResults[<span class="dv">1</span>]</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(testResults[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>t_results[<span class="dv">1</span>]</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(t_results[<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li>Using single square brackets returns a <code>list</code>
@@ -1072,108 +1204,160 @@ Dr Stevie Pederson
 <li>i.e.&nbsp;an object which is a subset of the larger object, but of the <em>same type</em></li>
 </ul></li>
 </ul>
+<div class="fragment">
+<ul>
+<li>Double brackets again retrieve a single element of the vector
+<ul>
+<li>Returns the actual <code>R</code> object at that position</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>t_results[[<span class="dv">1</span>]]</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(t_results[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p><em>When would we use either method?</em></p>
+</div>
 </section>
 <section id="subsetting-lists-1" class="slide level2">
 <h2>Subsetting Lists</h2>
-<p>Double brackets again retrieve a single element of the vector</p>
-<ul>
-<li>Returns the actual component as the underlying <code>R</code> object</li>
-</ul>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>testResults[[<span class="dv">1</span>]]</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">typeof</span>(testResults[[<span class="dv">1</span>]])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><em>When would we use either method?</em></p>
-</section>
-<section id="subsetting-lists-2" class="slide level2">
-<h2>Subsetting Lists</h2>
 <p>We can also use names instead of positions</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>testResults[<span class="fu">c</span>(<span class="st">"statistic"</span>, <span class="st">"p.value"</span>)]</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>testResults[[<span class="st">"statistic"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>t_results[<span class="fu">c</span>(<span class="st">"statistic"</span>, <span class="st">"p.value"</span>)]</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>t_results[[<span class="st">"statistic"</span>]]</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>t_results<span class="sc">$</span>statistic</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li><code>t_results[["statistic"]]</code> and <code>t_results$statistic</code> produce <strong>identical</strong> output
+<ul>
+<li><code>$</code> allows auto-completion in RStudio</li>
+</ul></li>
+</ul>
 </div>
 </section>
 <section id="lists-4" class="slide level2">
 <h2>Lists</h2>
 <ul>
 <li>Note also the <strong>Environment</strong> Tab in the top right of RStudio</li>
-<li>Click the arrow next to <code>testResults</code> to expand the entry</li>
-<li>This is the output of <code>str(testResults)</code></li>
+<li>Click the arrow next to <code>t_results</code> to expand the entry</li>
+<li>This is the output of <code>str(t_results)</code></li>
 </ul>
 </section></section>
 <section>
-<section id="data-frames" class="title-slide slide level1 center">
-<h1>Data Frames</h1>
+<section id="data-frame-objects" class="title-slide slide level1 center" data-background-color="#3c3c44">
+<h1>Data Frame Objects</h1>
 
+</section>
+<section id="data-frames" class="slide level2">
+<h2>Data Frames</h2>
+<p>(Finally!)</p>
+<ul>
+<li>These are the <em>most common type of data</em> you will work with</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Each column is a <code>vector</code>
+<ul>
+<li>i.e.&nbsp;will be coerced to the same type</li>
+<li>Columns can be different vector types</li>
+<li>Column vectors <strong>MUST</strong> be the same length</li>
+</ul></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>A relationship across rows is also expected</li>
+</ul>
+</div>
 </section>
 <section id="data-frames-1" class="slide level2">
 <h2>Data Frames</h2>
-<p>Finally!</p>
 <ul>
-<li>These are the <em>most common type of data</em> you will work with</li>
-<li>Each column is a <code>vector</code></li>
-<li>Columns can be a different type of vector</li>
-<li>Column vectors <strong>MUST</strong> be the same length</li>
-</ul>
-</section>
-<section id="data-frames-2" class="slide level2">
-<h2>Data Frames</h2>
+<li>Surface similarity to matrices, but are <strong>specifically for heterogeneous data</strong>
 <ul>
-<li>Analogous to matrices, but are <strong>specifically for heterogeneous data</strong></li>
+<li>Not useful at all for linear algebra</li>
+<li>Brilliant for presenting bioinformatics result tables . . .</li>
+</ul></li>
 <li>Have many of the same attributes as matrices
 <ul>
 <li><code>dim()</code>, <code>nrow()</code>, <code>ncol()</code>, <code>rownames()</code>, <code>colnames()</code></li>
 </ul></li>
-<li><code>colnames()</code> &amp; <code>rownames()</code> are <strong>NOT</strong> optional &amp; are assigned by default</li>
 </ul>
+<div class="fragment">
+<ul>
+<li><code>colnames()</code> &amp; <code>rownames()</code> are <strong>NOT</strong> optional &amp; are assigned by default
+<ul>
+<li>No <code>dimnames()</code> attribute</li>
+</ul></li>
+</ul>
+</div>
 </section>
-<section id="data-frames-3" class="slide level2">
+<section id="data-frames-2" class="slide level2">
 <h2>Data Frames</h2>
 <p>Let’s load <code>toothData</code> again</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>toothData <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/toothData.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>toothData <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/toothData.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Try these commands</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(toothData)</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(toothData)</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(toothData)</span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(toothData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(toothData)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(toothData)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(toothData)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(toothData)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(toothData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li>Note that rownames were automatically assigned</li>
+<li>This is a character vector!!! <span class="fragment"><code>"1"</code> <span class="math inline">\(\neq\)</span> <code>1</code></span>
+<ul>
+<li>For <code>tibble</code> objects they’re never printed to screen</li>
+<li>For <code>tibble</code> objects they always take these values</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="data-frames-3" class="slide level2">
+<h2>Data Frames</h2>
+<p>Individual entries can also be extracted using the square brackets</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>toothData[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p>We can also refer to columns by name (same as matrices)</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>toothData[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="st">"len"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>The <code>dplyr</code> (i.e.&nbsp;<code>tidy</code>) way of doing this would be:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>toothData <span class="sc">|&gt;</span></span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(len)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </section>
 <section id="data-frames-4" class="slide level2">
 <h2>Data Frames</h2>
-<p>Individual entries can also be extracted using the square brackets</p>
+<p>Remember that each column is a separate vector</p>
+<ul>
+<li>We can call each column vector of a <code>data.frame</code> using the <code>$</code> operator
+<ul>
+<li>Very different results to <code>toothData[1:2, "len"]</code></li>
+</ul></li>
+</ul>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>toothData[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>toothData<span class="sc">$</span>len[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can also refer to columns by name (same as matrices)</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>toothData[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="st">"len"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="fragment">
+<p><strong>No <code>$</code> equivalent exists for rows!!!</strong></p>
 </div>
 </section>
 <section id="data-frames-5" class="slide level2">
-<h2>Data Frames</h2>
-<p>The <code>dplyr</code> (i.e.&nbsp;<code>tidy</code>) way of doing this would be:</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>toothData <span class="sc">%&gt;%</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(len)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="data-frames-6" class="slide level2">
-<h2>Data Frames</h2>
-<p>Remember that each column is a separate vector</p>
-<ul>
-<li>We can call each column vector of a <code>data.frame</code> using the <code>$</code> operator</li>
-</ul>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>toothData<span class="sc">$</span>len[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><strong>This does NOT work for rows!!!</strong></p>
-</section>
-<section id="data-frames-7" class="slide level2">
 <h2>Data Frames</h2>
 <ul>
 <li><code>R</code> is <em>column major</em> by default (as is <code>FORTRAN</code> &amp; Matlab)</li>
@@ -1183,105 +1367,174 @@ Dr Stevie Pederson
 <p>(We will see this advantage this afternoon)</p>
 </section></section>
 <section>
-<section id="data-frames-lists" class="title-slide slide level1 center">
+<section id="data-frames-lists" class="title-slide slide level1 center" data-background-color="#3c3c44">
 <h1>Data Frames &amp; Lists</h1>
 
 </section>
 <section id="data-frames-lists-1" class="slide level2">
 <h2>Data Frames &amp; Lists</h2>
 <p><strong>Data frames are actually special cases of lists</strong></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">is.data.frame</span>(toothData)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">is.list</span>(toothData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
 <ul>
 <li>Each column of a <code>data.frame</code> is a component of a <code>list</code></li>
 <li>The components must all be vectors of the <strong>same length</strong></li>
 <li>Data Frames can be treated identically to a <code>list</code></li>
-<li>Have additional subsetting operations and attributes</li>
+<li>Have additional subsetting operations and attributes
+<ul>
+<li>e.g.&nbsp;Lists cannot be selected by row</li>
+</ul></li>
 </ul>
+</div>
 </section>
 <section id="data-frames-lists-2" class="slide level2">
 <h2>Data Frames &amp; Lists</h2>
 <p>Forgetting the comma, now gives a completely different result to a matrix!</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>toothData[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>toothData[<span class="dv">1</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>Was that what you expected?</strong></p>
+<p><span class="fragment">Hopefully this is now intuitive knowing it’s really a list</span></p>
+<p><br></p>
 <p><strong>Try using the double bracket method</strong></p>
 </section>
-<section id="data-frames-lists-more-errors" class="slide level2">
-<h2>Data Frames &amp; Lists | More Errors</h2>
+<section id="more-errors" class="slide level2">
+<h2>More Errors</h2>
 <p><strong>What do you think will happen if we type:</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>toothData[<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>toothData[<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="data-frames-lists-more-errors-1" class="slide level2">
-<h2>Data Frames &amp; Lists | More Errors</h2>
-<p><strong>What do you think will happen if we type:</strong></p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>toothData[<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output cell-output-error">
+<pre><code>Error in `toothData[5]`:
+! Can't subset columns past the end.
+ℹ Location 5 doesn't exist.
+ℹ There are only 3 columns.</code></pre>
 </div>
-<div class="red">
-<p>Error: Column index must be at most 3 if positive, not 5</p>
 </div>
 </section></section>
 <section>
-<section id="working-with-r-objects" class="title-slide slide level1 center">
-<h1>Working With <code>R</code> Objects</h1>
+<section id="working-with-r-objects" class="title-slide slide level1 center" data-background-color="#3c3c44">
+<h1>Working With R Objects</h1>
 
 </section>
-<section id="vectors-name-attributes" class="slide level2">
-<h2>Vectors | Name Attributes</h2>
+<section id="name-attributes" class="slide level2">
+<h2>Name Attributes</h2>
+<ul>
+<li>Each different data type can have different types of names</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Object</th>
+<th style="text-align: left;"><code>names()</code></th>
+<th style="text-align: left;"><code>rownames()</code></th>
+<th style="text-align: left;"><code>colnames()</code></th>
+<th style="text-align: left;"><code>dimnames()</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Vector</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">❌</td>
+<td style="text-align: left;">❌</td>
+<td style="text-align: left;">❌</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">List</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">❌</td>
+<td style="text-align: left;">❌</td>
+<td style="text-align: left;">❌</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Matrix</td>
+<td style="text-align: left;">❌</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">Optional</td>
+<td style="text-align: left;">Optional</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Data Frame</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅</td>
+<td style="text-align: left;">✅</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li><code>names()</code> for a matrix can be added but are without relevance</li>
+<li><code>rownames()</code> for a <code>tibble</code> are ignored</li>
+<li><code>dimnames()</code> for a <code>data.frame</code> are rarely accessed like this</li>
+<li><code>names()</code> = <code>colnames()</code> for a <code>data.frame</code></li>
+</ul>
+</div>
+</section>
+<section id="name-attributes-1" class="slide level2">
+<h2>Name Attributes</h2>
 <p><strong>How do we assign names?</strong></p>
+<ol type="1">
+<li>We can do so when creating an object</li>
+</ol>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>named_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="dv">2</span>, <span class="at">c =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>named_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">a =</span> <span class="dv">1</span>, <span class="at">b =</span> <span class="dv">2</span>, <span class="at">c =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>OR we can name an existing vector</p>
+<div class="fragment">
+<ol start="2" type="1">
+<li>We can add names to an existing vector</li>
+</ol>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(int_vec) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span>, <span class="st">"e"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(int_vec) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span>, <span class="st">"e"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </section>
-<section id="vectors-name-attributes-1" class="slide level2">
-<h2>Vectors | Name Attributes</h2>
+<section id="removing-name-attributes" class="slide level2">
+<h2>Removing Name Attributes</h2>
 <p><strong>Can we remove names?</strong></p>
-<p>The <code>NULL</code>, or empty, vector in <code>R</code> is created using <code>c()</code></p>
+<div class="fragment">
+<p>The <code>NULL</code>, or empty vector, in <code>R</code> is created using <code>c()</code></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>null_vec <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(null_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>null_vec <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(null_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</section>
-<section id="vectors-name-attributes-2" class="slide level2">
-<h2>Vectors | Name Attributes</h2>
+</div>
+<div class="fragment">
 <p>We can use this to remove names</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(named_vec) <span class="ot">&lt;-</span> <span class="fu">c</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(named_vec) <span class="ot">&lt;-</span> <span class="fu">c</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</div>
+<div class="fragment">
 <p><em>Don’t forget to put the names back…</em></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(named_vec) <span class="sc">&lt;</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 </section>
 <section id="matrices-7" class="slide level2">
 <h2>Matrices</h2>
-<p>We can convert vectors to matrices, as earlier</p>
+<p>We can assign row names &amp; column names to matrices after creation</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>int_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">ncol=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p><code>R</code> is column major so fills columns by default</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>row_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">ncol=</span><span class="dv">2</span>, <span class="at">byrow =</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="matrices-8" class="slide level2">
-<h2>Matrices</h2>
-<p>We can assign row names &amp; column names after creation</p>
-<div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(row_mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"odds"</span>, <span class="st">"evens"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(int_mat) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"high"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Or using <code>dimnames()</code></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(row_mat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(int_mat) <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"first"</span>, <span class="st">"second"</span>, <span class="st">"third"</span>),</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"high"</span>)</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This a list of <code>length</code> 2 with <code>rownames</code> then <code>colnames</code> as the components.</p>
 <p><strong>Why were the elements not named <code>rownames</code> or <code>colnames</code>?</strong></p>
-<!-- ## Matrices | A word of caution -->
-<!-- ```{r, warning=FALSE} -->
-<!-- rec_mat <- matrix(int_vec, ncol = 2) -->
+<!-- ## A word of caution -->
+<!-- ```{r, warning=TRUE} -->
+<!-- test_mat <- matrix(int_vec, ncol = 2) -->
 <!-- ``` -->
 <!-- __Did we successfully form an `R` object?__ -->
 <!-- __What has happened here?__ -->
@@ -1289,43 +1542,78 @@ Dr Stevie Pederson
 </section>
 <section id="lists-5" class="slide level2">
 <h2>Lists</h2>
+<p>Names can be accessed and set in a similar way for lists</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(int_vec, dbl_vec)</span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_list) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"integers"</span>, <span class="st">"doubles"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>OR</p>
+<div class="fragment">
+<p>We can easily overwrite these</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>my_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">integers =</span> int_vec, <span class="at">doubles =</span> dbl_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_list) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>, <span class="st">"d"</span>)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_list)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 </section>
 <section id="lists-6" class="slide level2">
 <h2>Lists</h2>
 <p><strong>What happens if we try this?</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>my_list<span class="sc">$</span>logical <span class="ot">&lt;-</span> logi_vec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>my_list<span class="sc">$</span>logical <span class="ot">&lt;-</span> logi_vec</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p>We can easily add elements to a list using this strategy</p>
+</div>
+<div class="fragment">
+<p>Or we can remove them from a list</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>my_list<span class="sc">$</span>logical <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <!-- ## Lists -->
 <!-- We can coerce vectors to lists as well -->
 <!-- ```{r} -->
 <!-- int_list <- as.list(named_vec) -->
 <!-- ``` -->
+</div>
 </section>
-<section id="data-frames-8" class="slide level2">
+<section id="data-frames-6" class="slide level2">
 <h2>Data Frames</h2>
 <p>This is exactly the same as creating lists, but</p>
 <p><strong>The <code>names</code> attribute will also be the <code>colnames()</code></strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>my_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">doubles =</span> dbl_vec, <span class="at">logical =</span> logi_vec)</span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_df) <span class="sc">==</span> <span class="fu">colnames</span>(my_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>my_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">doubles =</span> dbl_vec, <span class="at">logical =</span> logi_vec)</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(my_df) <span class="sc">==</span> <span class="fu">colnames</span>(my_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<p>We can also add columns as for lists</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>my_df<span class="sc">$</span>letters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"a"</span>, <span class="st">"b"</span>, <span class="st">"c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p>Up to us to ensure this is sensible</p>
+</div>
+<div class="fragment">
+<p>Can remove columns the same way as lists</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>my_df<span class="sc">$</span>letters <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Or use <code>dplyr::select()</code></p>
 </div>
 </section>
-<section id="data-frames-9" class="slide level2">
+<section id="data-frames-7" class="slide level2">
 <h2>Data Frames</h2>
 <p><strong>What happens if we try to add components that aren’t the same length?</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>my_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">integers =</span> int_vec, </span>
-<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">doubles =</span> dbl_vec,</span>
-<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">logical =</span> logi_vec)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>my_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">integers =</span> int_vec, </span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">doubles =</span> dbl_vec,</span>
+<span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">logical =</span> logi_vec</span>
+<span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output cell-output-error">
+<pre><code>Error in data.frame(integers = int_vec, doubles = dbl_vec, logical = logi_vec): arguments imply differing number of rows: 5, 3</code></pre>
+</div>
 </div>
 </section></section>
 <section id="morning-tea" class="title-slide slide level1 center">
@@ -1338,6 +1626,8 @@ Dr Stevie Pederson
 
 </div>
 </section>
+
+
     </div>
   </div>
 

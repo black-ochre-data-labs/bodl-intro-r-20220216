@@ -49,7 +49,7 @@ Today's Topics:
 2. Create a new RMarkdown File:  
     + `File > New File > R Markdown`
     + Save as `DataTypes.Rmd`
-3. Add your name, today's date and athe titles "Data Types in R"
+3. Add your name, today's date and the title "Data Types in R"
 
 ## Recap Of Day 1
 
@@ -120,7 +120,7 @@ c("742", "Evergreen", "Tce")
 ## The 4 Atomic Vector Types
 
 - *Atomic Vectors* are the building blocks for everything in `R`
-- There are siz atomic vector types
+- There are six atomic vector types
     + Four we'll focus on
     - Two we can ignore
     
@@ -492,11 +492,22 @@ Any questions...?
 
 - Vectors are strictly one dimensional and have a `length` attribute.
 - A `matrix` is the **two dimensional** equivalent
+- Very common in Bioinformatics
+    + Same measurement (e.g. gene expression) taken across all samples
 
-```{r, results='hide'}
-int_mat <- matrix(1:6, ncol=2)
-int_mat
-```
+::: {columns}
+::: {.column width="40%"}
+
+![Example count matrix^[Image taken from https://bioconnector.github.io/workshops/r-rnaseq-airway.html]](assets/count_matrix.png){width="300" height="265"}
+
+:::
+:::
+
+::: {.notes}
+This is a classic structure for gene expression:
+1. Each row would be the same gene
+2. Each column would be the same sample
+:::
 
 ## Matrices
 
@@ -504,6 +515,15 @@ int_mat
     + i.e. logical, integer, double, character
 - Have additional attributes such as `dim()`, `nrow()` `ncol()`
 - Can have __optional__ `rownames()` & `colnames()`
+- [Very useful]{.underline} for linear algebra
+
+. . .
+
+```{r, results='hide'}
+int_mat <- matrix(1:6, ncol=2)
+int_mat
+```
+
 
 ## Matrices
 
@@ -532,10 +552,11 @@ int_mat[1,]
 ```
 
 __How would we just get the first column?__
+<br><br>
 
-## Matrices
+. . .
 
-__NB: Forgetting the comma when subsetting will treat the matrix as a single vector running down the columns__
+_NB: Forgetting the comma will treat the matrix as a vector_ **running down the columns**
 
 ```{r}
 int_mat
@@ -546,129 +567,203 @@ int_mat[5]
 
 **Requesting a row or column that doesn't exist is the source of a very common error message**
 
-```{r}
+```{r, results='markup'}
+#| output-location: default
 dim(int_mat)
 ```
 
-```{r, eval=FALSE}
+. . .
+
+Given we have `r nrow(int_mat)` rows, we *should* expect an error if we ask for a row > `r nrow(int_mat)`
+
+```{r, eval=TRUE, error=TRUE}
 int_mat[5,]
 ```
-<div class="red">
+
+## Matrices
+
+- We can access column names or row names
+    + `colnames()` and `rownames()`
+- We can also set them
+
+```{r show-colnames, results='markup'}
+colnames(int_mat)
 ```
-Error in int_mat[5, ] : subscript out of bounds
+
+To set them we use the `colnames()<-` strategy
+
+```{r set-colnames}
+colnames(int_mat) <- c("A", "B")  
+colnames(int_mat)
 ```
-</div>
+
+. . .
+
+Both column and row names can be returned using `dimnames()`
+
+```{r mat-dimnames}
+dimnames(int_mat)
+```
 
 
 ## Arrays
 
-Arrays extend matrices to 3 or more dimensions
+- Arrays extend matrices to 3 or more dimensions
+- Beyond the scope of today, but we just have more commas in the square brackets
+- Less commonly used in bioinformatics
 
-Beyond the scope of today, but we just have more commas in the square brackets, e.g.
-```{r}
+```{r iris, results='markup'}
 dim(iris3)
 length(iris3)
-```
-
-```{r,eval=FALSE}
 dimnames(iris3)
 ```
 
-## Arrays
+## Summary
 
-```{r}
-iris3[1,,]
-```
-```{r,results='hide'}
-iris3[1:2,,]
-```
+- These are the basic *homogeneous* data types of `R`
+    + 1D: Vectors
+    + 2D: Matrices
+    + >2D: Arrays
 
-## Summary | Homogeneous Data Types
+. . .
 
-- Vectors, Matrices & Arrays are the basic *homogeneous* data types of `R`
 - All are essentially just vectors
 
-# Heterogeneous Data Types
+# Heterogeneous Data Types {background-color="#3c3c44"}
 
 ## Heterogeneous Data Types
 
-Summary of main data types in `R`
+::: {.columns}
+::: {.column width="50%}
 
-Dimension   | Homogeneous | Heterogeneous
+Dimension   | Homogeneous | [Heterogeneous]{.fragment fragment-index=1}
 ------------|-------------|--------------
-1d          | `vector`    | `list`
-2d          | `matrix`    | `data.frame`
+1d          | `vector`    | [`list`]{.fragment fragment-index=2}
+2d          | `matrix`    | [`data.frame`]{.fragment fragment-index=3}
 3d+         | `array`     |
 
-## Lists
+Table: *Main data types in R*
+
+:::
+:::
+
+[We've already seen `data.frame` objects...]{.fragment fragment-index=4}
+
+## List Objects
 
 A `list` is a __heterogeneous__ vector.
 
-- Each component is an `R` object
-- Can be a `vector`, or `matrix`
-- Could be another `list`
-- Any other `R` object type we haven't seen yet
+::: {.incremental}
+
+- Each element is an `R` object
+    + Could be a `vector` or `matrix`
+    + Could be another `list`
+    + Any other `R` object type we haven't seen yet
+
+:::
+
+::: {.fragment}
 
 **These are incredibly common in `R`**
 
-## Lists
-
-Many `R` functions provide output as a list
-
-```{r, results='hide'}
-testResults <- t.test(dbl_vec)
-class(testResults)
-typeof(testResults)
-testResults
-```
-
-NB: There is a function (`print.htest()`) that tells `R` how to print the results to the Console
+:::
 
 ## Lists
 
-Explore the various attributes of the object `testResults`
+We can put all our vectors into a single list
 
-```{r, results='hide'}
-str(testResults)
-attributes(testResults)
-length(testResults)
+```{r}
+my_list <- list(
+  logical = logi_vec,
+  integer = int_vec,
+  doubles = dbl_vec,
+  characters = char_vec
+)
+my_list
 ```
 
+. . .
+
+- This is a list of length `r length(my_list)`
+- At each position is another `R` object
+- No way to force row or columns on this
+
+. . .
+
+- We did add names though (note the `$` in the main object)
+
+```{r}
+names(my_list)
+```
 
 ## Lists
 
 We can call the individual components of a list using the `$` symbol followed by the name
 
 ```{r, results='hide'}
-testResults$statistic
-testResults$conf.int
-testResults$method
+my_list$logical
+my_list$integer
 ```
 
 *Note that each component is quite different to the others.*
+
+## Lists
+
+Many `R` functions provide output as a list
+
+```{r, results='hide'}
+t_results <- t.test(dbl_vec)
+class(t_results)
+typeof(t_results)
+t_results
+```
+
+NB: There is a function (`print.htest()`) that tells `R` how to print the results to the Console
+
+## Lists
+
+Explore the various attributes of the object `t_results`
+
+```{r, results='hide'}
+str(t_results)
+attributes(t_results)
+length(t_results)
+```
+
+. . .
+
+We can call the individual components of a list using the `$` symbol followed by the name
+
+```{r, results='hide'}
+t_results$statistic
+t_results$conf.int
+t_results$method
+```
+
 
 ## Subsetting Lists
 
 A `list` is a `vector` so we can also subset using the `[]` method
 
 ```{r, results='hide'}
-testResults[1]
-typeof(testResults[1])
+t_results[1]
+typeof(t_results[1])
 ```
 
 - Using single square brackets returns a `list` 
     - i.e. an object which is a subset of the larger object, but of the *same type*
 
-## Subsetting Lists
+. . .
 
-Double brackets again retrieve a single element of the vector
-
-- Returns the actual component as the underlying `R` object
+- Double brackets again retrieve a single element of the vector
+    + Returns the actual `R` object at that position
 
 ```{r, results='hide'}
-testResults[[1]]
-typeof(testResults[[1]])
+t_results[[1]]
+typeof(t_results[[1]])
 ```
+
+. . .
 
 *When would we use either method?*
 
@@ -677,35 +772,58 @@ typeof(testResults[[1]])
 We can also use names instead of positions
 
 ```{r, results='hide'}
-testResults[c("statistic", "p.value")]
-testResults[["statistic"]]
+t_results[c("statistic", "p.value")]
+t_results[["statistic"]]
+t_results$statistic
 ```
 
+. . .
+
+- `t_results[["statistic"]]` and `t_results$statistic` produce **identical** output
+    + `$` allows auto-completion in RStudio
 
 ## Lists
 
 - Note also the **Environment** Tab in the top right of RStudio
-- Click the arrow next to `testResults` to expand the entry
-- This is the output of `str(testResults)`
+- Click the arrow next to `t_results` to expand the entry
+- This is the output of `str(t_results)`
 
-# Data Frames
+# Data Frame Objects {background-color="#3c3c44"}
 
 ## Data Frames
 
-Finally!
+(Finally!)
 
 - These are the *most common type of data* you will work with
+
+. . .
+
 - Each column is a `vector`
-- Columns can be a different type of vector
-- Column vectors **MUST** be the same length
+    + i.e. will be coerced to the same type
+    + Columns can be different vector types 
+    + Column vectors **MUST** be the same length
+    
+. . .
+
+- A relationship across rows is also expected
 
 
 ## Data Frames
 
-- Analogous to matrices, but are **specifically for heterogeneous data**
+- Surface similarity to matrices, but are **specifically for heterogeneous data**
+    - Not useful at all for linear algebra
+    - Brilliant for presenting bioinformatics result tables
+. . .
+
 - Have many of the same attributes as matrices
     + `dim()`, `nrow()`, `ncol()`, `rownames()`, `colnames()`
+    
+. . .
+
 - `colnames()` & `rownames()` are **NOT** optional & are assigned by default
+    - No `dimnames()` attribute
+    
+
 
 ## Data Frames
 
@@ -718,12 +836,21 @@ toothData <- read_csv("data/toothData.csv")
 
 __Try these commands__
 
-```{r, results='hide'}
+```{r}
 glimpse(toothData)
 colnames(toothData)
 dim(toothData)
 nrow(toothData)
+rownames(toothData)
 ```
+
+. . .
+
+- Note that rownames were automatically assigned
+- This is a character vector!!! [`"1"` $\neq$ `1`]{.fragment}
+    + For `tibble` objects they're never printed to screen 
+    + For `tibble` objects they always take these values
+
 
 ## Data Frames
 
@@ -733,19 +860,21 @@ Individual entries can also be extracted using the square brackets
 toothData[1:2, 1]
 ```
 
+. . .
+
 We can also refer to columns by name (same as matrices)
 
 ```{r, results='hide'}
 toothData[1:2, "len"]
 ```
 
-## Data Frames
+. . .
 
 The `dplyr` (i.e. `tidy`) way of doing this would be:
 
 ```{r}
-toothData %>%
-  slice(1:2) %>%
+toothData |>
+  slice(1:2) |>
   select(len)
 ```
 
@@ -755,12 +884,15 @@ toothData %>%
 Remember that each column is a separate vector
 
 - We can call each column vector of a `data.frame` using the `$` operator
+    + Very different results to `toothData[1:2, "len"]`
 
 ```{r, results='hide'}
 toothData$len[1:2]
 ```
 
-**This does NOT work for rows!!!**
+. . .
+
+**No `$` equivalent exists for rows!!!**
 
 ## Data Frames
 
@@ -770,16 +902,25 @@ toothData$len[1:2]
 
 (We will see this advantage this afternoon)
 
-# Data Frames & Lists
+# Data Frames & Lists {background-color="#3c3c44"}
 
 ## Data Frames & Lists
 
 __Data frames are actually special cases of lists__
 
+
+```{r}
+is.data.frame(toothData)
+is.list(toothData)
+```
+
+. . .
+
 - Each column of a `data.frame` is a component of a `list`
 - The components must all be vectors of the **same length**
 - Data Frames can be treated identically to a `list`
 - Have additional subsetting operations and attributes
+    + e.g. Lists cannot be selected by row
 
 ## Data Frames & Lists
 
@@ -791,57 +932,76 @@ toothData[1]
 
 __Was that what you expected?__
 
+[Hopefully this is now intuitive knowing it's really a list]{.fragment}
+
+<br>
+
 __Try using the double bracket method__
 
-## Data Frames & Lists | More Errors
+## More Errors
 
 **What do you think will happen if we type:**
 
-```{r, eval=FALSE}
+```{r, error=TRUE}
+#| output-location: fragment
 toothData[5]
 ```
 
-## Data Frames & Lists | More Errors
 
-**What do you think will happen if we type:**
+# Working With R Objects {background-color="#3c3c44"}
 
-```{r, eval=FALSE}
-toothData[5]
-```
+## Name Attributes
 
-<div class="red">
-Error: Column index must be at most 3 if positive, not 5
-</div>
+- Each different data type can have different types of names
+
+| Object | `names()` | `rownames()` | `colnames()` | `dimnames()` |
+|:------ |:--------- |:------------ |:------------ |:------------ |
+| Vector | Optional  | &#10060;     | &#10060;     | &#10060;     |
+| List   | Optional  | &#10060;     | &#10060;     | &#10060;     |
+| Matrix | &#10060;  | Optional     | Optional     | Optional     |
+| Data Frame | &#9989; |  &#9989;   |  &#9989;     | &#9989;      |
+
+. . .
 
 
-# Working With `R` Objects
+- `names()` for a matrix can be added but are without relevance
+- `rownames()` for a `tibble` are ignored
+- `dimnames()` for a `data.frame` are rarely accessed like this
+- `names()` = `colnames()` for a `data.frame`
 
-## Vectors | Name Attributes
+
+## Name Attributes
 
 __How do we assign names?__
+
+1. We can do so when creating an object
 
 ```{r}
 named_vec <- c(a = 1, b = 2, c = 3)
 ```
 
-OR we can name an existing vector
+. . .
+
+2. We can add names to an existing vector
 
 ```{r}
 names(int_vec) <- c("a", "b", "c", "d", "e")
 ```
 
-## Vectors | Name Attributes
+## Removing Name Attributes
 
 __Can we remove names?__
 
-The `NULL`, or empty, vector in `R` is created using `c()`
+. . .
+
+The `NULL`, or empty vector, in `R` is created using `c()`
 
 ```{r, results='hide'}
 null_vec <- c()
 length(null_vec)
 ```
 
-## Vectors | Name Attributes
+. . .
 
 We can use this to remove names
 
@@ -849,44 +1009,40 @@ We can use this to remove names
 names(named_vec) <- c()
 ```
 
+. . .
+
 *Don't forget to put the names back...*
 
-## Matrices
-
-We can convert vectors to matrices, as earlier
-
 ```{r}
-int_mat <- matrix(1:6, ncol=2)
+names(named_vec) < c("a", "b", "c")
 ```
 
-`R` is column major so fills columns by default
-
-```{r}
-row_mat <- matrix(1:6, ncol=2, byrow =TRUE)
-```
 
 ## Matrices 
 
-We can assign row names & column names after creation
+We can assign row names & column names to matrices after creation
 
 ```{r}
-colnames(row_mat) <- c("odds", "evens")
+colnames(int_mat) <- c("low", "high")
 ```
 
 Or using `dimnames()`
 
 ```{r, results='hide'}
-dimnames(row_mat)
+dimnames(int_mat) <- list(
+  c("first", "second", "third"),
+  c("low", "high")
+)
 ```
 
 This a list of `length` 2 with `rownames` then `colnames` as the components.
 
 **Why were the elements not named `rownames` or `colnames`?**
 
-<!-- ## Matrices | A word of caution -->
+<!-- ## A word of caution -->
 
-<!-- ```{r, warning=FALSE} -->
-<!-- rec_mat <- matrix(int_vec, ncol = 2) -->
+<!-- ```{r, warning=TRUE} -->
+<!-- test_mat <- matrix(int_vec, ncol = 2) -->
 <!-- ``` -->
 
 <!-- __Did we successfully form an `R` object?__ -->
@@ -897,14 +1053,19 @@ This a list of `length` 2 with `rownames` then `colnames` as the components.
 
 ## Lists
 
-```{r}
-my_list <- list(int_vec, dbl_vec)
-names(my_list) <- c("integers", "doubles")
-```
-OR
+Names can be accessed and set in a similar way for lists
 
 ```{r}
-my_list <- list(integers = int_vec, doubles = dbl_vec)
+names(my_list)
+```
+
+. . .
+
+We can easily overwrite these
+
+```{r}
+names(my_list) <- c("a", "b", "c", "d")
+names(my_list)
 ```
 
 ## Lists
@@ -914,6 +1075,19 @@ __What happens if we try this?__
 ```{r}
 my_list$logical <- logi_vec
 ```
+
+. . .
+
+We can easily add elements to a list using this strategy
+
+. . .
+
+Or we can remove them from a list
+
+```{r}
+my_list$logical <- NULL
+```
+
 
 <!-- ## Lists -->
 <!-- We can coerce vectors to lists as well -->
@@ -932,14 +1106,40 @@ my_df <- data.frame(doubles = dbl_vec, logical = logi_vec)
 names(my_df) == colnames(my_df)
 ```
 
+. . .
+
+We can also add columns as for lists
+
+```{r}
+my_df$letters <- c("a", "b", "c")
+```
+
+. . .
+
+Up to us to ensure this is sensible
+
+. . .
+
+Can remove columns the same way as lists
+
+```{r}
+my_df$letters <- NULL
+```
+
+Or use `dplyr::select()`
+
+
 ## Data Frames
 
 __What happens if we try to add components that aren't the same length?__
 
-```{r, eval=FALSE}
-my_df <- data.frame(integers = int_vec, 
-                    doubles = dbl_vec,
-                    logical = logi_vec)
+```{r, error=TRUE}
+#| output-location: fragment
+my_df <- data.frame(
+  integers = int_vec, 
+  doubles = dbl_vec,
+  logical = logi_vec
+)
 ```
 
 
