@@ -22,8 +22,8 @@ Adelaide SA
 |:------ |:---------------------------------- |:----------------------------- |
 |9:00am  | Introduction to `R Studio` <br> Loading Data | Understanding Data Types in `R` |
 |10:30am | *Morning Tea*                      | *Morning Tea*                   |
-|11:00am | Manipulating Data Frames With the `tidyverse` <br> Manipulating Text | Basic Statistical Techniques |
+|11:00am | Manipulating Data Frames With the `tidyverse` | Manipulating Text <br>  Basic Statistical Techniques |
 |12:30pm | *Lunch*                            | *Lunch*                         | 
-|1:30pm  | Data Visualisation Using `ggplot2` <br> Making Publication Quality Images |  Iteration <br> Writing Functions  |
+|1:30pm  | Data Visualisation Using `ggplot2` <br> Making Publication Quality Images | Iteration <br> Writing Functions  |
 |3:00pm  | *Coffee Break*                     | *Coffee Break*                |
 |3:30pm  | Running Analyses Using `R Markdown` | The Bioconductor Project |

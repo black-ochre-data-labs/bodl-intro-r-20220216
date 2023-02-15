@@ -1,0 +1,30 @@
+---
+title: "Day 1"
+author: "Stevie Pederson"
+date: "`r format(Sys.Date(), '%d %B, %Y')`"
+output: workflowr::wflow_html
+editor_options:
+  chunk_output_type: console
+---
+
+## Introduction
+
+Yesterday was an applied look at working with data in `R`.
+Today we'll still be very applied, but we'll begin to explore some of the more technical aspects to understanding data in `R`
+
+### Data Files
+
+We'll continue working with the same files as Day 1
+
+## Slides
+
+For most of today, I'll present some slides and ask you to follow some (hopefully) simple instructions.
+If you want to follow along, please open these in a new browser tab/window but it might just be easier to follow mine and leave your RStudio session as the main focus
+
+### Session 1
+
+- [Understanding Data Types](2.1_DataTypes.html)
+
+### Session 2
+
+- [Working With Text](2.2_TextManipulation.html) 

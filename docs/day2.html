@@ -9,9 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Stevie Pederson" />
 
 
-<title>Home</title>
+<title>Day 1</title>
 
 <script src="site_libs/header-attrs-2.20/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -349,7 +350,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Day 1</h1>
+<h4 class="author">Stevie Pederson</h4>
+<h4 class="date">15 February, 2023</h4>
 
 </div>
 
@@ -382,7 +385,7 @@ aria-hidden="true"></span> </a>
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span> 1
 </p>
@@ -416,12 +419,96 @@ changes </a>
 <div id="strongRMarkdownfilestronguncommittedchanges"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
+<p>The R Markdown is untracked by Git. To know which version of the R
+Markdown file created these results, you’ll want to first commit it to
+the Git repo. If you’re still working on the analysis, you can ignore
+this warning. When you’re finished, you can run
 <code>wflow_publish</code> to commit the R Markdown file and build the
 HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20230204code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20230204)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20230204code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20230204)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr
+project makes it easier to run your code on other machines.</p>
 </div>
 </div>
 </div>
@@ -465,14 +552,21 @@ Ignored files:
     Ignored:    .Rproj.user/
 
 Untracked files:
-    Untracked:  analysis/day1.Rmd
+    Untracked:  analysis/day2.Rmd
 
 Unstaged changes:
+    Deleted:    analysis/d2s1.Rmd
+    Deleted:    analysis/d2s2.Rmd
+    Deleted:    analysis/d2s3.Rmd
+    Deleted:    analysis/d2s4.Rmd
+
+Staged changes:
     Modified:   analysis/_site.yml
     Deleted:    analysis/d1s1.Rmd
     Deleted:    analysis/d1s2.Rmd
     Deleted:    analysis/d1s3.Rmd
     Deleted:    analysis/d1s4.Rmd
+    New:        analysis/day1.Rmd
     Modified:   analysis/index.Rmd
 
 </code></pre>
@@ -488,229 +582,87 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
-
 <p>
-These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML
-(<code>docs/index.html</code>) files. If you’ve configured a remote Git
-repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
-in the table below to view the files as they were in that past version.
+There are no past versions. Publish this analysis with
+<code>wflow_publish()</code> to start tracking its development.
 </p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/black-ochre-data-labs/bodl-intro-r-20220216/blob/dd58dd922c1a180146e54e9ea0ef8953e4b98170/analysis/index.Rmd" target="_blank">dd58dd9</a>
-</td>
-<td>
-Steve Pederson
-</td>
-<td>
-2023-02-08
-</td>
-<td>
-Switched to quarto
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/black-ochre-data-labs/bodl-intro-r-20220216/dd58dd922c1a180146e54e9ea0ef8953e4b98170/docs/index.html" target="_blank">dd58dd9</a>
-</td>
-<td>
-Steve Pederson
-</td>
-<td>
-2023-02-08
-</td>
-<td>
-Switched to quarto
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/black-ochre-data-labs/bodl-intro-r-20220216/blob/554c57c4efbcf473692423bfe8a04864dd0d9c30/analysis/index.Rmd" target="_blank">554c57c</a>
-</td>
-<td>
-Steve Pederson
-</td>
-<td>
-2023-02-06
-</td>
-<td>
-Started adding slides
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/black-ochre-data-labs/bodl-intro-r-20220216/554c57c4efbcf473692423bfe8a04864dd0d9c30/docs/index.html" target="_blank">554c57c</a>
-</td>
-<td>
-Steve Pederson
-</td>
-<td>
-2023-02-06
-</td>
-<td>
-Started adding slides
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/black-ochre-data-labs/bodl-intro-r-20220216/2db446bd1bf1ffd2b114d739324134ed3cdaeab6/docs/index.html" target="_blank">2db446b</a>
-</td>
-<td>
-Steve Pederson
-</td>
-<td>
-2023-02-05
-</td>
-<td>
-Created session templates
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/black-ochre-data-labs/bodl-intro-r-20220216/blob/cb17360c6119a408ea25d336b02124e3d53ebe63/analysis/index.Rmd" target="_blank">cb17360</a>
-</td>
-<td>
-Steve Pederson
-</td>
-<td>
-2023-02-05
-</td>
-<td>
-Initial Commit
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/black-ochre-data-labs/bodl-intro-r-20220216/blob/9f538be81182077cd29820e2db9291c94b620ce0/analysis/index.Rmd" target="_blank">9f538be</a>
-</td>
-<td>
-Steve Pederson
-</td>
-<td>
-2023-02-04
-</td>
-<td>
-Start workflowr project.
-</td>
-</tr>
-</tbody>
-</table>
-</div>
 <hr>
 </div>
 </div>
 </div>
-<div id="bodl-introduction-to-r" class="section level2">
-<h2>BODL: Introduction To R</h2>
-<p>Feb 16-17, 2023<br />
-9am - 5pm<br />
-Board Room 2<br />
-Telethon Kids Institute<br />
-North Tce<br />
-Adelaide SA</p>
-<p><em>Presented by Dr Stevie Pederson, Black Ochre Data Labs</em></p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Yesterday was an applied look at working with data in <code>R</code>.
+Today we’ll still be very applied, but we’ll begin to explore some of
+the more technical aspects to understanding data in <code>R</code></p>
+<div id="data-files" class="section level3">
+<h3>Data Files</h3>
+<p>We’ll continue working with the same files as Day 1</p>
 </div>
-<div id="provisional-timetable" class="section level2">
-<h2>Provisional Timetable</h2>
-<table>
-<colgroup>
-<col width="9%" />
-<col width="48%" />
-<col width="41%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th align="left"><strong>Time</strong></th>
-<th align="left"><strong>Thursday</strong></th>
-<th align="left"><strong>Friday</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">9:00am</td>
-<td align="left">Introduction to <code>R Studio</code> <br> Loading
-Data</td>
-<td align="left">Understanding Data Types in <code>R</code></td>
-</tr>
-<tr class="even">
-<td align="left">10:30am</td>
-<td align="left"><em>Morning Tea</em></td>
-<td align="left"><em>Morning Tea</em></td>
-</tr>
-<tr class="odd">
-<td align="left">11:00am</td>
-<td align="left">Manipulating Data Frames With the
-<code>tidyverse</code></td>
-<td align="left">Manipulating Text <br> Basic Statistical
-Techniques</td>
-</tr>
-<tr class="even">
-<td align="left">12:30pm</td>
-<td align="left"><em>Lunch</em></td>
-<td align="left"><em>Lunch</em></td>
-</tr>
-<tr class="odd">
-<td align="left">1:30pm</td>
-<td align="left">Data Visualisation Using <code>ggplot2</code> <br>
-Making Publication Quality Images</td>
-<td align="left">Iteration <br> Writing Functions</td>
-</tr>
-<tr class="even">
-<td align="left">3:00pm</td>
-<td align="left"><em>Coffee Break</em></td>
-<td align="left"><em>Coffee Break</em></td>
-</tr>
-<tr class="odd">
-<td align="left">3:30pm</td>
-<td align="left">Running Analyses Using <code>R Markdown</code></td>
-<td align="left">The Bioconductor Project</td>
-</tr>
-</tbody>
-</table>
+</div>
+<div id="slides" class="section level2">
+<h2>Slides</h2>
+<p>For most of today, I’ll present some slides and ask you to follow
+some (hopefully) simple instructions. If you want to follow along,
+please open these in a new browser tab/window but it might just be
+easier to follow mine and leave your RStudio session as the main
+focus</p>
+<div id="session-1" class="section level3">
+<h3>Session 1</h3>
+<ul>
+<li><a href="2.1_DataTypes.html">Understanding Data Types</a></li>
+</ul>
+</div>
+<div id="session-2" class="section level3">
+<h3>Session 2</h3>
+<ul>
+<li><a href="2.2_TextManipulation.html">Working With Text</a></li>
+</ul>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.2.2 Patched (2022-11-10 r83330)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 20.04.5 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
+
+locale:
+ [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
+ [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
+ [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+[1] workflowr_1.7.0
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_1.0.10      compiler_4.2.2   pillar_1.8.1     bslib_0.4.2     
+ [5] later_1.3.0      git2r_0.30.1     jquerylib_0.1.4  tools_4.2.2     
+ [9] getPass_0.2-2    digest_0.6.31    jsonlite_1.8.4   evaluate_0.20   
+[13] lifecycle_1.0.3  tibble_3.1.8     pkgconfig_2.0.3  rlang_1.0.6     
+[17] cli_3.6.0        rstudioapi_0.14  yaml_2.3.6       xfun_0.36       
+[21] fastmap_1.1.0    httr_1.4.4       stringr_1.5.0    knitr_1.41      
+[25] fs_1.5.2         vctrs_0.5.1      sass_0.4.4       rprojroot_2.0.3 
+[29] glue_1.6.2       R6_2.5.1         processx_3.8.0   fansi_1.0.4     
+[33] rmarkdown_2.20   callr_3.7.3      magrittr_2.0.3   whisker_0.4.1   
+[37] ps_1.7.2         promises_1.2.0.1 htmltools_0.5.4  httpuv_1.6.8    
+[41] utf8_1.2.2       stringi_1.7.12   cachem_1.0.6    </code></pre>
+</div>
+</div>
 </div>
 
 
