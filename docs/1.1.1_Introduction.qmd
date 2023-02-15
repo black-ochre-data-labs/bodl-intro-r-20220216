@@ -50,6 +50,42 @@ knitr::opts_chunk$set(
     + RAdelaide, BioinfoSummer, SARDI
 - Made [countless]{.underline} typos and horrible decisions
 
+## Helpful Resources
+
+- Two excellent books/web resources are
+    + R For Data Science: https://r4ds.had.co.nz/
+    + The R Graphics Cookbook: https://r-graphics.org/
+
+::: {.columns}
+
+::: {.column width="50%}
+
+::::{.r-stack}
+
+![](https://m.media-amazon.com/images/I/51eTKL+SkeL.jpg){.fragment width="300px" height="450px" fig-align="left"}
+![](assets/Hadley.jpg){.fragment width="100px"}
+
+::::
+
+:::
+
+::: {.column width="50%}
+
+:::: {.r-stack}
+
+![](https://r-graphics.org/cover.jpg){.fragment width="300px" height="450px" fig-align="left}
+
+![](assets/Winston.jpg){.fragment width="100px" fig-align="right"}
+
+::::
+
+:::
+
+:::
+
+----
+
+![](assets/drinks.jpg)
 
 # R {background-color="#3c3c44" background-image=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/512px-R_logo.svg.png background-size="70%" background-opacity="0.5"}
 
@@ -154,6 +190,10 @@ By the end of the day, we'll be able to
     + `RStudio` even comes with extra flashy features not related to `R` 
 - `R` does all the calculations, manages the data, generates plots
 - `RStudio` helps manage our code, displays the plots plus more
+
+::: {.notes}
+Demonstrate the old-school R terminal first
+:::
 
 ## What is RStudio
 

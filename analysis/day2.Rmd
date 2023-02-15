@@ -14,7 +14,9 @@ Today we'll still be very applied, but we'll begin to explore some of the more t
 
 ### Data Files
 
-We'll continue working with the same files as Day 1
+We'll continue working with the same files as Day 1, with one further addition
+
+- [geneExpression.csv](data/geneExpression.csv)
 
 ## Slides
 
@@ -28,3 +30,7 @@ If you want to follow along, please open these in a new browser tab/window but i
 ### Session 2
 
 - [Working With Text](2.2_TextManipulation.html) 
+
+### Session 3
+
+- [Basic Statistics](2.3_BasicStatistics.html) 

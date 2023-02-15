@@ -18,6 +18,9 @@ Adelaide SA
 
 ## Provisional Timetable
 
+**NB** We will take lunch late on Day 1 to allow for people to attend Dawn's presentation (2pm) and Nick Wong's Memorial (1:30pm).
+We will discuss on the day
+
 | **Time** | **Thursday**                     | **Friday**                    |
 |:------ |:---------------------------------- |:----------------------------- |
 |9:00am  | Introduction to `R Studio` <br> Loading Data | Understanding Data Types in `R` |
