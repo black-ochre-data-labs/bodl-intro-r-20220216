@@ -388,18 +388,10 @@ fTest
 All tests gave similar looking output.
 
 - Objects of class `htest`
+    - Print & markdown formatting methods exist for this class
+    - `tibble` coercion also exists
 - These are list objects
-
-```{r}
-class(fTest)
-typeof(fTest)
-str(fTest)
-```
-
-```{r, echo=FALSE}
-knitr::opts_chunk$set(eval = FALSE)
-```
-
+    + We can simply grab any values we need
 
 
 # Regression {background-color="#3c3c44"}
@@ -425,193 +417,217 @@ Linear Regression always uses the `R` formula syntax
 
 - `y ~ x` means `y` depends on `x`
     + i.e. $y = \beta_0 + \beta_1x$
+    + The Intercept term is assumed unless explicitly removed (`~ 0 + ...`)
 - We use the function `lm()`
-- The Intercept term is assumed unless explicitly removed (`~ 0 + ...`)
 
 ```{r}
-lmTooth <- lm(len ~ supp , data = toothData) 
+lm_tooth <- lm(len ~ supp , data = toothData) 
 ```
-
 
 ## Linear Regression
 
-What is the structure of this object?
-
 ```{r}
-class(lmTooth)
-typeof(lmTooth)
-str(lmTooth)
+lm_tooth <- lm(len ~ supp , data = toothData) 
 ```
 
+
+- Produces an `list` object of class `lm`
+- `print.lm` methods exist
+    + Not quite as helpful as for `htest`
+    
 . . .
 
-```{r}
-anova(lmTooth)
-summary(lmTooth)
+```{r, results='hide'}
+names(lm_tooth)
+glimpse(lm_tooth)
+lm_tooth
+```
+
+## Linear Regression
+
+- `pander` also works nicely
+
+```{r, results='asis'}
+pander(lm_tooth)
+```
+
+## Linear Regression
+
+- `pander()` actually calls `summary()` before printing
+    + This produces the main output table we look for
+    
+```{r, results='markup'}
+summary(lm_tooth)
+```
+
+## Linear Regression
+
+- We can also run a simple ANOVA
+
+```{r, results='markup'}
+anova(lm_tooth)
 ```
 
 ## Linear Regression
 
 - Both `anova()` and `summary()` also create objects
+    + `anova()` creates a `data.frame`
+    + `summary()` creates a `list`
 
-```{r}
-class(anova(lmTooth))
-class(summary(lmTooth))
-typeof(summary(lmTooth))
+```{r, results='hide'}
+anova_tooth <- anova(lm_tooth)
+class(anova_tooth)
+summary_lm_tooth <- summary(lm_tooth)
+class(summary_lm_tooth)
+typeof(summary_lm_tooth)
+glimpse(summary_lm_tooth)
 ```
 
+. . .
+
+- Again we can extract or create tables as needed
+
+```{r, results='hide'}
+summary_lm_tooth$coefficients
+```
 
 
 ## Linear Regression
 
-- It looks like `supp == VC` reduces the length of the teeth
-- In reality we'd like to see if dose has an effect as well
+- `broom::tidy()` also works on all objects
+    + Calls `summary()` on the basic `lm` object
 
 ```{r}
-lmToothDose <- lm(len ~ supp + dose, data = toothData) 
-anova(lmToothDose)
-summary(lmToothDose)
+tidy(anova_tooth)
+tidy(lm_tooth)
+tidy(summary_lm_tooth)
 ```
 
-- It looks like an increasing dose-level increases length
+## Regression Diagnostics
 
-## Linear Regression | Interaction Terms {.build}
+- Passing an object of class `lm` to `plot()` produces 4 diagnostic plots
+    + The are produced in series
+- Can be produced in one call by setting the plot device to be two rows and two columns
+   + `par()` is used to set global plotting parameters
+   + `mfrow` is for Multi-Frame Row-wise plots
 
-Do the values for `supp == VC` stay `-3.70` below `supp == OC`?
-
-- We could include an **interaction term**
-
-```{r}
-lmToothInteraction <- lm(len ~ supp + dose + supp:dose, 
-                         data = toothData) 
-summary(lmToothInteraction)
-anova(lmToothInteraction)
-```
-
-- It looks like at the higher doses, this difference disappears
-
-## Linear Regression | Interaction Terms
-
-An alternative way to write the previous model is:
-
-```{r}
-lmToothInteraction <- lm(len ~ (supp + dose)^2, 
-                         data = toothData)
-summary(lmToothInteraction)
-anova(lmToothInteraction)
-```
-
-## Linear Regression | Model Selection
-
-Which model should we choose?
-
-```{r}
-anova(lmTooth, lmToothDose, lmToothInteraction)
-```
-
-## Linear Regression 
-
-Are we happy with our model assumptions?
-
-1. Normally distributed
-2. Constant Variance
-3. Linear relationship
-
-```{r}
-par(mfrow = c(1,2))
-plot(lmToothInteraction, which = 1:2)
+```{r lm-diagnostics, fig.show='hide'}
+par(mfrow = c(2, 2))
+plot(lm_tooth)
 par(mfrow = c(1, 1))
 ```
 
-<!-- ## Logistic Regression | `glm()` -->
+## Regression Diagnostics
 
-<!-- Logistic Regression models probabilities (e.g. $H_0: \pi = 0$) -->
+- Can be produced manually using `ggplot`
+    + Only needed if specifically required
 
-<!-- - We need to specify two columns to the model -->
-<!-- - One represents successes, the other failures -->
-<!-- - This is `binomial` data, $\pi$ is the probability of success -->
-
-<!-- ```{r} -->
-<!-- pass_df <- as.data.frame(pass) %>% -->
-<!--   rownames_to_column("Attendance") -->
-<!-- ``` -->
-
-<!-- ## Logistic Regression | `glm()` -->
-
-<!-- Does attendance affect the probability of passing? -->
-
-<!-- - `glm()` can take numerous families (e.g. `Poisson`) -->
-
-<!-- ```{r} -->
-<!-- glmPass <- glm(cbind(Pass, Fail) ~ Attendance,  -->
-<!--                data = pass_df,  -->
-<!--                family = "binomial") -->
-<!-- summary(glmPass) -->
-<!-- ``` -->
-
-
-<!-- ## Mixed Effects Models | `lme4` -->
-
-<!-- Mixed effects models include: -->
-
-<!-- 1) Fixed effects & 2) Random effects -->
-
-<!-- May need to nest results within a biological sample, include day effects etc. -->
-
-<!-- ```{r} -->
-<!-- Rabbit <- MASS::Rabbit -->
-<!-- glimpse(Rabbit) -->
-<!-- ``` -->
-
-<!-- ## Mixed Effects Models | `lme4` -->
-
-<!-- Here we have the change in Blood pressure within the same 5 rabbits -->
-
-<!-- - 6 dose levels of control + 6 dose levels of `MDL` -->
-<!-- - Just looking within one rabbit -->
-
-<!-- ```{r} -->
-<!-- filter(Rabbit, Animal == "R1") -->
-<!-- ``` -->
+```{r plot-qq, fig.show='asis'}
+#| output-location: column
+tibble(
+  fitted = fitted(lm_tooth),
+  resid = resid(lm_tooth),
+  standard = rstandard(lm_tooth)
+) %>% 
+  ggplot(aes(sample = standard)) +
+  stat_qq(shape = 21) +
+  stat_qq_line(linetype = 3) +
+  ggtitle("Normal Q-Q") +
+  labs(
+    x = "Theoretical Quantiles",
+    y = "Standardized Residuals"
+  ) +
+  scale_y_continuous(
+    expand = expansion(c(0, 0))
+  ) +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+  
 
 
-<!-- ## Mixed Effects Models | `lme4` -->
 
-<!-- If fitting within one rabbit: -->
+## Interaction Terms 
 
-<!-- ```{r} -->
-<!-- lmRabbit1 <- lm(BPchange~(Treatment + Dose)^2,  -->
-<!--                 data = filter(Rabbit, Animal == "R1")) -->
-<!-- summary(lmRabbit1) -->
-<!-- ``` -->
+- The previous model assumed that tooth length increased by 3.7 across all dose levels
+- Do we believe that?
 
-<!-- ## Mixed Effects Models | `lme4` -->
+```{r re-boxplot-teeth, ref.label='boxplot-teeth', fig.show='asis'}
+#| output-location: column
+```
 
-<!-- To nest within each rabbit we: -->
+## Interaction Terms
 
-<!-- - Use `lmer()` from `lme4` -->
-<!-- - Introduce a random effect `(1|Animal)` -->
+- Adding `dose` to the model would define a new baseline (Intercept) for each dose level
+    + `lm ~ dose + supp`
+    + The difference is still assumed constant
 
-<!-- ```{r} -->
-<!-- library(lme4) -->
-<!-- lmeRabbit <- lmer(BPchange~Treatment + Dose + (1|Animal),  -->
-<!--                   data = Rabbit) -->
-<!-- summary(lmeRabbit) -->
-<!-- coef(summary(lmeRabbit)) -->
-<!-- ``` -->
+```{r, results='asis'}
+#| output-location: fragment
+lm_dose <- lm(len ~ dose + supp, data = toothData) 
+pander(lm_dose)
+```
 
-<!-- ## Mixed Effects Models | `lmerTest`  -->
 
-<!-- This gives $t$-statistics, but no $p$-value -->
+## Interaction Terms
 
-<!-- **Why?** -->
+- Including an interaction term allows for a different effect at each level
 
-<!-- ```{r} -->
-<!-- library(lmerTest) -->
-<!-- lmeRabbit <- lmer(BPchange~(Treatment + Dose)^2 + (1|Animal),  -->
-<!--                   data = Rabbit) -->
-<!-- summary(lmeRabbit) -->
-<!-- ``` -->
+```{r, results='asis'}
+#| output-location: fragment
+lm_interaction <- lm(len ~ dose + supp + dose:supp, data = toothData) 
+pander(lm_interacton)
+```
+
+
+## Interaction Terms
+
+- The complete manual specification was `len ~ dose + supp + dose:supp`
+- A shorthand is `len ~ dose * supp`
+- When dealing with multiple terms `len ~ (dose + supp)^2`
+    + The exponent sets the level of interactions
+    
+. . .
+
+- Interaction terms usually require careful thought...
+    + 3-level interactions get really confusing
+
+## Model Selection
+
+**Which model should we choose?**
+
+- Running an ANOVA on multiple *related* models compares the reduction in the residual Sum of Squares
+
+```{r}
+anova(lm_tooth, lm_dose, lm_interaction)
+```
+
+. . .
+
+- The p-value tests H~0~: No improvement in model fit when removing the next term
+    + Clearly the interaction term improves the fit and should remain
+    + This makes intuitive sense
+
+## Other Types of Regression
+
+- `lm` fits conventional linear regression, i.e. Normal Residuals
+    + Also assumes all effects are fixed effects
+    
+. . .
+
+- Mixed effects models are best fit using `lme4::lmer()`
+    + Can be clunky syntax, random effects specified using `(1|variable)`
+    + No $p$-values provided $\implies$ `lmerTest`
+    
+. . .
+
+- Poisson and Logistic Regression can be fit using `glm()`
+    + Logistic: `glm(..., family = binomial())`
+    + Poisson: `glm(..., family = poisson())`
+
+. . .
+
+- Robust Regression using `MASS::rlm()`
+
 
 # Other Statistical Tools
 
@@ -625,13 +641,15 @@ Also the package `multcomp` is excellent
 
 ## PCA
 
-- Here we have 50 genes, from two T cell types: Stimulated & Resting
+- Here we have 50 genes:
+    + Two T cell types (Th and Treg)
+    + Two treatments: Stimulated (+) & Resting (-)
 - `PCA` needs a matrix, so I'll transform as I load
 
 ```{r}
 genes <- read_csv("data/geneExpression.csv") %>%
-  as.data.frame() %>%
-  column_to_rownames("X1") %>%
+  as.data.frame() %>% 
+  column_to_rownames("ID") %>%
   as.matrix() 
 dim(genes)
 ```
@@ -643,85 +661,195 @@ dim(genes)
 - Transpose the data using `t()`
 - Run `PCA` using `prcomp()`
 
-```{r}
-pcaGenes <- genes %>% t() %>% prcomp()
+```{r generic-pca}
+#| output-location: column
+pcaGenes <- genes %>% 
+  t() %>% 
+  prcomp()
 summary(pcaGenes)
 biplot(pcaGenes)
-screeplot(pcaGenes)
 ```
 
 ## PCA
 
-If we'd like to see how our samples group:
-
-- Create a `tibble` using the sample names
+- I don't find the standard functions very friendly
+- `broom::tidy()` is far more convenient
 
 ```{r}
-samples <- tibble(name = colnames(genes)) %>%
-  mutate(CellType = str_extract(name, "(Th|Treg)"),
-         Stim = str_detect(name, "\\+"))
+pca_df <- tidy(pcaGenes)
+pca_df
+```
+
+. . .
+
+- We still might like sample-level information
+
+```{r}
+pca_df <- tidy(pcaGenes) %>% 
+  mutate(
+    cell_type = str_extract(row, "(Th|Treg)") %>% 
+      as_factor(),
+    treat = case_when(
+      str_detect(row, "\\+") ~ "Stim",
+      str_detect(row, "\\-") ~ "Resting"
+    ) %>% 
+      fct(levels = c("Resting", "Stim")),
+    group = fct_cross(cell_type, treat, sep = " - ")
+  ) 
+```
+
+
+## PCA
+
+- Now we can plot more easily
+
+```{r plot-pca, fig.show='asis'}
+#| output-location: column
+library(ggrepel)
+pca_df %>% 
+  dplyr::filter(PC %in% 1:2) %>% 
+  pivot_wider(
+    names_from = "PC", 
+    values_from = "value", 
+    names_prefix = "PC"
+  ) %>% 
+  ggplot(aes(PC1, PC2, colour = treat)) +
+  geom_point(
+    aes(shape = cell_type), size = 3
+  ) +
+  geom_label_repel(
+    aes(label = row), show.legend = FALSE
+  ) +
+  scale_colour_manual(
+    values = hcl.colors(2, "Zissou1")
+  ) +
+  scale_shape_manual(values = c(21, 19)) +
+  labs(shape = "Cell Type", colour = "Treatment")
 ```
 
 ## PCA
 
-The co-ordinates on each component are in `pcaGenes$x`
+- Alternatively
 
-Now we can convert to a `data.frame` and `left_join()`
-
-```{r}
-pcaGenes$x %>%
-  as.data.frame() %>%
-  rownames_to_column("name") %>%
-  left_join(samples) %>%
-  ggplot(
-    aes(x = PC1, y = PC2, colour = CellType, shape = Stim)
+```{r plot-pca2, fig.show='asis'}
+#| output-location: column
+library(ggrepel)
+pca_df %>% 
+  dplyr::filter(PC %in% 1:2) %>% 
+  pivot_wider(
+    names_from = "PC", 
+    values_from = "value", 
+    names_prefix = "PC"
+  ) %>% 
+  ggplot(aes(PC1, PC2, colour = group)) +
+  geom_point(
+    aes(shape = group), size = 3
   ) +
-  geom_point(size = 2)
-```
-
-## Making Plots Interactive
-
-- The package `plotly` enables interactive plots
-- We need to specify all variables in the *"tool-tip"*
-
-```{r}
-library(plotly)
-```
-
-## Making Plots Interactive
-
-We can add any custom parameter to a plot
-
-```{r}
-pcaPlot <- pcaGenes$x %>%
-  as.data.frame() %>%
-  rownames_to_column("name") %>%
-  left_join(samples) %>%
-  ggplot(
-    aes(PC1, PC2, 
-        colour = CellType, shape = Stim, label = name)
+  scale_colour_manual(
+    values = rep(hcl.colors(2, "Zissou1"), 2)
   ) +
-  geom_point(size = 2) +
-  theme(legend.position = "none")
+  scale_shape_manual(values = c(21, 21, 19, 19)) +
+  labs(shape = "Group", colour = "Group") +
+  theme(
+    legend.position = c(0.99, 0.01),
+    legend.justification =  c(1, 0)
+  )
 ```
 
-## Making Plots Interactive
+## Multiple Panels
+
+::: {.panel-tabset}
+
+### PC1 vs PC2
 
 ```{r}
-ggplotly(pcaPlot)
+C <- pca_df %>% 
+  dplyr::filter(PC %in% 1:2) %>% 
+  pivot_wider(
+    names_from = "PC", 
+    values_from = "value", 
+    names_prefix = "PC"
+  ) %>% 
+  ggplot(aes(PC1, PC2, colour = group)) +
+  geom_point(
+    aes(shape = group), size = 3
+  ) +
+  scale_colour_manual(
+    values = rep(hcl.colors(2, "Zissou1"), 2)
+  ) +
+  scale_shape_manual(values = c(21, 21, 19, 19)) +
+  labs(shape = "Group", colour = "Group") 
 ```
 
-## Making Plots Interactive
-
-We can select the parameters to show in the tool-tip
+### PC1 Vs PC3
 
 ```{r}
-ggplotly(pcaPlot, tooltip = c("colour", "shape", "label"))
+A <- pca_df %>% 
+  dplyr::filter(PC %in% c(1, 3)) %>% 
+  pivot_wider(
+    names_from = "PC", 
+    values_from = "value", 
+    names_prefix = "PC"
+  ) %>% 
+  ggplot(aes(PC1, PC3, colour = group)) +
+  geom_point(
+    aes(shape = group), size = 3
+  ) +
+  scale_colour_manual(
+    values = rep(hcl.colors(2, "Zissou1"), 2)
+  ) +
+  scale_shape_manual(values = c(21, 21, 19, 19)) +
+  labs(shape = "Group", colour = "Group") 
+```
+
+### PC2 Vs PC3
+
+```{r}
+B <- pca_df %>% 
+  dplyr::filter(PC %in% c(2, 3)) %>% 
+  pivot_wider(
+    names_from = "PC", 
+    values_from = "value", 
+    names_prefix = "PC"
+  ) %>% 
+  ggplot(aes(PC2, PC3, colour = group)) +
+  geom_point(
+    aes(shape = group), size = 3
+  ) +
+  scale_colour_manual(
+    values = rep(hcl.colors(2, "Zissou1"), 2)
+  ) +
+  scale_shape_manual(values = c(21, 21, 19, 19)) +
+  labs(shape = "Group", colour = "Group") 
+```
+
+### Cumulative Variance
+
+```{r}
+library(scales)
+D <- pcaGenes %>% 
+  summary() %>% 
+  .[["importance"]] %>% 
+  as_tibble(rownames = "Type") %>% 
+  pivot_longer(cols = starts_with("PC"), names_to = "PC") %>% 
+  dplyr::filter(str_detect(Type, "^Proportion")) %>% 
+  mutate(PC = fct_inorder(PC) %>% fct_relabel(str_remove, "PC")) %>% 
+  ggplot(aes(PC, value)) +
+  geom_col(fill = "grey", colour = "black") +
+  scale_y_continuous(expand = expansion(c(0, 0.05)), labels = percent) +
+  labs(x = "Principal Component", y = "% Variance")
+```
+
+:::
+
+## Combined PCA Plot
+
+```{r plot-full-pca, fig.width=9, fig.height=6}
+library(patchwork)
+(A + B) / (C + D) +
+  plot_layout(guides = "collect") + 
+  plot_annotation(tag_levels = "A")
 ```
 
 
----
 
-<div class="footer" style="text-align:center;width:25%">
-[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2018/)
-</div>
