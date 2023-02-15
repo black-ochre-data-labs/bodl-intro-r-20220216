@@ -1,0 +1,710 @@
+---
+title: "Basic Statistics"
+subtitle: "BODL R Training"
+author: "Dr Stevie Pederson"
+institute: "Black Ochre Data Labs<br>Telethon Kids Institute"
+date: "2023-02-17"
+date-format: long
+title-slide-attributes:
+    data-background-color: "#3c3c44"
+    data-background-image: assets/bodl_logo_white_background.jpg
+    data-background-opacity: "0.3"
+    data-background-size: "90%"
+editor: source
+format: 
+  revealjs:
+    theme: [../custom.scss]
+    code-line-numbers: false
+    width: 1024
+    height: 768
+    sansfont: Times New Roman
+    logo: assets/bodl_logo_white_background.jpg
+---
+
+```{r setup, echo = FALSE, include = FALSE}
+if (interactive()) setwd(here::here("docs"))
+knitr::opts_chunk$set(
+  echo = TRUE, include = TRUE, warning = FALSE, message = FALSE, 
+  fig.align = "center", results = 'hide', fig.show = "asis",
+  fig.width = 6,
+  collapse=TRUE
+)
+```
+
+# Basic Statistical Techniques {background-color="#3c3c44"}
+
+## Introduction
+
+- `R` has it's origins as a statistical analysis language (i.e. `S`)
+- Purpose of this session is NOT to teach statistics
+- I am a Bioinformatician NOT statistician
+- How do we perform simple analyses in R?
+    - Up to you to know what you're doing
+    - Or **talk to your usual statistician**
+
+## Distributions
+
+- `R` comes with nearly every distribution
+- Standard syntax for accessing each
+
+## Distributions 
+
+| Distribution | Density   | Area Under Curve | Quantile  | Random    |
+|:------------ |:--------- |:---------------- |:--------- |:--------- |
+| Normal       | `dnorm()` | `pnorm()`        | `qnorm()` | `rnorm()` |
+| T            | `dt()`    | `pt()`           | `qt()`    | `rt()`    |
+| Uniform      | `dunif()` | `punif()`        | `qunif()` | `runif()` |
+| Exponential  | `dexp()`  | `pexp()`         | `qexp()`  | `rexp()`  |
+| $\chi^2$     | `dchisq()` | `pchisq()`      | `qchisq()` | `rchisq()` |
+| Binomial     | `dbinom()` | `pbinom()`      | `qbinom()` | `rbinom()` |
+<!-- | Poisson      | `dpois()` | `ppois()`        | `qpois()` | `rpois()` | -->
+
+## Distributions 
+
+- Also Poisson, Beta, $\Gamma$, Log-Normal, F, Geometric, Cauchy, Hyper-geometric etc...
+
+```{r dist-help, eval=FALSE}
+?Distributions
+```
+
+
+## Distributions
+
+Take a random sample from a few important distributions
+
+```{r randomSamples}
+library(tidyverse)
+randomSamples <- list(
+  Normal = rnorm(1000, mean = 1, sd = 1),
+  Uniform = runif(1000, min = -0.732, max = 2.732),
+  Exponential = rexp(1000, rate = 1),
+  Poisson = rpois(1000, lambda = 1)
+)
+```
+
+These were all sampled from distributions with $\mu = 1$; $\sigma = 1$
+
+## Distributions {.smaller}
+
+- Normal
+    + The most common distribution (i.e. Bell Curve)
+    + Most statistical theory developed for this type of data
+    
+. . .
+
+- Uniform
+    + Can appear anywhere within a range, with equal probability
+    + Most common example: $p$-values under $H_0$
+
+. . .
+
+- Exponential
+    + Continuous data
+    + Common example is the time between events occurring
+
+. . .
+
+- Poisson
+    + Discrete (i.e. count) data
+    + Number of phone calls per minute
+    + Number of alignments per kb
+
+## Distributions 
+
+**Why are the sample means & std. deviations not exactly equal to 1?**
+
+```{r means_pander, echo=FALSE, include=TRUE, results='asis'}
+library(pander)
+randomSamples %>% 
+  lapply(function(x) tibble(mn = mean(x), sd = sd(x))) %>% 
+  bind_rows(.id = "Distribution") %>% 
+  pander(
+    justify = "lrr",
+    col.names = c("Distribution", "$\\hat{\\mu}$", "$\\hat{\\sigma}$")
+  )
+```
+
+
+## All Densities
+
+```{r plot-dist, echo=FALSE, fig.show='asis', fig.align='center', fig.width=8, fig.height=6}
+theme_set(theme_bw())
+randomSamples %>%
+  lapply(as_tibble_col) %>% 
+  bind_rows(.id = "Distribution") %>% 
+  ggplot(aes(x = value, fill = Distribution)) +
+  geom_histogram(colour = "grey50", alpha = 0.7, bins = 50) +
+  geom_vline(xintercept = 1, linetype = 2, colour = "blue") +
+  facet_wrap(~Distribution, ncol = 2, scales = "free")  +
+  theme(text = element_text(size = 14))
+```
+
+## All Densities
+
+```{r boxplot-dist, echo=FALSE, fig.show='asis', fig.width=8, fig.height=6, fig.align='center'}
+randomSamples %>%
+  lapply(as_tibble_col) %>% 
+  bind_rows(.id = "Distribution") %>% 
+  ggplot(aes(x = Distribution, y = value, fill = Distribution)) +
+  geom_boxplot(colour = "grey50", alpha = 0.7) +
+  geom_hline(yintercept = 1, linetype = 2, colour = "blue") +
+  theme(text = element_text(size = 14))
+```
+
+# Basic Tests  {background-color="#3c3c44"}
+
+## Data For This Session
+
+We'll use the `toothData` dataset we saw yesterday
+
+- Length of teeth in rats
+- Two vitamin C supplementation methods
+- Three dose levels
+
+```{r, results='hide'}
+toothData <- read_csv("data/toothData.csv") %>%
+  mutate(
+    dose = fct(dose, levels = c("Low", "Med", "High")),
+    supp = as_factor(supp)
+  )
+glimpse(toothData)
+```
+
+## Data For This Session
+
+```{r boxplot-teeth, fig.width=8, fig.height=6, fig.align='center'}
+#| output-location: column
+ggplot(
+  toothData, 
+  aes(x = dose, y = len, fill = supp)) +
+  geom_boxplot() +
+  theme_bw() +
+  theme(text = element_text(size = 16))
+```
+
+
+## t-tests
+
+- Data should be normally distributed
+- $t$-tests always test $H_0$ Vs $H_A$
+    - (We may not always do meaningful tests today)
+
+## t-tests
+
+- The simplest test is on a simple vector
+    + The below is a bit of a dumb test
+    + Demonstrates the code (not the statistics)
+
+```{r}
+?t.test
+t.test(toothData$len)
+```
+
+**What is $H_0$ in the above test?**
+
+. . .
+
+$$
+H_0: \mu = 0\\
+H_A: \mu \neq 0
+$$
+
+## t-tests
+
+$$
+H_0: \mu_{1} = \mu_{2} \\
+H_A: \mu_{1} \neq \mu_{2}
+$$
+
+We could use two vectors (i.e. `x` & `y`)
+
+```{r}
+x <- toothData$len[toothData$supp == "VC"]
+y <- toothData$len[toothData$supp == "OJ"]
+t.test(x, y)
+```
+
+**Is this a paired test?**
+
+## t-tests
+
+$$
+H_0: \mu_{1} = \mu_{2} \\
+H_A: \mu_{1} \neq \mu_{2}
+$$
+
+Or we could use the `R` formula method:
+
+`len~supp`: *len* (the response) is dependent on *supp* (the predictor)
+
+```{r}
+t.test(len~supp, data = toothData)
+```
+
+**Did this give the same results?**
+
+## Working With Objects of Class `htest()`
+
+- The results of `t.test()` are of class `htest`
+
+```{r ttest-res, results='hide'}
+res <- t.test(len~supp, data = toothData)
+class(res)
+typeof(res)
+glimpse(res)
+```
+
+. . .
+
+```{r print-res, results='markup'}
+#| output-location: default
+res
+```
+
+- When we type the object name: `print()` is called
+- `print()` actually looks for a function `print.htest()`
+- This is known as an `S3` method
+    + More on these later
+
+## Working With Objects of Class `htest()`
+
+- We know these objects are just a list
+    + Can grab any values we want
+    
+```{r res-details, results='markup'}
+names(res)
+res$statistic
+res$parameter
+res$p.value
+res$conf.int
+```
+
+. . .
+
+- We can place these inline using \``r`\`
+
+## Working With Objects of Class `htest()`
+
+- `pander` is excellent for formatting the complete results 
+
+```{r pander-res, results='asis'}
+pander(res, split.table = Inf)
+```
+
+## Working With Objects of Class `htest()`
+
+- `tidy()` from the package `broom` will produced a `tibble()`
+
+```{r results='markup'}
+library(broom)
+tidy(res)
+```
+
+
+## Wilcoxon Tests  
+
+- We assumed the data was normally distributed: **What if it's not?**
+- Non-parametric alternative is the *Wilcoxon Rank-Sum* (aka *Mann-Whitney*)
+
+$$
+H_0: \text{Distribution}_1 = \text{Distribution}_2 \\
+H_A: \text{Distribution}_1 \neq \text{Distribution}_2
+$$
+
+## Wilcoxon Tests 
+
+- This assigns *ranks* to each value based on their value
+    - Tied values can be problematic
+    + Test is based on *ranks* not values
+- Still produces an object f class `htest`
+
+```{r wilcox-test, results='markup'}
+#| output-location: fragment
+res <- wilcox.test(len~supp, data = toothData)
+class(res)
+names(res)
+res
+```
+
+
+## $\chi^2$ Test
+
+- Here we need counts
+- Often a $2 \times 2$ table
+- Commonly used in *Observed Vs Expected*
+
+$$
+H_0: \text{No dependence between groups and outcome}\\
+H_A: \text{Dependence between groups and outcome}
+$$
+
+
+## $\chi^2$ Test
+
+```{r, results='markup'}
+pass <- matrix(c(25, 8, 6, 15), nrow = 2)
+colnames(pass) <- c("Pass", "Fail")
+rownames(pass) <- c("Attended", "Skipped")
+pass
+```
+
+. . .
+
+```{r, results='markup'}
+res <- chisq.test(pass)
+names(res)
+class(res)
+res
+```
+
+. . .
+
+**Can anyone remember when we shouldn't use a $\chi^2$ test?**
+
+## Fisher's Exact Test
+
+- $\chi^2$ tests became popular in the days of the printed tables
+    - We now have computers
+- Fisher's Exact Test is preferable in the cases of low cell counts
+    - Uses the hypergeometric distribution
+- Same $H_0$ as the $\chi^2$ test
+
+```{r, results = 'markup'}
+fTest <- fisher.test(pass)
+names(fTest)
+class(fTest)
+fTest
+```
+
+## Basic Hypothesis Testing
+
+1. $t$-tests
+2. Wilcoxon Rank-Sum tests (aka Mann-Whitney)
+3. $\chi^2$ tests
+4. Fisher's Exact Test
+
+## Basic Hypothesis Testing
+
+All tests gave similar looking output.
+
+- Objects of class `htest`
+- These are list objects
+
+```{r}
+class(fTest)
+typeof(fTest)
+str(fTest)
+```
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+
+
+# Regression
+
+## Linear Regression
+
+Recap: We are trying to estimate a line
+
+$$
+y = ax + b
+$$
+
+Or 
+
+$$
+y = \beta_0 + \beta_1 x
+$$
+
+
+## Linear Regression
+
+Linear Regression always uses the `R` formula syntax
+
+- `y ~ x` means `y` is a function of `x`
+- We use the function `lm()`
+- The Intercept term is assumed unless explicitly removed (`~ 0 + ...`)
+
+```{r}
+lmTooth <- lm(len ~ supp , data = toothData) 
+anova(lmTooth)
+summary(lmTooth)
+```
+
+
+## Linear Regression
+
+What is the structure of this object?
+
+```{r}
+class(lmTooth)
+typeof(lmTooth)
+str(lmTooth)
+```
+
+
+## Linear Regression
+
+- It looks like `supp == VC` reduces the length of the teeth
+- In reality we'd like to see if dose has an effect as well
+
+```{r}
+lmToothDose <- lm(len ~ supp + dose, data = toothData) 
+anova(lmToothDose)
+summary(lmToothDose)
+```
+
+- It looks like an increasing dose-level increases length
+
+## Linear Regression | Interaction Terms {.build}
+
+Do the values for `supp == VC` stay `-3.70` below `supp == OC`?
+
+- We could include an **interaction term**
+
+```{r}
+lmToothInteraction <- lm(len ~ supp + dose + supp:dose, 
+                         data = toothData) 
+summary(lmToothInteraction)
+anova(lmToothInteraction)
+```
+
+- It looks like at the higher doses, this difference disappears
+
+## Linear Regression | Interaction Terms
+
+An alternative way to write the previous model is:
+
+```{r}
+lmToothInteraction <- lm(len ~ (supp + dose)^2, 
+                         data = toothData)
+summary(lmToothInteraction)
+anova(lmToothInteraction)
+```
+
+## Linear Regression | Model Selection
+
+Which model should we choose?
+
+```{r}
+anova(lmTooth, lmToothDose, lmToothInteraction)
+```
+
+## Linear Regression 
+
+Are we happy with our model assumptions?
+
+1. Normally distributed
+2. Constant Variance
+3. Linear relationship
+
+```{r}
+par(mfrow = c(1,2))
+plot(lmToothInteraction, which = 1:2)
+par(mfrow = c(1, 1))
+```
+
+<!-- ## Logistic Regression | `glm()` -->
+
+<!-- Logistic Regression models probabilities (e.g. $H_0: \pi = 0$) -->
+
+<!-- - We need to specify two columns to the model -->
+<!-- - One represents successes, the other failures -->
+<!-- - This is `binomial` data, $\pi$ is the probability of success -->
+
+<!-- ```{r} -->
+<!-- pass_df <- as.data.frame(pass) %>% -->
+<!--   rownames_to_column("Attendance") -->
+<!-- ``` -->
+
+<!-- ## Logistic Regression | `glm()` -->
+
+<!-- Does attendance affect the probability of passing? -->
+
+<!-- - `glm()` can take numerous families (e.g. `Poisson`) -->
+
+<!-- ```{r} -->
+<!-- glmPass <- glm(cbind(Pass, Fail) ~ Attendance,  -->
+<!--                data = pass_df,  -->
+<!--                family = "binomial") -->
+<!-- summary(glmPass) -->
+<!-- ``` -->
+
+
+<!-- ## Mixed Effects Models | `lme4` -->
+
+<!-- Mixed effects models include: -->
+
+<!-- 1) Fixed effects & 2) Random effects -->
+
+<!-- May need to nest results within a biological sample, include day effects etc. -->
+
+<!-- ```{r} -->
+<!-- Rabbit <- MASS::Rabbit -->
+<!-- glimpse(Rabbit) -->
+<!-- ``` -->
+
+<!-- ## Mixed Effects Models | `lme4` -->
+
+<!-- Here we have the change in Blood pressure within the same 5 rabbits -->
+
+<!-- - 6 dose levels of control + 6 dose levels of `MDL` -->
+<!-- - Just looking within one rabbit -->
+
+<!-- ```{r} -->
+<!-- filter(Rabbit, Animal == "R1") -->
+<!-- ``` -->
+
+
+<!-- ## Mixed Effects Models | `lme4` -->
+
+<!-- If fitting within one rabbit: -->
+
+<!-- ```{r} -->
+<!-- lmRabbit1 <- lm(BPchange~(Treatment + Dose)^2,  -->
+<!--                 data = filter(Rabbit, Animal == "R1")) -->
+<!-- summary(lmRabbit1) -->
+<!-- ``` -->
+
+<!-- ## Mixed Effects Models | `lme4` -->
+
+<!-- To nest within each rabbit we: -->
+
+<!-- - Use `lmer()` from `lme4` -->
+<!-- - Introduce a random effect `(1|Animal)` -->
+
+<!-- ```{r} -->
+<!-- library(lme4) -->
+<!-- lmeRabbit <- lmer(BPchange~Treatment + Dose + (1|Animal),  -->
+<!--                   data = Rabbit) -->
+<!-- summary(lmeRabbit) -->
+<!-- coef(summary(lmeRabbit)) -->
+<!-- ``` -->
+
+<!-- ## Mixed Effects Models | `lmerTest`  -->
+
+<!-- This gives $t$-statistics, but no $p$-value -->
+
+<!-- **Why?** -->
+
+<!-- ```{r} -->
+<!-- library(lmerTest) -->
+<!-- lmeRabbit <- lmer(BPchange~(Treatment + Dose)^2 + (1|Animal),  -->
+<!--                   data = Rabbit) -->
+<!-- summary(lmeRabbit) -->
+<!-- ``` -->
+
+# Other Statistical Tools
+
+## Mutiple Testing in R
+
+The function `p.adjust()` takes the argument `method = ...`
+
+- We can select from `c("fdr", "BH", "BY", "holm", "bonferroni")`
+
+Also the package `multcomp` is excellent
+
+## PCA
+
+- Here we have 50 genes, from two T cell types: Stimulated & Resting
+- `PCA` needs a matrix, so I'll transform as I load
+
+```{r}
+genes <- read_csv("data/geneExpression.csv") %>%
+  as.data.frame() %>%
+  column_to_rownames("X1") %>%
+  as.matrix() 
+dim(genes)
+```
+
+## PCA
+
+- Our variable of interest here is the cell-types (columns)
+- We need to set that as the row variable:
+- Transpose the data using `t()`
+- Run `PCA` using `prcomp()`
+
+```{r}
+pcaGenes <- genes %>% t() %>% prcomp()
+summary(pcaGenes)
+biplot(pcaGenes)
+screeplot(pcaGenes)
+```
+
+## PCA
+
+If we'd like to see how our samples group:
+
+- Create a `tibble` using the sample names
+
+```{r}
+samples <- tibble(name = colnames(genes)) %>%
+  mutate(CellType = str_extract(name, "(Th|Treg)"),
+         Stim = str_detect(name, "\\+"))
+```
+
+## PCA
+
+The co-ordinates on each component are in `pcaGenes$x`
+
+Now we can convert to a `data.frame` and `left_join()`
+
+```{r}
+pcaGenes$x %>%
+  as.data.frame() %>%
+  rownames_to_column("name") %>%
+  left_join(samples) %>%
+  ggplot(
+    aes(x = PC1, y = PC2, colour = CellType, shape = Stim)
+  ) +
+  geom_point(size = 2)
+```
+
+## Making Plots Interactive
+
+- The package `plotly` enables interactive plots
+- We need to specify all variables in the *"tool-tip"*
+
+```{r}
+library(plotly)
+```
+
+## Making Plots Interactive
+
+We can add any custom parameter to a plot
+
+```{r}
+pcaPlot <- pcaGenes$x %>%
+  as.data.frame() %>%
+  rownames_to_column("name") %>%
+  left_join(samples) %>%
+  ggplot(
+    aes(PC1, PC2, 
+        colour = CellType, shape = Stim, label = name)
+  ) +
+  geom_point(size = 2) +
+  theme(legend.position = "none")
+```
+
+## Making Plots Interactive
+
+```{r}
+ggplotly(pcaPlot)
+```
+
+## Making Plots Interactive
+
+We can select the parameters to show in the tool-tip
+
+```{r}
+ggplotly(pcaPlot, tooltip = c("colour", "shape", "label"))
+```
+
+
+---
+
+<div class="footer" style="text-align:center;width:25%">
+[Home](http://uofabioinformaticshub.github.io/RAdelaide-July-2018/)
+</div>
