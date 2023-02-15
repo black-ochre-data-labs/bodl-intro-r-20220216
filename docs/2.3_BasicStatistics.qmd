@@ -402,7 +402,7 @@ knitr::opts_chunk$set(eval = FALSE)
 
 
 
-# Regression
+# Regression {background-color="#3c3c44"}
 
 ## Linear Regression
 
@@ -423,14 +423,13 @@ $$
 
 Linear Regression always uses the `R` formula syntax
 
-- `y ~ x` means `y` is a function of `x`
+- `y ~ x` means `y` depends on `x`
+    + i.e. $y = \beta_0 + \beta_1x$
 - We use the function `lm()`
 - The Intercept term is assumed unless explicitly removed (`~ 0 + ...`)
 
 ```{r}
 lmTooth <- lm(len ~ supp , data = toothData) 
-anova(lmTooth)
-summary(lmTooth)
 ```
 
 
@@ -443,6 +442,24 @@ class(lmTooth)
 typeof(lmTooth)
 str(lmTooth)
 ```
+
+. . .
+
+```{r}
+anova(lmTooth)
+summary(lmTooth)
+```
+
+## Linear Regression
+
+- Both `anova()` and `summary()` also create objects
+
+```{r}
+class(anova(lmTooth))
+class(summary(lmTooth))
+typeof(summary(lmTooth))
+```
+
 
 
 ## Linear Regression
