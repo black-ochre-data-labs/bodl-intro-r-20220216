@@ -86,7 +86,7 @@ x <- c("Hi Mum", "Hi Mother", "Hi Parent1")
     + `str_detect()`
     + `str_extract()`
     + `str_replace()`
-- Alternatives to `grepl()`, `grep()`, `gsub()` etc from `base`
+- Alternatives to `grepl()`, `grep()`, `gsub()` etc. from `base`
 
 ## `stringr::str_detect()`
 
@@ -357,7 +357,9 @@ glue_collapse(letters, sep = ", ", last = " & ")
 
 A common data type in statistics is a *categorical variable* (i.e. a `factor`)
 
-- Data will be a set of common groups
+- Can appear to be a `character` vector/column
+    + Can easily trip an unsuspecting analyst up
+- Data will be a set of common groups/categories
 
 ```{r}
 pet_vec <- c("Dog", "Dog", "Cat", "Dog", "Cat")
@@ -379,6 +381,7 @@ We can manually set these categories as `levels`
 
 ```{r}
 pet_factors <- factor(pet_vec, levels = c("Dog", "Cat"))
+pet_factors
 ```
 
 ## Factors
@@ -392,13 +395,11 @@ as.integer(pet_factors)
 as.character(pet_factors)
 ```
 
-## Factors
+## A Potential Pitfall
 
 **What would happen if we think a `factor` is a `character`, and we use it to select values from a `vector`/`matrix`/`data.frame`?**
 
-## Factors
-
-**What would happen if we think a `factor` is a `character`, and we use it to select values from a `vector`/`matrix`/`data.frame`?**
+. . .
 
 ```{r}
 names(pet_vec) <- pet_vec
@@ -406,4 +407,233 @@ pet_vec
 pet_vec[pet_factors]
 ```
 
-*This is why I'm very cautious about `read.csv()` and the standard `data.frame` etc*
+. . .
+
+- `read_csv()` and other `readr` functions always parse text as a `character`
+    + Older versions of `read.csv()` parsed text to factors by default
+    + Changed with R $\geq$ v4.0.0
+- If I want a `factor`, **I explicitly make** a `factor`
+   + During statistical analysis `character` vectors are always coerced
+
+## The package `forcats`
+
+- `forcats` is a part of the core `tidyverse`
+    + Specifically for wrangling `factors`
+    + Also plays very nicely with `stringr`
+    
+. . .
+
+- Reload `transport`
+
+```{r}
+transport <- read_csv("data/transport_clean.csv")
+glimpse(transport)
+```
+
+- In reality, we have **two** categorical variables here
+    + `gender` and `method`
+
+## Specifying Factors
+
+- We can change them '*on-the-fly*' using `mutate`
+
+```{r}
+transport |>
+  mutate(
+    gender = as.factor(gender),
+    method = factor(method, levels = c("car", "bike"))
+  )
+```
+
+**What were the consequences of using `factor()` Vs. `as.factor()`?**
+
+. . .
+
+- `forcats` versions are `fct()` and `as_factor()`
+    + Will error more readily $\implies$ This is good!!!
+
+```{r}
+transport |>
+  mutate(
+    gender = as_factor(gender),
+    method = fct(method, levels = c("car", "bike"))
+  )
+```
+
+## Modifying Factors
+
+- `stringr` functions can be handy for re-labelling
+
+```{r}
+transport |>
+  mutate(
+    gender = as_factor(gender) |> fct_relabel(.fun = str_to_title),
+    method = fct(method, levels = c("car", "bike")) |> 
+      fct_relabel(.fun = str_to_title)
+  )
+```
+
+. . .
+
+- Or to be more fancy we can just relabel all factors using `across()`
+
+```{r}
+transport |>
+  mutate(
+    gender = as_factor(gender),
+    method = fct(method, levels = c("car", "bike")) 
+  ) |>
+  mutate(
+    across(where(is.factor), fct_relabel, .fun = str_to_title)
+  )
+```
+
+
+## Specifying Factors
+
+- I usually set and tidy factors during loading or immediately after
+
+```{r}
+transport <- read_csv("data/transport_clean.csv") |>
+  mutate(
+    gender = as_factor(gender),
+    method = fct(method, levels = c("car", "bike"))
+  ) |>
+  mutate(
+    across(where(is.factor), fct_relabel, .fun = str_to_title)
+  )
+glimpse(transport)
+```
+
+. . .
+
+- We can check the levels of each column manually
+
+```{r}
+levels(transport$gender)
+levels(transport$method)
+```
+
+
+## Specifying Factors
+
+- Perhaps, it may be more sensible to set these as groups
+    + `fct_cross()`
+
+```{r}
+transport |>
+  mutate(
+    group = fct_cross(gender, method, sep = " - ")
+  ) 
+```
+
+. . .
+
+- We can easily check the group sizes
+
+```{r}
+transport |>
+  mutate(
+    group = fct_cross(gender, method, sep = " - ")
+  ) |>
+  group_by(group) |>
+  tally()
+```
+
+## Collapsing Groups
+
+- A group of 2 is generally unhelpful for statisticians
+    + We can merge groups based on size
+    + Also note we're piping *within* a larger *mutate()*
+    
+```{r}
+transport |>
+  mutate(
+    group = fct_cross(gender, method, sep = " - ") |>
+      fct_lump_min(min = 3, other_level = "Other")
+  ) |>
+  group_by(group) |>
+  tally() 
+```
+
+. . .
+
+- That just changed the name $\implies$ merge with the second smallest group
+    
+```{r}
+transport |>
+  mutate(
+    group = fct_cross(gender, method, sep = " - ") |>
+      fct_lump_min(min = 5, other_level = "Other")
+  ) |>
+  group_by(group) |>
+  tally() 
+```
+
+. . .
+
+`?fct_lump`
+
+## Specifying Factors
+
+- We can also automatically set factor levels to match frequency of appearance
+    + Here the order has changed to reflect the most common levels
+
+```{r}
+transport |>
+  mutate(
+    group = fct_cross(gender, method, sep = " - ") |>
+      fct_infreq()
+  ) |>
+  group_by(group) |>
+  tally() 
+```
+
+. . .
+
+- Or we can set strictly in the order of appearance in the data
+
+```{r}
+transport |>
+  mutate(
+    group = fct_cross(gender, method, sep = " - ") |>
+      fct_inorder()
+  ) |>
+  group_by(group) |>
+  tally() 
+```
+
+## Factors When Plotting
+
+- If passing a character vector to `ggplot()`
+    + Will automatically be coerced using `as.factor()`
+    + Alpha-numeric order most likely
+    + Usually good for `x` but not for `y`
+- Manually specify factors impacts plotting order
+
+## Factors When Plotting
+
+```{r barplot-transport}
+#| output-location: fragment
+transport |>
+  ggplot(aes(y = gender, fill = method)) +
+  geom_bar()
+```
+
+## Factors When Plotting
+
+- Can be easily changed
+
+```{r barplot-transport-rev}
+#| output-location: fragment
+transport |>
+  ggplot(aes(y = fct_rev(gender), fill = method)) +
+  geom_bar()
+```
+
+## A Final Comment
+
+- The use of integers can sometimes falsely infer a hierarchy between factors
+- Clearly in many situations (e.g. Cat Vs Dog) there is no hierarchy
+- `as.ordered` can set a strict ordering
+- Generally not anything we need to be concerned about

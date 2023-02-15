@@ -483,7 +483,7 @@ Dr Stevie Pederson
 <li><code>str_extract()</code></li>
 <li><code>str_replace()</code></li>
 </ul></li>
-<li>Alternatives to <code>grepl()</code>, <code>grep()</code>, <code>gsub()</code> etc from <code>base</code></li>
+<li>Alternatives to <code>grepl()</code>, <code>grep()</code>, <code>gsub()</code> etc. from <code>base</code></li>
 </ul>
 </section>
 <section id="stringrstr_detect" class="slide level2">
@@ -798,7 +798,11 @@ Dr Stevie Pederson
 <h2>Factors</h2>
 <p>A common data type in statistics is a <em>categorical variable</em> (i.e.&nbsp;a <code>factor</code>)</p>
 <ul>
-<li>Data will be a set of common groups</li>
+<li>Can appear to be a <code>character</code> vector/column
+<ul>
+<li>Can easily trip an unsuspecting analyst up</li>
+</ul></li>
+<li>Data will be a set of common groups/categories</li>
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>pet_vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Dog"</span>, <span class="st">"Dog"</span>, <span class="st">"Cat"</span>, <span class="st">"Dog"</span>, <span class="st">"Cat"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -819,7 +823,8 @@ Dr Stevie Pederson
 </div>
 <p>We can manually set these categories as <code>levels</code></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>pet_factors <span class="ot">&lt;-</span> <span class="fu">factor</span>(pet_vec, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Dog"</span>, <span class="st">"Cat"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>pet_factors <span class="ot">&lt;-</span> <span class="fu">factor</span>(pet_vec, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"Dog"</span>, <span class="st">"Cat"</span>))</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>pet_factors</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="factors-3" class="slide level2">
@@ -834,19 +839,292 @@ Dr Stevie Pederson
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">as.character</span>(pet_factors)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="factors-4" class="slide level2">
-<h2>Factors</h2>
+<section id="a-potential-pitfall" class="slide level2">
+<h2>A Potential Pitfall</h2>
 <p><strong>What would happen if we think a <code>factor</code> is a <code>character</code>, and we use it to select values from a <code>vector</code>/<code>matrix</code>/<code>data.frame</code>?</strong></p>
-</section>
-<section id="factors-5" class="slide level2">
-<h2>Factors</h2>
-<p><strong>What would happen if we think a <code>factor</code> is a <code>character</code>, and we use it to select values from a <code>vector</code>/<code>matrix</code>/<code>data.frame</code>?</strong></p>
+<div class="fragment">
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(pet_vec) <span class="ot">&lt;-</span> pet_vec</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>pet_vec</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>pet_vec[pet_factors]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p><em>This is why I’m very cautious about <code>read.csv()</code> and the standard <code>data.frame</code> etc</em></p>
+</div>
+<div class="fragment">
+<ul>
+<li><code>read_csv()</code> and other <code>readr</code> functions always parse text as a <code>character</code>
+<ul>
+<li>Older versions of <code>read.csv()</code> parsed text to factors by default</li>
+<li>Changed with R <span class="math inline">\(\geq\)</span> v4.0.0</li>
+</ul></li>
+<li>If I want a <code>factor</code>, <strong>I explicitly make</strong> a <code>factor</code>
+<ul>
+<li>During statistical analysis <code>character</code> vectors are always coerced</li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="the-package-forcats" class="slide level2">
+<h2>The package <code>forcats</code></h2>
+<ul>
+<li><code>forcats</code> is a part of the core <code>tidyverse</code>
+<ul>
+<li>Specifically for wrangling <code>factors</code></li>
+<li>Also plays very nicely with <code>stringr</code></li>
+</ul></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Reload <code>transport</code></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>transport <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/transport_clean.csv"</span>)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(transport)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li>In reality, we have <strong>two</strong> categorical variables here
+<ul>
+<li><code>gender</code> and <code>method</code></li>
+</ul></li>
+</ul>
+</div>
+</section>
+<section id="specifying-factors" class="slide level2">
+<h2>Specifying Factors</h2>
+<ul>
+<li>We can change them ‘<em>on-the-fly</em>’ using <code>mutate</code></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">as.factor</span>(gender),</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="fu">factor</span>(method, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"bike"</span>))</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>What were the consequences of using <code>factor()</code> Vs. <code>as.factor()</code>?</strong></p>
+<div class="fragment">
+<ul>
+<li><code>forcats</code> versions are <code>fct()</code> and <code>as_factor()</code>
+<ul>
+<li>Will error more readily <span class="math inline">\(\implies\)</span> This is good!!!</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">as_factor</span>(gender),</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="fu">fct</span>(method, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"bike"</span>))</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="modifying-factors" class="slide level2">
+<h2>Modifying Factors</h2>
+<ul>
+<li><code>stringr</code> functions can be handy for re-labelling</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">as_factor</span>(gender) <span class="sc">|&gt;</span> <span class="fu">fct_relabel</span>(<span class="at">.fun =</span> str_to_title),</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="fu">fct</span>(method, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"bike"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_relabel</span>(<span class="at">.fun =</span> str_to_title)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li>Or to be more fancy we can just relabel all factors using <code>across()</code></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">as_factor</span>(gender),</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="fu">fct</span>(method, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"bike"</span>)) </span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">where</span>(is.factor), fct_relabel, <span class="at">.fun =</span> str_to_title)</span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="specifying-factors-1" class="slide level2">
+<h2>Specifying Factors</h2>
+<ul>
+<li>I usually set and tidy factors during loading or immediately after</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>transport <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/transport_clean.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">as_factor</span>(gender),</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="fu">fct</span>(method, <span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"car"</span>, <span class="st">"bike"</span>))</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(<span class="fu">where</span>(is.factor), fct_relabel, <span class="at">.fun =</span> str_to_title)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(transport)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li>We can check the levels of each column manually</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(transport<span class="sc">$</span>gender)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(transport<span class="sc">$</span>method)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="specifying-factors-2" class="slide level2">
+<h2>Specifying Factors</h2>
+<ul>
+<li>Perhaps, it may be more sensible to set these as groups
+<ul>
+<li><code>fct_cross()</code></li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">fct_cross</span>(gender, method, <span class="at">sep =</span> <span class="st">" - "</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li>We can easily check the group sizes</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">fct_cross</span>(gender, method, <span class="at">sep =</span> <span class="st">" - "</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tally</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="collapsing-groups" class="slide level2">
+<h2>Collapsing Groups</h2>
+<ul>
+<li>A group of 2 is generally unhelpful for statisticians
+<ul>
+<li>We can merge groups based on size</li>
+<li>Also note we’re piping <em>within</em> a larger <em>mutate()</em></li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">fct_cross</span>(gender, method, <span class="at">sep =</span> <span class="st">" - "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_lump_min</span>(<span class="at">min =</span> <span class="dv">3</span>, <span class="at">other_level =</span> <span class="st">"Other"</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tally</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li>That just changed the name <span class="math inline">\(\implies\)</span> merge with the second smallest group</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">fct_cross</span>(gender, method, <span class="at">sep =</span> <span class="st">" - "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_lump_min</span>(<span class="at">min =</span> <span class="dv">5</span>, <span class="at">other_level =</span> <span class="st">"Other"</span>)</span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tally</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="fragment">
+<p><code>?fct_lump</code></p>
+</div>
+</section>
+<section id="specifying-factors-3" class="slide level2">
+<h2>Specifying Factors</h2>
+<ul>
+<li>We can also automatically set factor levels to match frequency of appearance
+<ul>
+<li>Here the order has changed to reflect the most common levels</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">fct_cross</span>(gender, method, <span class="at">sep =</span> <span class="st">" - "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_infreq</span>()</span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tally</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<ul>
+<li>Or we can set strictly in the order of appearance in the data</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">group =</span> <span class="fu">fct_cross</span>(gender, method, <span class="at">sep =</span> <span class="st">" - "</span>) <span class="sc">|&gt;</span></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">fct_inorder</span>()</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tally</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="factors-when-plotting" class="slide level2">
+<h2>Factors When Plotting</h2>
+<ul>
+<li>If passing a character vector to <code>ggplot()</code>
+<ul>
+<li>Will automatically be coerced using <code>as.factor()</code></li>
+<li>Alpha-numeric order most likely</li>
+<li>Usually good for <code>x</code> but not for <code>y</code></li>
+</ul></li>
+<li>Manually specify factors impacts plotting order</li>
+</ul>
+</section>
+<section id="factors-when-plotting-1" class="slide level2">
+<h2>Factors When Plotting</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> gender, <span class="at">fill =</span> method)) <span class="sc">+</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="2.2_TextManipulation_files/figure-revealjs/barplot-transport-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="factors-when-plotting-2" class="slide level2">
+<h2>Factors When Plotting</h2>
+<ul>
+<li>Can be easily changed</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>transport <span class="sc">|&gt;</span></span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">fct_rev</span>(gender), <span class="at">fill =</span> method)) <span class="sc">+</span></span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="2.2_TextManipulation_files/figure-revealjs/barplot-transport-rev-1.png" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="a-final-comment" class="slide level2">
+<h2>A Final Comment</h2>
+<ul>
+<li>The use of integers can sometimes falsely infer a hierarchy between factors</li>
+<li>Clearly in many situations (e.g.&nbsp;Cat Vs Dog) there is no hierarchy</li>
+<li><code>as.ordered</code> can set a strict ordering</li>
+<li>Generally not anything we need to be concerned about</li>
+</ul>
 
 <img src="assets/bodl_logo_white_background.jpg" class="slide-logo r-stretch"><div class="footer footer-default">
 
