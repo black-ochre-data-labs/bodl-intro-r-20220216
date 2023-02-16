@@ -32,13 +32,17 @@ knitr::opts_chunk$set(
 
 ## Welcome To Day 2
 
+*I acknowledge & pay my respects to the Kaurna people as traditional owners & custodians of this land*
+
+## Welcome To Day 2
+
 Today's Topics:
 
 1. __`R` Objects & Data Types__
 2. Text Manipulation
 3. Basic Statistical Analysis
-4. Writing Functions and Iteration
-5. The Bioconductor Project
+<!-- 4. Writing Functions and Iteration -->
+<!-- 5. The Bioconductor Project -->
 
 
 # `R` Objects {background-color="#3c3c44"}
@@ -46,10 +50,10 @@ Today's Topics:
 ## Before we start {.build}
 
 1. Clear your `Global Environment`  (![](assets/broom.png))
-2. Create a new RMarkdown File:  
-    + `File > New File > R Markdown`
-    + Save as `DataTypes.Rmd`
-3. Add your name, today's date and the title "Data Types in R"
+    + `Session` > `Restart R`
+2. Create a new R Script:  
+    + `File > New File > R Script`
+    + Save as `DataTypes.R`
 
 ## Recap Of Day 1
 
@@ -59,7 +63,7 @@ We learned how to:
 2. Look through & summarise a `data.frame`
 3. Pipe data objects (`%>%` or `|>`)
 4. Generate plots with `ggplot2`
-5. Use Rmarkdown
+<!-- 5. Use Rmarkdown -->
 
 
 ## `R` Objects

@@ -35,13 +35,38 @@ knitr::opts_chunk$set(
 
 ## Text Manipulation
 
+1. `Session` > `Restart R`
+    + Clear the Environment if required
+2. `File` > `New File` > `R Script`
+3. Save as `Text.R`
+
+. . . 
+
+
+```{r}
+library(tidyverse)
+```
+
+- Next, create the vector we'll mess around with
+
+```{r}
+x <- c("Hi Mum", "Hi Mother", "Hi Parent1")
+```
+ 
+
+## Text Manipulation
+
+- Working with `character` vectors
 - One of the most common and regular tasks
     + Cleaning up column names
     + Cleaning up data
     + Tidying up text on plots
+    
+. . .
+
 - Particularly relevant when working with IDs
     + May appear as `Run 1` in one file and `Run_001` in another
-- Sequence providers often have their ID formats and edit the ones provided
+- Data providers often have their ID formats and edit the ones provided
     + Need to identify & extract/modify
     
     
@@ -56,34 +81,13 @@ knitr::opts_chunk$set(
 
 - Will progress to categorical data $\implies$ *factors*
 
-## Setup
-
-- Please use a R Script or RMarkdown file for this session
-    + Use whichever you prefer, named as you decide
-    
-. . .
-
-- At the beginning of the main section
-    + This will load all core `tidyverse` packages, including `stringr`
-
-```{r}
-library(tidyverse)
-```
-
-. . . 
-
-- Next, create a vector we'll mess around with
-
-```{r}
-x <- c("Hi Mum", "Hi Mother", "Hi Parent1")
-```
- 
 
 ## Text Manipulation
 
 - The package `stringr` contains functions for text manipulation 
 - Key Functions:
     + `str_detect()`
+    + `str_remove()`
     + `str_extract()`
     + `str_replace()`
 - Alternatives to `grepl()`, `grep()`, `gsub()` etc. from `base`
@@ -101,7 +105,7 @@ str_detect(string = x, pattern = "Mum")
 
 - In the above we used basic words for the search pattern
 - *Regular expressions* use a `.` as a wild card
-    + `*` has different meaning to many other applications
+    + `*` has different meaning to many other contexts
 
 ```{r}
 str_detect(x, "Mu")
@@ -129,6 +133,29 @@ str_detect(x, "M[ou]")
     
 ```{r}
 str_detect(x, "Mother|Parent")
+```
+
+## `stringr::str_detect()`
+
+- We can also anchor patterns to:
+    + The start of a stringr (`^`)
+    + The end of a string (`$`)
+    
+```{r}
+str_detect(x, "r")
+str_detect(x, "r$")
+str_detect(x, "^Hi ")
+```
+
+## `stringr::str_view()`
+
+- We can check our matches in detail using `str_view()`
+
+```{r}
+str_view(x, "r")
+str_view(x, "r$")
+str_view(x, "M[ou]")
+str_view(x, "M[ou]", match = NA, html = TRUE)
 ```
 
 
@@ -214,19 +241,40 @@ str_extract(x, "Hi [:alpha:]{4}")
 str_extract(x, "[Hh].")
 ```
 
-## `stringr::str_extract_all()`
+<!-- ## `stringr::str_extract_all()` -->
 
-- `str_extract_all()` returns **all matches**
+<!-- - `str_extract_all()` returns **all matches** -->
+
+<!-- ```{r} -->
+<!-- str_extract_all(x, "[Hh].") -->
+<!-- ``` -->
+
+<!-- . . . -->
+
+<!-- - Note that now we have a list of the same length as `x` -->
+<!--     + Each element contains all matches within the initial string -->
+
+## `stringr::str_remove()`
+
+- We can use the above tricks to remove patterns within our text
 
 ```{r}
-str_extract_all(x, "[Hh].")
+str_remove(x, "Hi ")
+str_remove(x, "[aeiou]")
 ```
 
-. . .
+. . . 
 
-- Note that now we have a list of the same length as `x`
-    + Each element contains all matches within the initial string
+- Notice that only the first match was removed
+    + `str_remove_all()` will remove all occurences
 
+```{r}
+str_remove_all(x, "[aeiou]")
+```
+
+. . . 
+
+Very useful for removing file suffixes etc
 
 ## `stringr::str_replace()`
 
@@ -635,5 +683,5 @@ transport |>
 
 - The use of integers can sometimes falsely infer a hierarchy between factors
 - Clearly in many situations (e.g. Cat Vs Dog) there is no hierarchy
-- `as.ordered` can set a strict ordering
-- Generally not anything we need to be concerned about
+    - `as.ordered` can set a strict ordering
+    - Generally not anything we need to be concerned about

@@ -33,6 +33,17 @@ knitr::opts_chunk$set(
 
 # Basic Statistical Techniques {background-color="#3c3c44"}
 
+## Setup
+
+1. Restart R Session
+    + Remove objects if required
+2. New R Script
+    + BasicStatistics.R
+    
+```{r}
+library(tidyverse)
+```
+
 ## Introduction
 
 - `R` has it's origins as a statistical analysis language (i.e. `S`)
@@ -73,7 +84,6 @@ knitr::opts_chunk$set(
 Take a random sample from a few important distributions
 
 ```{r randomSamples}
-library(tidyverse)
 randomSamples <- list(
   Normal = rnorm(1000, mean = 1, sd = 1),
   Uniform = runif(1000, min = -0.732, max = 2.732),
@@ -195,7 +205,7 @@ ggplot(
     + The below is a bit of a dumb test
     + Demonstrates the code (not the statistics)
 
-```{r}
+```{r, eval=FALSE}
 ?t.test
 t.test(toothData$len)
 ```

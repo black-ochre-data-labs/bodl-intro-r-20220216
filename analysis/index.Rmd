@@ -12,7 +12,8 @@ Feb 16-17, 2023
 Board Room 2  
 Telethon Kids Institute  
 North Tce  
-Adelaide SA
+Adelaide SA  
+*Kaurna Land*
 
 *Presented by Dr Stevie Pederson, Black Ochre Data Labs*
 
@@ -25,8 +26,8 @@ We will discuss on the day
 |:------ |:---------------------------------- |:----------------------------- |
 |9:00am  | Introduction to `R Studio` <br> Loading Data | Understanding Data Types in `R` |
 |10:30am | *Morning Tea*                      | *Morning Tea*                   |
-|11:00am | Manipulating Data Frames With the `tidyverse` | Manipulating Text <br>  Basic Statistical Techniques |
+|11:00am | Manipulating Data Frames With the `tidyverse` | Manipulating Text |
 |12:30pm | *Lunch*                            | *Lunch*                         | 
-|1:30pm  | Data Visualisation Using `ggplot2` <br> Making Publication Quality Images | Iteration <br> Writing Functions  |
+|1:30pm  | Manipulating Data Frames With the `tidyverse`  | Running Analyses Using `R Markdown` |
 |3:00pm  | *Coffee Break*                     | *Coffee Break*                |
-|3:30pm  | Running Analyses Using `R Markdown` | The Bioconductor Project |
+|3:30pm  |  Data Visualisation Using `ggplot2`  | Basic Statistical Techniques |
