@@ -42,6 +42,7 @@ knitr::opts_chunk$set(
     
 ```{r}
 library(tidyverse)
+library(pander)
 ```
 
 ## Introduction
@@ -68,20 +69,75 @@ library(tidyverse)
 | Exponential  | `dexp()`  | `pexp()`         | `qexp()`  | `rexp()`  |
 | $\chi^2$     | `dchisq()` | `pchisq()`      | `qchisq()` | `rchisq()` |
 | Binomial     | `dbinom()` | `pbinom()`      | `qbinom()` | `rbinom()` |
-<!-- | Poisson      | `dpois()` | `ppois()`        | `qpois()` | `rpois()` | -->
+| Poisson      | `dpois()` | `ppois()`        | `qpois()` | `rpois()` |
+
+. . .
+<br>
+(I do use `rnorm()`, `rbinom()` and `runif()` quite a bit)
 
 ## Distributions 
 
-- Also Poisson, Beta, $\Gamma$, Log-Normal, F, Geometric, Cauchy, Hyper-geometric etc...
+- Also Beta, $\Gamma$, Log-Normal, F, Geometric, Cauchy, Hypergeometric etc...
+- Lots of others in additional packages, e.g. Skew-Normal is in `sn`
 
 ```{r dist-help, eval=FALSE}
 ?Distributions
 ```
 
+## Distributions
+
+:::: {.columns}
+
+::: {.column width="50%"}
+
+
+### Normal
+
+- The most common distribution (i.e. Bell Curve)
+- Most statistical theory developed for this type of data
+
+::: {.fragment}
+    
+### Uniform
+
+- Can appear anywhere within a range, with equal probability
+- Most common example: $p$-values under $H_0$
+
+:::
+
+:::
+
+::: {.column width="50%"}
+
+::: {.fragment}
+
+### Exponential
+
+- *Continuous* data
+- E.g. the time between events
+
+<br><br>
+
+:::
+
+::: {.fragment}
+
+### Poisson
+
+- Discrete (i.e. count) data
+- Number of phone calls per minute
+- Number of alignments per kb
+
+:::
+
+:::
+
+::::
 
 ## Distributions
 
-Take a random sample from a few important distributions
+- I'll take a random sample from these distributions
+- All sampled from distributions with $\mu = 1$; $\sigma = 1$
 
 ```{r randomSamples}
 randomSamples <- list(
@@ -90,48 +146,6 @@ randomSamples <- list(
   Exponential = rexp(1000, rate = 1),
   Poisson = rpois(1000, lambda = 1)
 )
-```
-
-These were all sampled from distributions with $\mu = 1$; $\sigma = 1$
-
-## Distributions {.smaller}
-
-- Normal
-    + The most common distribution (i.e. Bell Curve)
-    + Most statistical theory developed for this type of data
-    
-. . .
-
-- Uniform
-    + Can appear anywhere within a range, with equal probability
-    + Most common example: $p$-values under $H_0$
-
-. . .
-
-- Exponential
-    + Continuous data
-    + Common example is the time between events occurring
-
-. . .
-
-- Poisson
-    + Discrete (i.e. count) data
-    + Number of phone calls per minute
-    + Number of alignments per kb
-
-## Distributions 
-
-**Why are the sample means & std. deviations not exactly equal to 1?**
-
-```{r means_pander, echo=FALSE, include=TRUE, results='asis'}
-library(pander)
-randomSamples %>% 
-  lapply(function(x) tibble(mn = mean(x), sd = sd(x))) %>% 
-  bind_rows(.id = "Distribution") %>% 
-  pander(
-    justify = "lrr",
-    col.names = c("Distribution", "$\\hat{\\mu}$", "$\\hat{\\sigma}$")
-  )
 ```
 
 
@@ -148,6 +162,22 @@ randomSamples %>%
   facet_wrap(~Distribution, ncol = 2, scales = "free")  +
   theme(text = element_text(size = 14))
 ```
+
+
+## Distributions 
+
+**Why are the sample means & std. deviations not exactly equal to 1?**
+
+```{r means_pander, echo=FALSE, include=TRUE, results='asis'}
+randomSamples %>% 
+  lapply(function(x) tibble(mn = mean(x), sd = sd(x))) %>% 
+  bind_rows(.id = "Distribution") %>% 
+  pander(
+    justify = "lrr",
+    col.names = c("Distribution", "$\\hat{\\mu}$", "$\\hat{\\sigma}$")
+  )
+```
+
 
 ## All Densities
 
@@ -183,10 +213,9 @@ glimpse(toothData)
 ## Data For This Session
 
 ```{r boxplot-teeth, fig.width=8, fig.height=6, fig.align='center'}
-#| output-location: column
-ggplot(
-  toothData, 
-  aes(x = dose, y = len, fill = supp)) +
+#| output-location: fragment
+toothData %>% 
+  ggplot(aes(x = dose, y = len, fill = supp)) +
   geom_boxplot() +
   theme_bw() +
   theme(text = element_text(size = 16))
@@ -196,8 +225,13 @@ ggplot(
 ## t-tests
 
 - Data should be normally distributed
-- $t$-tests always test $H_0$ Vs $H_A$
-    - (We may not always do meaningful tests today)
+- $t$-tests always test $H_0$ (e.g. $\mu = 0$)
+    - Leaves $H_A$ as everything **not** $H_0$
+    
+. . . 
+
+- We may not always do meaningful tests today
+- Focus is more on the syntax of *"how"* we do things
 
 ## t-tests
 
@@ -209,7 +243,7 @@ ggplot(
 ?t.test
 t.test(toothData$len)
 ```
-
+<br>
 **What is $H_0$ in the above test?**
 
 . . .
@@ -233,7 +267,7 @@ x <- toothData$len[toothData$supp == "VC"]
 y <- toothData$len[toothData$supp == "OJ"]
 t.test(x, y)
 ```
-
+<br>
 **Is this a paired test?**
 
 ## t-tests
@@ -250,8 +284,9 @@ Or we could use the `R` formula method:
 ```{r}
 t.test(len~supp, data = toothData)
 ```
-
+<br>
 **Did this give the same results?**
+
 
 ## Working With Objects of Class `htest()`
 
@@ -263,6 +298,7 @@ class(res)
 typeof(res)
 glimpse(res)
 ```
+<br>
 
 . . .
 
@@ -274,7 +310,6 @@ res
 - When we type the object name: `print()` is called
 - `print()` actually looks for a function `print.htest()`
 - This is known as an `S3` method
-    + More on these later
 
 ## Working With Objects of Class `htest()`
 
@@ -291,7 +326,7 @@ res$conf.int
 
 . . .
 
-- We can place these inline using \``r`\`
+- When using Rmarkdown, we can place these *inline* using \``r`\`
 
 ## Working With Objects of Class `htest()`
 
@@ -310,6 +345,11 @@ library(broom)
 tidy(res)
 ```
 
+. . .
+
+- Very helpful when combining multiple tests
+    + `bind_rows(my_list_of_results, .id = "my_id")`
+
 
 ## Wilcoxon Tests  
 
@@ -321,12 +361,13 @@ H_0: \text{Distribution}_1 = \text{Distribution}_2 \\
 H_A: \text{Distribution}_1 \neq \text{Distribution}_2
 $$
 
-## Wilcoxon Tests 
+. . .
 
-- This assigns *ranks* to each value based on their value
+- This assigns *ranks* to each value $\implies$ tests $H_0$ using *ranks* **not** *values*
     - Tied values can be problematic
-    + Test is based on *ranks* not values
-- Still produces an object f class `htest`
+- Still produces an object of class `htest`
+
+## Wilcoxon Tests 
 
 ```{r wilcox-test, results='markup'}
 #| output-location: fragment
@@ -335,17 +376,33 @@ class(res)
 names(res)
 res
 ```
+<br>
 
+. . .
+
+```{r, results='asis'}
+pander(res)
+```
+
+## Wilcoxon Tests
+
+- Non-parametric tests are usually less powerful with small sample sizes
+- As $n \rightarrow \infty$ very similar power to parametric tests
+- Sometimes transformations (e.g. $\log_2$, inverse) can approximate normality
+
+::: {.notes}
+Might be worth pointing out the similarity in results form the t-test
+:::
 
 ## $\chi^2$ Test
 
 - Here we need counts
-- Often a $2 \times 2$ table
+- Often a $2 \times 2$ table but can be $n \times m$
 - Commonly used in *Observed Vs Expected*
 
 $$
-H_0: \text{No dependence between groups and outcome}\\
-H_A: \text{Dependence between groups and outcome}
+H_0: \text{No association between groups and outcome}\\
+H_A: \text{Some association between groups and outcome}
 $$
 
 
@@ -357,6 +414,7 @@ colnames(pass) <- c("Pass", "Fail")
 rownames(pass) <- c("Attended", "Skipped")
 pass
 ```
+<br>
 
 . . .
 
@@ -369,15 +427,15 @@ res
 
 . . .
 
-**Can anyone remember when we shouldn't use a $\chi^2$ test?**
+**Does anyone know when we shouldn't use a $\chi^2$ test?**
 
 ## Fisher's Exact Test
 
-- $\chi^2$ tests became popular in the days of the printed tables
-    - We now have computers
 - Fisher's Exact Test is preferable in the cases of low cell counts
     - Uses the hypergeometric distribution
-- Same $H_0$ as the $\chi^2$ test
+    - More computationally demanding
+- Same $H_0$ as $\chi^2$ test
+- $\chi^2$ tests were popular in the days of the printed tables $\implies$ computers
 
 ```{r, results = 'markup'}
 fTest <- fisher.test(pass)
@@ -398,8 +456,8 @@ fTest
 All tests gave similar looking output.
 
 - Objects of class `htest`
-    - Print & markdown formatting methods exist for this class
-    - `tibble` coercion also exists
+    - Print & Rmarkdown formatting methods exist for this class
+    - `tibble` coercion also exists (`broom::tidy()`)
 - These are list objects
     + We can simply grab any values we need
 
@@ -428,11 +486,19 @@ Linear Regression always uses the `R` formula syntax
 - `y ~ x` means `y` depends on `x`
     + i.e. $y = \beta_0 + \beta_1x$
     + The Intercept term is assumed unless explicitly removed (`~ 0 + ...`)
+    + The slope always corresponds to a *one-unit* change in the predictor
 - We use the function `lm()`
 
 ```{r}
 lm_tooth <- lm(len ~ supp , data = toothData) 
 ```
+
+. . .
+
+<br>
+
+- Here the length depends on the supplement method
+
 
 ## Linear Regression
 
@@ -516,7 +582,7 @@ tidy(summary_lm_tooth)
 ## Regression Diagnostics
 
 - Passing an object of class `lm` to `plot()` produces 4 diagnostic plots
-    + The are produced in series
+    + The are produced in series $\implies$ &#128552;
 - Can be produced in one call by setting the plot device to be two rows and two columns
    + `par()` is used to set global plotting parameters
    + `mfrow` is for Multi-Frame Row-wise plots
@@ -585,7 +651,7 @@ pander(lm_dose)
 ```{r, results='asis'}
 #| output-location: fragment
 lm_interaction <- lm(len ~ dose + supp + dose:supp, data = toothData) 
-pander(lm_interacton)
+pander(lm_interaction)
 ```
 
 
@@ -600,6 +666,24 @@ pander(lm_interacton)
 
 - Interaction terms usually require careful thought...
     + 3-level interactions get really confusing
+    
+. . .
+
+- How do we interpret the previous results
+
+## Iteraction terms
+
+```{r, results='markup'}
+broom::tidy(lm_interaction)
+```
+
+- `suppOJ` is the "baseline" impact of OJ
+    + Defaults to the first factor level
+- Interaction terms test $H_0: \beta_{ij} = 0$ for each interaction
+    + If significant, there is a difference between baseline
+    + If not significant, effect is same as baseline
+- Overall estimate of effect-size is Baseline (`suppOJ`) + Interaction term
+
 
 ## Model Selection
 
@@ -607,13 +691,13 @@ pander(lm_interacton)
 
 - Running an ANOVA on multiple *related* models compares the reduction in the residual Sum of Squares
 
-```{r}
+```{r, results='markup'}
 anova(lm_tooth, lm_dose, lm_interaction)
 ```
 
 . . .
 
-- The p-value tests H~0~: No improvement in model fit when removing the next term
+- The p-value tests $H_0$: No improvement in model fit when removing the next term
     + Clearly the interaction term improves the fit and should remain
     + This makes intuitive sense
 
@@ -861,5 +945,13 @@ library(patchwork)
   plot_annotation(tag_levels = "A")
 ```
 
+## Conclusion
+
+- Can perform simple hypothesis testing
+    + $t$, Wilcoxon, $\chi^2$, Fisher's Exact
+- Standard linear regression & diagnostics
+    + Can dig deeper if needed
+- PCA for data exploration
+- Use existing knowledge of `tidyverse` to manipulate & visualise
 
 
